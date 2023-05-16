@@ -24,7 +24,7 @@ class FloatingButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(3),
         ),
-        backgroundColor: MyColor.primaryColor,
+        backgroundColor: MyColor.primary,
         foregroundColor: MyColor.white,
         elevation: 0,
         icon: widget,

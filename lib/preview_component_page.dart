@@ -4,7 +4,9 @@ import 'package:capstone_project/components/buttons/primary_button.dart';
 import 'package:capstone_project/components/buttons/primary_button_icon.dart';
 import 'package:capstone_project/components/buttons/secondary_button.dart';
 import 'package:capstone_project/components/buttons/secondary_button_icon.dart';
+import 'package:capstone_project/components/text_box/text_box.dart';
 import 'package:capstone_project/utils/my_color.dart';
+import 'package:capstone_project/utils/my_focus_node.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +20,13 @@ class PreviewComponentPage extends StatefulWidget {
 }
 
 class _PreviewComponentPageState extends State<PreviewComponentPage> {
+  final TextEditingController _namaController = TextEditingController();
+  final TextEditingController _alamatController = TextEditingController();
+  final TextEditingController _kotaController = TextEditingController();
+  final FocusNode _namaNode = FocusNode();
+  final FocusNode _alamatNode = FocusNode();
+  final FocusNode _kotaNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +43,47 @@ class _PreviewComponentPageState extends State<PreviewComponentPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                TextBox(
+                  textEditingController: _namaController,
+                  hintText: 'Ex: Budi',
+                  currentFocus: _namaNode,
+                  onFieldSubmitted: (value) {
+                    MyFocusNode.change(
+                      context: context,
+                      currentFocus: _namaNode,
+                      nextFocus: _alamatNode,
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextBox(
+                  textEditingController: _alamatController,
+                  hintText: 'Ex: Alamat',
+                  currentFocus: _alamatNode,
+                  width: MySize.halfWidth(context),
+                  onFieldSubmitted: (value) {
+                    MyFocusNode.change(
+                      context: context,
+                      currentFocus: _alamatNode,
+                      nextFocus: _kotaNode,
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextBox(
+                  textEditingController: _kotaController,
+                  hintText: 'Ex: Kota',
+                  currentFocus: _kotaNode,
+                  width: 134,
+                  last: true,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 PrimaryButton(
                   teks: 'Full Width',
                   onPressed: () {},
@@ -110,7 +160,7 @@ class _PreviewComponentPageState extends State<PreviewComponentPage> {
                   teks: 'Full Width',
                   widget: Icon(
                     Icons.email,
-                    color: MyColor.primaryColor,
+                    color: MyColor.primary,
                   ),
                   onPressed: () {},
                 ),
@@ -122,7 +172,7 @@ class _PreviewComponentPageState extends State<PreviewComponentPage> {
                   teks: 'Half Width',
                   widget: Icon(
                     Icons.email,
-                    color: MyColor.primaryColor,
+                    color: MyColor.primary,
                   ),
                   onPressed: () {},
                 ),
@@ -134,7 +184,7 @@ class _PreviewComponentPageState extends State<PreviewComponentPage> {
                   teks: 'Custom',
                   widget: Icon(
                     Icons.email,
-                    color: MyColor.primaryColor,
+                    color: MyColor.primary,
                   ),
                   onPressed: () {},
                 ),

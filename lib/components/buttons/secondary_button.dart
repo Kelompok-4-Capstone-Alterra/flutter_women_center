@@ -20,7 +20,7 @@ class SecondaryButton extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         backgroundColor: MyColor.white,
         elevation: 0,
-        side: BorderSide(color: MyColor.primaryColor, width: 1),
+        side: BorderSide(color: MyColor.primary, width: 1),
         fixedSize: Size(
             customWidth == null ? MySize.width(context) : customWidth!, 44),
         shape: RoundedRectangleBorder(
@@ -33,7 +33,7 @@ class SecondaryButton extends StatelessWidget {
         style: TextStyle(
             fontSize: 14.0,
             fontWeight: FontWeight.w500,
-            color: MyColor.primaryColor),
+            color: MyColor.primary),
       ),
     );
   }

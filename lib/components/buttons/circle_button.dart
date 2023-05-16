@@ -15,7 +15,7 @@ class CircleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: MyColor.primaryColor,
+          backgroundColor: MyColor.primary,
           elevation: 0,
           fixedSize: const Size(56, 56),
           shape: const CircleBorder(),
