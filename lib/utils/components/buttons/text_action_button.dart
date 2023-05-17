@@ -1,14 +1,13 @@
 import 'package:capstone_project/utils/my_color.dart';
-import 'package:capstone_project/utils/my_size.dart';
 import 'package:flutter/material.dart';
 
-class PrimaryButton extends StatelessWidget {
+class TextActionButton extends StatelessWidget {
   final String teks;
   final double? customWidth;
   final double? customHeight;
   final void Function()? onPressed;
 
-  const PrimaryButton({
+  const TextActionButton({
     super.key,
     this.customWidth,
     this.customHeight,
@@ -18,36 +17,42 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return TextButton(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
           (Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed)) {
-              return MyColor.primaryPressed;
+              return MyColor.secondaryPressed;
             } else if (states.contains(MaterialState.hovered)) {
-              return MyColor.primaryHover;
+              return MyColor.secondaryHover;
             } else if (states.contains(MaterialState.disabled)) {
-              return MyColor.primarySurface;
+              return MyColor.secondarySurface;
             }
-            return MyColor.primaryMain;
+            return MyColor.white;
           },
         ),
-        foregroundColor: MaterialStatePropertyAll<Color>(MyColor.white),
+        foregroundColor: MaterialStateProperty.resolveWith<Color>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.pressed)) {
+              return MyColor.white;
+            } else if (states.contains(MaterialState.hovered)) {
+              return MyColor.white;
+            } else if (states.contains(MaterialState.disabled)) {
+              return MyColor.secondarySurface;
+            }
+            return MyColor.secondaryMain;
+          },
+        ),
         elevation: const MaterialStatePropertyAll<double>(0),
-        fixedSize: MaterialStatePropertyAll<Size>(Size(
-          customWidth == null ? MySize.bodyWidth(context) : customWidth!,
-          customHeight == null ? 44 : customHeight!,
-        )),
         shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(3))),
       ),
       onPressed: onPressed,
       child: Text(
         teks,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 14.0,
           fontWeight: FontWeight.w500,
-          color: MyColor.white,
         ),
       ),
     );

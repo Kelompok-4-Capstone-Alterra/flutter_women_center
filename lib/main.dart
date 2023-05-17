@@ -1,4 +1,3 @@
-import 'package:capstone_project/preview_component_page.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -15,11 +14,8 @@ class MyApp extends StatelessWidget {
       title: 'Woman Center',
       theme: ThemeData.light(useMaterial3: true),
       initialRoute: TransactionScreen.routeName,
-      // initialRoute: PreviewComponentPage.routeName,
       routes: {
         TransactionScreen.routeName: (context) => const TransactionScreen(),
-        PreviewComponentPage.routeName: (context) =>
-            const PreviewComponentPage(),
       },
     );
   }

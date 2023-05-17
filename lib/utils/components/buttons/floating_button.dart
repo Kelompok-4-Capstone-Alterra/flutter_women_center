@@ -20,11 +20,13 @@ class FloatingButton extends StatelessWidget {
     return SizedBox(
       height: 36,
       child: FloatingActionButton.extended(
+        splashColor: MyColor.primaryPressed,
+        hoverColor: MyColor.primaryHover,
         tooltip: toolTip,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(3),
         ),
-        backgroundColor: MyColor.primary,
+        backgroundColor: MyColor.primaryMain,
         foregroundColor: MyColor.white,
         elevation: 0,
         icon: widget,

@@ -5,6 +5,7 @@ class MyFocusNode {
   final FocusNode currentFocus;
   final FocusNode nextFocus;
 
+  ///ganti fokus ke text form field berikutnya
   MyFocusNode.change(
       {required this.context,
       required this.currentFocus,

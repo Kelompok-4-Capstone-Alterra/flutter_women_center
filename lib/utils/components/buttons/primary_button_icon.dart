@@ -21,25 +21,38 @@ class PrimaryButtonIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: MyColor.primary,
-          elevation: 0,
-          fixedSize: Size(
-            customWidth == null ? MySize.width(context) : customWidth!,
-            customHeight == null ? 44 : customHeight!,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(3),
-          ),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.resolveWith<Color>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.pressed)) {
+              return MyColor.primaryPressed;
+            } else if (states.contains(MaterialState.hovered)) {
+              return MyColor.primaryHover;
+            } else if (states.contains(MaterialState.disabled)) {
+              return MyColor.primarySurface;
+            }
+            return MyColor.primaryMain;
+          },
         ),
-        onPressed: onPressed,
-        label: Text(
-          teks,
-          style: TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.w500,
-              color: MyColor.white),
+        foregroundColor: MaterialStatePropertyAll<Color>(MyColor.white),
+        elevation: const MaterialStatePropertyAll<double>(0),
+        fixedSize: MaterialStatePropertyAll<Size>(Size(
+          customWidth == null ? MySize.bodyWidth(context) : customWidth!,
+          customHeight == null ? 44 : customHeight!,
+        )),
+        shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(3))),
+      ),
+      onPressed: onPressed,
+      label: Text(
+        teks,
+        style: TextStyle(
+          fontSize: 14.0,
+          fontWeight: FontWeight.w500,
+          color: MyColor.white,
         ),
-        icon: widget);
+      ),
+      icon: widget,
+    );
   }
 }

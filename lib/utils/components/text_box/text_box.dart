@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 
 class TextBox extends StatelessWidget {
   final TextEditingController textEditingController;
-  final String? initialValue;
   final TextInputType? keyboardType;
   final TextCapitalization? textCapitalization;
   final bool? autoFocus;
@@ -21,7 +20,6 @@ class TextBox extends StatelessWidget {
   final String? Function(String?)? validator;
   final FocusNode? currentFocus;
   final bool? last;
-  final bool? textInputAction;
   final void Function(String)? onFieldSubmitted;
   final double? width;
 
@@ -31,10 +29,8 @@ class TextBox extends StatelessWidget {
     required this.textEditingController,
     required this.hintText,
     this.onFieldSubmitted,
-    this.textInputAction,
     this.currentFocus,
     this.last,
-    this.initialValue,
     this.keyboardType,
     this.textCapitalization,
     this.autoFocus,
@@ -52,8 +48,7 @@ class TextBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width == null ? MySize.width(context) : width!,
-      height: 44,
+      width: width == null ? MySize.bodyWidth(context) : width!,
       child: TextFormField(
         controller: textEditingController,
         focusNode: currentFocus,
@@ -65,7 +60,6 @@ class TextBox extends StatelessWidget {
         textInputAction: last == null || last == false
             ? TextInputAction.next
             : TextInputAction.done,
-        initialValue: initialValue,
         keyboardType: keyboardType,
         textCapitalization: textCapitalization == null
             ? TextCapitalization.none
@@ -73,15 +67,15 @@ class TextBox extends StatelessWidget {
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w400,
-          color: MyColor.info,
+          color: MyColor.neutralMediumLow,
         ),
         autofocus: autoFocus == null || autoFocus == false ? false : true,
         obscureText: obscureText == null || obscureText == false ? false : true,
         obscuringCharacter:
             obscureText == null || obscureText == false || obscureChar == ''
-                ? ' '
+                ? '*'
                 : obscureChar!,
-        maxLines: maxLines,
+        maxLines: maxLines ?? 1,
         maxLength: maxLength,
         onChanged: onChanged,
         decoration: InputDecoration(
@@ -90,18 +84,18 @@ class TextBox extends StatelessWidget {
             horizontal: 24.0,
           ),
           isDense: true,
-          prefixIconColor: Colors.blue,
           errorMaxLines: errorMaxLines,
           hintMaxLines: hintMaxLines,
           hintText: hintText,
           hintStyle: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w400,
-            color: MyColor.subInfo,
+            color: MyColor.neutralMediumLow,
           ),
-          errorStyle: const TextStyle(
+          errorStyle: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w400,
+            color: MyColor.danger,
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(3),

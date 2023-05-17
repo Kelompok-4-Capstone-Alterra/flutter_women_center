@@ -32,7 +32,7 @@ class SearchTextBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width == null ? MySize.width(context) : width!,
+      width: width == null ? MySize.bodyWidth(context) : width!,
       height: 48,
       child: TextFormField(
         controller: textEditingController,
@@ -43,7 +43,7 @@ class SearchTextBox extends StatelessWidget {
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w400,
-          color: MyColor.info,
+          color: MyColor.neutralMediumLow,
         ),
         maxLength: maxLength,
         onChanged: onChanged,
@@ -59,17 +59,18 @@ class SearchTextBox extends StatelessWidget {
           hintStyle: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w400,
-            color: MyColor.subInfo,
+            color: MyColor.neutralMediumLow,
           ),
-          errorStyle: const TextStyle(
+          errorStyle: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w400,
+            color: MyColor.danger,
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: MyColor.primary, width: .25),
+            borderSide: BorderSide(color: MyColor.primaryMain, width: .25),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: MyColor.subInfo, width: .25),
+            borderSide: BorderSide(color: MyColor.neutralMediumLow, width: .25),
           ),
         ),
         inputFormatters: inputFormatters,

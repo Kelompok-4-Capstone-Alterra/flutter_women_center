@@ -14,11 +14,22 @@ class CircleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: MyColor.primary,
-          elevation: 0,
-          fixedSize: const Size(56, 56),
-          shape: const CircleBorder(),
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.pressed)) {
+                return MyColor.primaryPressed;
+              } else if (states.contains(MaterialState.hovered)) {
+                return MyColor.primaryHover;
+              } else if (states.contains(MaterialState.disabled)) {
+                return MyColor.primarySurface;
+              }
+              return MyColor.primaryMain;
+            },
+          ),
+          elevation: const MaterialStatePropertyAll<double>(0),
+          fixedSize: const MaterialStatePropertyAll<Size>(Size(56, 56)),
+          shape: const MaterialStatePropertyAll<CircleBorder>(CircleBorder()),
         ),
         onPressed: onPressed,
         child: widget);
