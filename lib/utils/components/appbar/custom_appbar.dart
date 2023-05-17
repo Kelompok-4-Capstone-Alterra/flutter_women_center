@@ -29,20 +29,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    late double height;
-    if (home == true) {
-      height = 206;
-    } else {
-      if (searchField == true && tabBar == false) {
-        height = 178;
-      } else if (searchField == false && tabBar == true) {
-        height = 174;
-      } else if (searchField == true && tabBar == true) {
-        height = 238;
-      } else {
-        height = 114;
-      }
-    }
     return PreferredSize(
       preferredSize: preferredSize,
       child: Column(

@@ -3,7 +3,6 @@ import 'package:capstone_project/utils/components/buttons/primary_button.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button_icon.dart';
 import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
 import 'package:capstone_project/utils/components/text_box/text_box.dart';
-import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_focus_node.dart';
 import 'package:capstone_project/utils/my_reg_exp.dart';
 import 'package:capstone_project/utils/my_size.dart';
@@ -47,7 +46,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
               padding: const EdgeInsets.only(right: 16),
               child: PrimaryButtonIcon(
                 teks: 'teks',
-                widget: Icon(Icons.add),
+                widget: const Icon(Icons.add),
                 onPressed: () {},
                 customHeight: 36,
                 customWidth: 100,
@@ -127,10 +126,10 @@ class _TransactionScreenState extends State<TransactionScreen> {
                         maxLines: 4,
                         textCapitalization: TextCapitalization.words,
                         validator: (value) {
-                          if (_terakhirController.text == null ||
-                              _terakhirController.text.isEmpty) {
+                          if (_terakhirController.text.isEmpty) {
                             return 'Harus diisi';
                           }
+                          return null;
                         },
                       ),
                       const SizedBox(height: 20),
@@ -142,7 +141,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   ),
                 ),
               ),
-              Center(child: Text('teks')),
+              const Center(child: Text('teks')),
             ],
           ),
         ),
