@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.capstone_project">
+    package="com.example.flutter_women_center">
    <application
-        android:label="capstone_project"
+        android:label="flutter_women_center"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
