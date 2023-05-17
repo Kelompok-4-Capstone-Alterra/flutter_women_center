@@ -1,6 +1,26 @@
+import 'package:capstone_project/preview_component_page.dart';
+import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
 import 'package:flutter/material.dart';
-import 'my_app.dart';
 
 void main() {
   runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Woman Center',
+      theme: ThemeData.light(useMaterial3: true),
+      initialRoute: TransactionScreen.routeName,
+      // initialRoute: PreviewComponentPage.routeName,
+      routes: {
+        TransactionScreen.routeName: (context) => const TransactionScreen(),
+        PreviewComponentPage.routeName: (context) =>
+            const PreviewComponentPage(),
+      },
+    );
+  }
 }

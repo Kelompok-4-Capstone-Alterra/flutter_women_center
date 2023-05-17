@@ -2,26 +2,31 @@ import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:flutter/material.dart';
 
-class PrimaryButton extends StatelessWidget {
+class SecondaryButton extends StatelessWidget {
   final String teks;
   final double? customWidth;
+  final double? customHeight;
   final void Function()? onPressed;
 
-  const PrimaryButton({
+  const SecondaryButton({
     super.key,
     this.customWidth,
+    this.customHeight,
     required this.teks,
     required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: MyColor.primary,
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        backgroundColor: MyColor.white,
         elevation: 0,
+        side: BorderSide(color: MyColor.primary, width: 1),
         fixedSize: Size(
-            customWidth == null ? MySize.width(context) : customWidth!, 44),
+          customWidth == null ? MySize.width(context) : customWidth!,
+          customHeight == null ? 44 : customHeight!,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(3),
         ),
@@ -30,7 +35,9 @@ class PrimaryButton extends StatelessWidget {
       child: Text(
         teks,
         style: TextStyle(
-            fontSize: 14.0, fontWeight: FontWeight.w500, color: MyColor.white),
+            fontSize: 14.0,
+            fontWeight: FontWeight.w500,
+            color: MyColor.primary),
       ),
     );
   }

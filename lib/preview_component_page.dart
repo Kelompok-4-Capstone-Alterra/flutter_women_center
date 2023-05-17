@@ -1,10 +1,11 @@
-import 'package:capstone_project/components/buttons/circle_button.dart';
-import 'package:capstone_project/components/buttons/floating_button.dart';
-import 'package:capstone_project/components/buttons/primary_button.dart';
-import 'package:capstone_project/components/buttons/primary_button_icon.dart';
-import 'package:capstone_project/components/buttons/secondary_button.dart';
-import 'package:capstone_project/components/buttons/secondary_button_icon.dart';
-import 'package:capstone_project/components/text_box/text_box.dart';
+import 'package:capstone_project/utils/components/buttons/circle_button.dart';
+import 'package:capstone_project/utils/components/buttons/floating_button.dart';
+import 'package:capstone_project/utils/components/buttons/primary_button.dart';
+import 'package:capstone_project/utils/components/buttons/primary_button_icon.dart';
+import 'package:capstone_project/utils/components/buttons/secondary_button.dart';
+import 'package:capstone_project/utils/components/buttons/secondary_button_icon.dart';
+import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
+import 'package:capstone_project/utils/components/text_box/text_box.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_focus_node.dart';
 import 'package:capstone_project/utils/my_size.dart';
@@ -43,6 +44,12 @@ class _PreviewComponentPageState extends State<PreviewComponentPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SearchTextBox(
+                  textEditingController: _namaController,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 TextBox(
                   textEditingController: _namaController,
                   hintText: 'Ex: Budi',

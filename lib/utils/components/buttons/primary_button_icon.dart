@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 class PrimaryButtonIcon extends StatelessWidget {
   final String teks;
   final double? customWidth;
+  final double? customHeight;
   final Widget widget;
   final void Function()? onPressed;
 
   const PrimaryButtonIcon({
     super.key,
     this.customWidth,
+    this.customHeight,
     required this.teks,
     required this.widget,
     required this.onPressed,
@@ -23,7 +25,9 @@ class PrimaryButtonIcon extends StatelessWidget {
           backgroundColor: MyColor.primary,
           elevation: 0,
           fixedSize: Size(
-              customWidth == null ? MySize.width(context) : customWidth!, 44),
+            customWidth == null ? MySize.width(context) : customWidth!,
+            customHeight == null ? 44 : customHeight!,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(3),
           ),
