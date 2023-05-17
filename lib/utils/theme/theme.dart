@@ -7,7 +7,7 @@ class StyleTheme {
       useMaterial3: true,
       primarySwatch: Colors.deepPurple,
       primaryColor: const Color(0xFFAF1582),
-      scaffoldBackgroundColor: Colors.white,
+      scaffoldBackgroundColor: const Color(0xffFFFFFF),
       fontFamily: GoogleFonts.roboto().fontFamily,
       textTheme: GoogleFonts.robotoTextTheme().copyWith(
         titleMedium: const TextStyle(
@@ -19,6 +19,7 @@ class StyleTheme {
         bodySmall: const TextStyle(
           fontSize: 12,
           color: Color(0xffBDB728),
+          fontWeight: FontWeight.w500,
         ),
         labelMedium: const TextStyle(
           fontSize: 12,
@@ -26,6 +27,22 @@ class StyleTheme {
           letterSpacing: 0.5,
           fontWeight: FontWeight.w500,
         ),
+        labelLarge: const TextStyle(
+          fontSize: 14,
+          color: Color(0xffFFFFFF),
+          letterSpacing: 0.1,
+          fontWeight: FontWeight.w500,
+        ),
+        labelSmall: const TextStyle(
+          fontSize: 8,
+          color: Color(0xff9E9494),
+          letterSpacing: 0.5,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      appBarTheme: const AppBarTheme(
+        color: Colors.white,
+        elevation: 0,
       ),
     );
   }
