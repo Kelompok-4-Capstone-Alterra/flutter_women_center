@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../text_box/search_text_box.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final bool action;
   final bool searchField;
+  final String judul;
   final bool tabBar;
   final bool home;
   final List<Widget>? actions;
@@ -15,8 +15,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     super.key,
     required this.preferredSize,
+    required this.judul,
     required this.home,
-    required this.action,
     required this.searchField,
     required this.tabBar,
     this.searchTextBox,
@@ -41,7 +41,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           AppBar(
             toolbarHeight: 40,
             title: Text(
-              'Home',
+              judul,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
@@ -54,7 +54,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ? Padding(
                   padding: const EdgeInsets.only(left: MySize.screenPadding),
                   child: Text(
-                    'Hi,SUser!',
+                    'Hi,User!',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
