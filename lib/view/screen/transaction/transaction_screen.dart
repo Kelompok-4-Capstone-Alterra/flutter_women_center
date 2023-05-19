@@ -1,13 +1,12 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
-import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
+import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 import 'package:capstone_project/utils/components/text_box/regular_text_box/text_box.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
-import 'package:capstone_project/view/screen/transaction/widgets/transaction_bottom_sheet_builder.dart';
 import 'package:capstone_project/view/screen/transaction/widgets/transaction_card.dart';
 import 'package:flutter/material.dart';
 
@@ -51,10 +50,6 @@ class _TransactionScreenState extends State<TransactionScreen> {
           ],
           searchTextBox:
               SearchTextBox(textEditingController: _searchController),
-        ),
-        bottomNavigationBar: BottomNavBar(
-          currentIndex: 1,
-          onTap: (index) {},
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -104,7 +99,9 @@ class _TransactionScreenState extends State<TransactionScreen> {
                           }
                           provider.counselingSessionTotalRate = 0;
                           provider.counselorTotalRate = 0;
-                          return TransactionBottomSheet(
+                          return CustomBottomSheetBuilder(
+                            tinggi: 680,
+                            header: true,
                             judul: 'Give Rate & Review',
                             isi: [
                               SizedBox(
