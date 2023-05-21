@@ -1,4 +1,9 @@
 import 'package:capstone_project/model/article_model.dart';
+import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
+import 'package:capstone_project/utils/components/buttons/floating_button.dart';
+import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
+import 'package:capstone_project/utils/my_color.dart';
+import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/view/screen/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article_list/bottomsheet_content.dart';
 import 'package:flutter/material.dart';
@@ -11,226 +16,199 @@ class ArticleListScreen extends StatefulWidget {
   State<ArticleListScreen> createState() => _ArticleListScreenState();
 }
 
-const List<Tab> myTabs = <Tab>[
-  Tab(text: 'All'),
-  Tab(text: 'Mental Health'),
-  Tab(text: 'Self Improvement'),
-  Tab(text: 'Spiritual'),
-];
-
 class _ArticleListScreenState extends State<ArticleListScreen> {
+  final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: CustomAppBar(
+          preferredSize: Size(MySize.screenWidth(context), double.maxFinite),
+          home: false,
+          action: false,
+          title: 'Article',
+          searchField: true,
+          tabBar: true,
+          tabs: const [
+            Tab(text: 'All'),
+            Tab(text: 'Mental Health'),
+            Tab(text: 'Self Improvement'),
+            Tab(text: 'Spiritual'),
+          ],
+          searchTextBox:
+              SearchTextBox(textEditingController: _searchController),
         ),
-        title: const Text(
-          "Articles",
-          style: TextStyle(
-            color: Colors.black,
+        body: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
           ),
-        ),
-        backgroundColor: Colors.white,
-      ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        child: Column(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.1,
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.grey,
-                    width: 0.3,
-                  ),
-                ),
-              ),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Find Something here ...',
-                  prefixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-            DefaultTabController(
-              length: myTabs.length,
-              child: const TabBar(
-                isScrollable: true,
-                tabs: myTabs,
-                indicatorColor: Color(0xFFAF1582),
-                labelColor: Color(0xFFAF1582),
-                unselectedLabelColor: Colors.black,
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: const Text(
-                      "Most Viewed",
-                      style: TextStyle(
-                        color: Colors.grey,
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Text(
+                        "Most Viewed",
+                        style: TextStyle(
+                          color: MyColor.neutralMediumLow,
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemBuilder: ((context, index) {
-                        final Articles articles = articlesList[index];
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    ArticleDetailsScreen(articles: articles),
-                              ),
-                            );
-                          },
-                          child: Card(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(3),
-                              ),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Image.asset(
-                                    articles.image,
-                                    width: 135,
-                                    height: 128,
-                                    fit: BoxFit.fill,
-                                  ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemBuilder: ((context, index) {
+                          final Articles articles = articlesList[index];
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ArticleDetailsScreen(articles: articles),
                                 ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(16),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text(
-                                          articles.title,
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        const SizedBox(
-                                          height: 16,
-                                        ),
-                                        Text(
-                                          articles.author,
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            color: Color(0xFF6B6161),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 16,
-                                        ),
-                                        Text(
-                                          articles.date,
-                                          style: const TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400,
-                                            color: Color(0xFF6B6161),
-                                          ),
-                                        ),
-                                      ],
+                              );
+                            },
+                            child: Card(
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(3),
+                                ),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Image.asset(
+                                      articles.image,
+                                      width: 135,
+                                      height: 128,
+                                      fit: BoxFit.fill,
                                     ),
                                   ),
-                                ),
-                                Container(
-                                  padding:
-                                      const EdgeInsets.only(top: 18, right: 18),
-                                  child: Row(
-                                    children: const [
-                                      Icon(Icons.bookmark_border),
-                                      Icon(Icons.more_vert)
-                                    ],
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Text(
+                                            articles.title,
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          const SizedBox(
+                                            height: 16,
+                                          ),
+                                          Text(
+                                            articles.author,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                              color: MyColor.neutralMedium,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 16,
+                                          ),
+                                          Text(
+                                            articles.date,
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w400,
+                                              color: MyColor.neutralMedium,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                )
-                              ],
+                                  Container(
+                                    padding: const EdgeInsets.only(top: 19),
+                                    child: Row(
+                                      children: [
+                                        const Icon(Icons.bookmark_border),
+                                        PopupMenuButton(
+                                            itemBuilder: (context) => [
+                                                  PopupMenuItem(
+                                                    value: 1,
+                                                    // row has two child icon and text.
+                                                    child: Row(
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: () {},
+                                                          child: Text(
+                                                            "Show less like this",
+                                                            style: TextStyle(
+                                                                color: MyColor
+                                                                    .neutralHigh),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  PopupMenuItem(
+                                                    value: 2,
+                                                    // row has two child icon and text.
+                                                    child: Row(
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: () {},
+                                                          child: Text(
+                                                            "Report",
+                                                            style: TextStyle(
+                                                              color: MyColor
+                                                                  .danger,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ])
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      }),
-                      itemCount: articlesList.length,
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: SizedBox(
-        height: 50,
-        width: 130,
-        child: FloatingActionButton(
-          onPressed: () {
-            showModalBottomSheet(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(16),
-                  ),
-                ),
-                context: context,
-                builder: (BuildContext context) {
-                  return const BottomSheetContent();
-                });
-          },
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(3),
-            ),
-          ),
-          backgroundColor: const Color(0xFFAF1582),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
-                // 3 bar icon
-                Icons.sort,
-                color: Colors.white,
-              ),
-              Text(
-                'Sort By',
-                style: TextStyle(
-                  color: Colors.white,
+                          );
+                        }),
+                        itemCount: articlesList.length,
+                      ),
+                    )
+                  ],
                 ),
               ),
             ],
           ),
         ),
+        floatingActionButton: SizedBox(
+          height: 50,
+          width: 130,
+          child: FloatingButton(
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const BottomSheetContent();
+                  });
+            },
+            teks: 'Sort By',
+            widget: const Icon(Icons.sort),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

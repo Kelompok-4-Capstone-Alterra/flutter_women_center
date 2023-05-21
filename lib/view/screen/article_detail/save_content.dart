@@ -4,8 +4,8 @@ import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:flutter/material.dart';
 
-class BottomSheetContent extends StatelessWidget {
-  const BottomSheetContent({super.key});
+class SaveContent extends StatelessWidget {
+  const SaveContent({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class BottomSheetContent extends StatelessWidget {
             child: Row(
               children: [
                 const Text(
-                  "Sort By",
+                  "Save to ...",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -46,8 +46,21 @@ class BottomSheetContent extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 16),
             child: Row(
               children: [
+                Text(
+                  "Create new list ...",
+                  style:
+                      TextStyle(fontSize: 16, color: MyColor.secondaryPressed),
+                ),
+                const Spacer(),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 16),
+            child: Row(
+              children: [
                 const Text(
-                  "Most Viewed",
+                  "Heal my inner child  ",
                   style: TextStyle(fontSize: 16),
                 ),
                 const Spacer(),
@@ -63,7 +76,7 @@ class BottomSheetContent extends StatelessWidget {
             child: Row(
               children: const [
                 Text(
-                  "Newest",
+                  "Trust issues",
                   style: TextStyle(fontSize: 16),
                 ),
               ],
@@ -74,7 +87,18 @@ class BottomSheetContent extends StatelessWidget {
             child: Row(
               children: const [
                 Text(
-                  "Older",
+                  "Improving my skills",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 16),
+            child: Row(
+              children: const [
+                Text(
+                  "Self Development",
                   style: TextStyle(fontSize: 16),
                 ),
               ],
