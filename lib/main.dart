@@ -1,6 +1,8 @@
 import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_view_model.dart';
+import 'package:capstone_project/view/screen/onboarding/onboarding_screen.dart';
+import 'package:capstone_project/view/screen/onboarding/onboarding_view_model.dart';
 import 'package:capstone_project/view/screen/profile/profile_screen.dart';
 import 'package:capstone_project/view/screen/saved/acticle/article_screen.dart';
 import 'package:capstone_project/view/screen/saved/acticle/article_view_model.dart';
@@ -38,12 +40,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => ArticleViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => OnboardingViewModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Woman Center',
         theme: ThemeData.light(useMaterial3: true),
-        initialRoute: LandingScreen.routeName,
+        initialRoute: OnboardingScreen.routeName,
         routes: {
           LandingScreen.routeName: (context) => const LandingScreen(),
           HomeScreen.routeName: (context) => const HomeScreen(),
@@ -53,6 +58,7 @@ class MyApp extends StatelessWidget {
           DetailReadingListScreen.routeName: (context) =>
               const DetailReadingListScreen(),
           ArticleScreen.routeName: (context) => const ArticleScreen(),
+          OnboardingScreen.routeName: (context) => const OnboardingScreen(),
         },
       ),
     );
