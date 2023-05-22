@@ -97,8 +97,26 @@ class TextBox extends StatelessWidget {
             fontWeight: FontWeight.w400,
             color: MyColor.danger,
           ),
-          border: OutlineInputBorder(
+          enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(3),
+            borderSide: BorderSide(
+              color: MyColor.neutralMediumLow,
+              width: .25,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(3),
+            borderSide: BorderSide(
+              color: MyColor.primaryMain,
+              width: .25,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(3),
+            borderSide: BorderSide(
+              color: MyColor.danger,
+              width: .25,
+            ),
           ),
         ),
         inputFormatters: inputFormatters,
