@@ -1,5 +1,6 @@
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
 import 'package:capstone_project/view/screen/join_forum_discussion/join_forum_discussion_screen.dart';
+import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,6 +24,12 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.pushNamed(context, CounselingTopicScreen.routeName);
             },
             child: const Text('Counseling Topic Screen'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, TransactionScreen.routeName);
+            },
+            child: const Text('Transaction Screen'),
           ),
           ElevatedButton(
             onPressed: () {
