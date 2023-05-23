@@ -38,7 +38,6 @@ class _TransactionScreenState extends State<TransactionScreen> {
             double.maxFinite,
           ),
           home: false,
-          action: false,
           searchField: true,
           tabBar: true,
           actions: [
@@ -63,6 +62,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
           ],
           searchTextBox:
               SearchTextBox(textEditingController: _searchController),
+          judul: '',
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),

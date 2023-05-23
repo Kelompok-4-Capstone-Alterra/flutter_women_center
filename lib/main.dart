@@ -1,10 +1,15 @@
-import 'package:capstone_project/utils/theme/theme.dart';
-import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
-import 'package:capstone_project/view/screen/counselor_list/counselor_list_screen.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
-import 'package:capstone_project/view/screen/join_forum_discussion/join_forum_discussion_screen.dart';
-import 'package:capstone_project/view/screen/join_forum_discussion/join_forum_discussion_view_model.dart';
+import 'package:capstone_project/view/screen/landing/landing_screen.dart';
+import 'package:capstone_project/view/screen/landing/landing_view_model.dart';
+import 'package:capstone_project/view/screen/profile/profile_screen.dart';
+import 'package:capstone_project/view/screen/saved/acticle/article_screen.dart';
+import 'package:capstone_project/view/screen/saved/acticle/article_view_model.dart';
+import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_screen.dart';
+import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_view_model.dart';
+import 'package:capstone_project/view/screen/saved/saved_screen.dart';
+import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
+import 'package:capstone_project/view/screen/transaction/transaction_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,21 +21,38 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => SortByForumProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => LandingViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TransactionViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SavedViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DetailReadingListViewmodel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ArticleViewModel(),
+        ),
+      ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Woman Center',
-        theme: StyleTheme.themeData(),
-        initialRoute: HomeScreen.routeName,
+        theme: ThemeData.light(useMaterial3: true),
+        initialRoute: LandingScreen.routeName,
         routes: {
-          CounselingTopicScreen.routeName: (context) =>
-              const CounselingTopicScreen(),
+          LandingScreen.routeName: (context) => const LandingScreen(),
           HomeScreen.routeName: (context) => const HomeScreen(),
-          CounselorListScreen.routeName: (context) =>
-              const CounselorListScreen(),
           TransactionScreen.routeName: (context) => const TransactionScreen(),
-          JoinForumDiscussionScreen.routeName: (context) =>
-              const JoinForumDiscussionScreen(),
+          SavedScreen.routeName: (context) => const SavedScreen(),
+          ProfileScreen.routeName: (context) => const ProfileScreen(),
+          DetailReadingListScreen.routeName: (context) =>
+              const DetailReadingListScreen(),
+          ArticleScreen.routeName: (context) => const ArticleScreen(),
         },
       ),
     );

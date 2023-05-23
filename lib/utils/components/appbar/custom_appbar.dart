@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import '../text_box/search_text_box.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final bool action;
   final bool searchField;
-  final String? title;
+  final String judul;
   final bool tabBar;
   final bool home;
   final List<Widget>? actions;
@@ -16,14 +15,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     super.key,
     required this.preferredSize,
+    required this.judul,
     required this.home,
-    required this.action,
     required this.searchField,
     required this.tabBar,
     this.searchTextBox,
     this.actions,
     this.tabs,
-    this.title,
   });
 
   @override
@@ -37,38 +35,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // const SizedBox(
-          //   height: 42,
-          // ),
+          const SizedBox(
+            height: 42,
+          ),
           AppBar(
             toolbarHeight: 40,
-            //! default pull request
-            // title: Text(
-            //   'Home',
-            //   style: TextStyle(
-            //     fontSize: 16,
-            //     fontWeight: FontWeight.w500,
-            //     color: MyColor.neutralHigh,
-            //   ),
-            // ),
-            //! custom untuk forum discussion
-            title: title != null
-                ? Text(
-                    title!,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: MyColor.neutralHigh,
-                    ),
-                  )
-                : const SizedBox(),
+            title: Text(
+              judul,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: MyColor.neutralHigh,
+              ),
+            ),
             actions: actions,
           ),
           home == true
               ? Padding(
                   padding: const EdgeInsets.only(left: MySize.screenPadding),
                   child: Text(
-                    'Hi,SUser!',
+                    'Hi,User!',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
