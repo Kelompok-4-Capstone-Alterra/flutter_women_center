@@ -37,6 +37,16 @@ dependencies:
   cupertino_icons: ^1.0.2
   hexcolor: ^3.0.1
   provider: ^6.0.5
+  flutter_native_splash: ^2.2.19
+
+# Splash Screen
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+  background_image: assets/images/splash_screen.png
+  android_12: 
+    background_image: assets/images/splash_screen.png
 
 dev_dependencies:
   flutter_test:

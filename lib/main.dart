@@ -13,7 +13,8 @@ import 'package:capstone_project/view/screen/transaction/transaction_view_model.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  await Future.delayed(const Duration(seconds: 1));
   runApp(const MyApp());
 }
 
