@@ -22,6 +22,7 @@ class TextBox extends StatelessWidget {
   final bool? last;
   final void Function(String)? onFieldSubmitted;
   final double? width;
+  final IconButton? suffixIcon;
 
   const TextBox({
     super.key,
@@ -43,6 +44,7 @@ class TextBox extends StatelessWidget {
     this.hintMaxLines,
     this.inputFormatters,
     this.validator,
+    this.suffixIcon,
   });
 
   @override
@@ -118,6 +120,7 @@ class TextBox extends StatelessWidget {
               width: .25,
             ),
           ),
+          suffixIcon: suffixIcon,
         ),
         inputFormatters: inputFormatters,
         validator: validator,
