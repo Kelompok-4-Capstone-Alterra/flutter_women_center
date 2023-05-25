@@ -34,15 +34,12 @@ class _LogniScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    Provider.of<LoginViewModel>(context, listen: false).loadRememberMe();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<LoginViewModel>(context, listen: false);
-    _usernameController.text = loginProvider.rememberMeData.username;
-    _passwordController.text = loginProvider.rememberMeData.password;
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -164,44 +161,21 @@ class _LogniScreenState extends State<LoginScreen> {
                       },
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
+                      height: MediaQuery.of(context).size.height * 0.02,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Consumer<LoginViewModel>(
-                              builder: (context, value, _) {
-                                return Checkbox(
-                                  splashRadius: 0,
-                                  value: value.rememberMe,
-                                  onChanged: (check) {
-                                    loginProvider.setRememberMe();
-                                  },
-                                  activeColor: MyColor.primaryMain,
-                                );
-                              },
-                            ),
-                            Text(
-                              'Remember Me',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: MyColor.neutralHigh,
-                              ),
-                            ),
-                          ],
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'Forgot Password ?',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: MyColor.secondaryPressed,
                         ),
-                        Text(
-                          'Forgot Password ?',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: MyColor.secondaryPressed,
-                          ),
-                        ),
-                      ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
                     ),
                     PrimaryButton(
                         teks: 'Login',
@@ -212,7 +186,6 @@ class _LogniScreenState extends State<LoginScreen> {
                                   username: _usernameController.text,
                                   password: _passwordController.text),
                             );
-                            loginProvider.loadRememberMe();
                             Navigator.pop(context);
                           }
                         }),
