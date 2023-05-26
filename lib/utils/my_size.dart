@@ -21,7 +21,6 @@ class MySize {
       } else if (searchField == true && tabBar == true) {
         return height -= 238;
       } else {
-        print(height - 114);
         return height -= 114;
       }
     }

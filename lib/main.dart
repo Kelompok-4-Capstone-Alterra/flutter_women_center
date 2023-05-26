@@ -5,6 +5,8 @@ import 'package:capstone_project/view/screen/landing/landing_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_view_model.dart';
 import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
 import 'package:capstone_project/view/screen/auth/login/login_view_model.dart';
+import 'package:capstone_project/view/screen/onboarding/onboarding_screen.dart';
+import 'package:capstone_project/view/screen/onboarding/onboarding_view_model.dart';
 import 'package:capstone_project/view/screen/profile/profile_screen.dart';
 import 'package:capstone_project/view/screen/saved/acticle/article_screen.dart';
 import 'package:capstone_project/view/screen/saved/acticle/article_view_model.dart';
@@ -62,12 +64,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => ForgotPasswordViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => OnboardingViewModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Woman Center',
         theme: ThemeData.light(useMaterial3: true),
-        initialRoute: HomeScreen.routeName,
+        initialRoute: OnboardingScreen.routeName,
         routes: {
           LandingScreen.routeName: (context) => const LandingScreen(),
           HomeScreen.routeName: (context) => const HomeScreen(),
@@ -82,6 +87,7 @@ class MyApp extends StatelessWidget {
           VerificationScreen.routeName: (context) => const VerificationScreen(),
           ForgotPasswordScreen.routeName: (context) =>
               const ForgotPasswordScreen(),
+          OnboardingScreen.routeName: (context) => const OnboardingScreen(),
         },
       ),
     );
