@@ -1,50 +1,50 @@
-import 'package:capstone_project/model/login_model.dart';
-import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
-import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
-import 'package:capstone_project/utils/components/buttons/primary_button.dart';
-import 'package:capstone_project/utils/components/text_box/regular_text_box/text_box.dart';
-import 'package:capstone_project/utils/my_color.dart';
-import 'package:capstone_project/view/screen/login/login_view_model.dart';
-import 'package:capstone_project/view/screen/signup/signup_screen.dart';
+import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
+import 'package:capstone_project/view/screen/auth/signup/signup_view_model.dart';
+import 'package:capstone_project/view/screen/auth/verification/verification_screen.dart';
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 
-import '../../../utils/my_size.dart';
+import '../../../../model/signup_model.dart';
+import '../../../../utils/components/appbar/custom_appbar.dart';
+import '../../../../utils/components/buttons/primary_button.dart';
+import '../../../../utils/components/text_box/regular_text_box/text_box.dart';
+import '../../../../utils/my_color.dart';
+import '../../../../utils/my_size.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
-  static const String routeName = '/login_screen';
+  static const String routeName = '/signup_screen';
 
   @override
-  State<LoginScreen> createState() => _LogniScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LogniScreenState extends State<LoginScreen> {
-  final TextEditingController _usernameController = TextEditingController();
+class _SignupScreenState extends State<SignupScreen> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    _usernameController.dispose();
+    _nameController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
+    _usernameController.dispose();
     super.dispose();
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final loginProvider = Provider.of<LoginViewModel>(context, listen: false);
+    final signupProvider = Provider.of<SignupViewModel>(context, listen: false);
 
     return Scaffold(
       appBar: CustomAppBar(
         preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
-        judul: 'Log In',
+        judul: 'Create Account',
         home: false,
         searchField: false,
         tabBar: false,
@@ -75,7 +75,7 @@ class _LogniScreenState extends State<LoginScreen> {
                 child: ListView(
                   children: [
                     Text(
-                      'Hello ! Welcome back.',
+                      'Let’s get started with us.',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -86,7 +86,7 @@ class _LogniScreenState extends State<LoginScreen> {
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
                     Text(
-                      'Please sign in to get full access to our services and resources',
+                      'Go ahead and sign up now to take the first step towards a brighter future',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -95,6 +95,56 @@ class _LogniScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.05,
+                    ),
+                    Text(
+                      'Name',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: MyColor.neutralHigh,
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
+                    TextBox(
+                      textEditingController: _nameController,
+                      hintText: "Ex : johndoe",
+                      keyboardType: TextInputType.text,
+                      validator: (p0) {
+                        if (p0 == null || p0.isEmpty) {
+                          return 'nama tidak boleh kosong';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
+                    Text(
+                      'Email',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: MyColor.neutralHigh,
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
+                    TextBox(
+                      textEditingController: _emailController,
+                      hintText: "Ex : johndoe@example.com",
+                      keyboardType: TextInputType.text,
+                      validator: (p0) {
+                        if (p0 == null || p0.isEmpty) {
+                          return 'email tidak boleh kosong';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
                     ),
                     Text(
                       'Username',
@@ -113,7 +163,7 @@ class _LogniScreenState extends State<LoginScreen> {
                       keyboardType: TextInputType.text,
                       validator: (p0) {
                         if (p0 == null || p0.isEmpty) {
-                          return 'username tidak boleh kosong';
+                          return 'usernama tidak boleh kosong';
                         }
                         return null;
                       },
@@ -132,7 +182,7 @@ class _LogniScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
-                    Consumer<LoginViewModel>(
+                    Consumer<SignupViewModel>(
                       builder: (context, value, _) {
                         return TextBox(
                           textEditingController: _passwordController,
@@ -161,32 +211,21 @@ class _LogniScreenState extends State<LoginScreen> {
                       },
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        'Forgot Password ?',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: MyColor.secondaryPressed,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
+                      height: MediaQuery.of(context).size.height * 0.01,
                     ),
                     PrimaryButton(
-                        teks: 'Login',
+                        teks: 'Sign Up',
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            loginProvider.login(
-                              LoginModel(
+                            signupProvider.signup(
+                              SignupModel(
+                                  name: _nameController.text,
+                                  email: _emailController.text,
                                   username: _usernameController.text,
                                   password: _passwordController.text),
                             );
-                            Navigator.pop(context);
+                            Navigator.pushNamed(
+                                context, VerificationScreen.routeName);
                           }
                         }),
                     SizedBox(
@@ -196,7 +235,7 @@ class _LogniScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Don't have an account ? ",
+                          "Already have an account? ",
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
@@ -205,16 +244,18 @@ class _LogniScreenState extends State<LoginScreen> {
                         ),
                         GestureDetector(
                             child: Text(
-                              'Sign Up',
+                              'Sign In',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
                                 color: MyColor.secondaryPressed,
                               ),
                             ),
-                            onTap: () => Navigator.pushNamed(
-                                context, SignupScreen.routeName)),
+                            onTap: () => Navigator.pop(context)),
                       ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.1,
                     ),
                   ],
                 ),

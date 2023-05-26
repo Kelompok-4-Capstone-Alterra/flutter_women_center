@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../model/signup_model.dart';
+import '../../../../model/signup_model.dart';
 
 class SignupViewModel with ChangeNotifier {
   bool passwordVisibility = false;

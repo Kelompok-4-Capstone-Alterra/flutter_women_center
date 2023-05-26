@@ -1,9 +1,9 @@
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
-import 'package:capstone_project/view/screen/login/login_screen.dart';
-import 'package:capstone_project/view/screen/signup/verification/verification_veiw_model.dart';
-import 'package:capstone_project/view/screen/signup/verification/widgets/otp_box.dart';
-import 'package:capstone_project/view/screen/signup/verification/widgets/otp_form_view_model.dart';
+import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
+import 'package:capstone_project/view/screen/auth/verification/verification_veiw_model.dart';
+import 'package:capstone_project/view/screen/auth/verification/widgets/otp_box.dart';
+import 'package:capstone_project/view/screen/auth/verification/widgets/otp_form_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -157,7 +157,6 @@ class _OtpFormState extends State<OtpForm> {
                         verificationProvider.resendCode();
                         otpFormProvider.resetTimer();
                       }
-                      print('durasi belum habis');
                     },
                     child: Text(
                       'Request new code',

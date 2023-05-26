@@ -1,50 +1,50 @@
-import 'package:capstone_project/view/screen/login/login_screen.dart';
-import 'package:capstone_project/view/screen/signup/signup_view_model.dart';
-import 'package:capstone_project/view/screen/signup/verification/verification_screen.dart';
+import 'package:capstone_project/model/login_model.dart';
+import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
+import 'package:capstone_project/utils/components/buttons/primary_button.dart';
+import 'package:capstone_project/utils/components/text_box/regular_text_box/text_box.dart';
+import 'package:capstone_project/utils/my_color.dart';
+import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_screen.dart';
+import 'package:capstone_project/view/screen/auth/login/login_view_model.dart';
+import 'package:capstone_project/view/screen/auth/signup/signup_screen.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 
-import '../../../model/signup_model.dart';
-import '../../../utils/components/appbar/custom_appbar.dart';
-import '../../../utils/components/buttons/primary_button.dart';
-import '../../../utils/components/text_box/regular_text_box/text_box.dart';
-import '../../../utils/my_color.dart';
-import '../../../utils/my_size.dart';
+import '../../../../utils/my_size.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
-  static const String routeName = '/signup_screen';
+  static const String routeName = '/login_screen';
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  State<LoginScreen> createState() => _LogniScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+class _LogniScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
     _usernameController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final signupProvider = Provider.of<SignupViewModel>(context, listen: false);
+    final loginProvider = Provider.of<LoginViewModel>(context, listen: false);
 
     return Scaffold(
       appBar: CustomAppBar(
         preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
-        judul: 'Create Account',
+        judul: 'Log In',
         home: false,
         searchField: false,
         tabBar: false,
@@ -71,11 +71,11 @@ class _SignupScreenState extends State<SignupScreen> {
                   top: MediaQuery.of(context).size.height * 0.05,
                   right: MySize.screenPadding),
               child: Form(
-                key: formKey,
+                key: _formKey,
                 child: ListView(
                   children: [
                     Text(
-                      'Let’s get started with us.',
+                      'Hello ! Welcome back.',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -86,7 +86,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
                     Text(
-                      'Go ahead and sign up now to take the first step towards a brighter future',
+                      'Please sign in to get full access to our services and resources',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -95,56 +95,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                    Text(
-                      'Name',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: MyColor.neutralHigh,
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
-                    ),
-                    TextBox(
-                      textEditingController: _nameController,
-                      hintText: "Ex : johndoe",
-                      keyboardType: TextInputType.text,
-                      validator: (p0) {
-                        if (p0 == null || p0.isEmpty) {
-                          return 'nama tidak boleh kosong';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
-                    ),
-                    Text(
-                      'Email',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: MyColor.neutralHigh,
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
-                    ),
-                    TextBox(
-                      textEditingController: _emailController,
-                      hintText: "Ex : johndoe@example.com",
-                      keyboardType: TextInputType.text,
-                      validator: (p0) {
-                        if (p0 == null || p0.isEmpty) {
-                          return 'email tidak boleh kosong';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
                     ),
                     Text(
                       'Username',
@@ -163,7 +113,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       keyboardType: TextInputType.text,
                       validator: (p0) {
                         if (p0 == null || p0.isEmpty) {
-                          return 'usernama tidak boleh kosong';
+                          return 'username tidak boleh kosong';
                         }
                         return null;
                       },
@@ -182,7 +132,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
-                    Consumer<SignupViewModel>(
+                    Consumer<LoginViewModel>(
                       builder: (context, value, _) {
                         return TextBox(
                           textEditingController: _passwordController,
@@ -211,21 +161,38 @@ class _SignupScreenState extends State<SignupScreen> {
                       },
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, ForgotPasswordScreen.routeName);
+                      },
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          'Forgot Password ?',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: MyColor.secondaryPressed,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
                     ),
                     PrimaryButton(
-                        teks: 'Sign Up',
+                        teks: 'Login',
                         onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            signupProvider.signup(
-                              SignupModel(
-                                  name: _nameController.text,
-                                  email: _emailController.text,
+                          if (_formKey.currentState!.validate()) {
+                            loginProvider.login(
+                              LoginModel(
                                   username: _usernameController.text,
                                   password: _passwordController.text),
                             );
-                            Navigator.pushNamed(
-                                context, VerificationScreen.routeName);
+                            Navigator.pop(context);
                           }
                         }),
                     SizedBox(
@@ -235,7 +202,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Already have an account? ",
+                          "Don't have an account ? ",
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
@@ -243,19 +210,18 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                         GestureDetector(
-                            child: Text(
-                              'Sign In',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: MyColor.secondaryPressed,
-                              ),
+                          child: Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: MyColor.secondaryPressed,
                             ),
-                            onTap: () => Navigator.pop(context)),
+                          ),
+                          onTap: () => Navigator.pushNamed(
+                              context, SignupScreen.routeName),
+                        ),
                       ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.1,
                     ),
                   ],
                 ),

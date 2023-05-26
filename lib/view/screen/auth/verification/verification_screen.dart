@@ -1,5 +1,5 @@
-import 'package:capstone_project/view/screen/signup/verification/verification_veiw_model.dart';
-import 'package:capstone_project/view/screen/signup/verification/widgets/otp_form.dart';
+import 'package:capstone_project/view/screen/auth/verification/verification_veiw_model.dart';
+import 'package:capstone_project/view/screen/auth/verification/widgets/otp_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
