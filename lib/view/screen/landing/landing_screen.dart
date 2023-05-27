@@ -1,5 +1,6 @@
 import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
+import 'package:capstone_project/view/screen/forum/join_forum_discussion_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_view_model.dart';
 import 'package:capstone_project/view/screen/profile/profile_screen.dart';
 import 'package:capstone_project/view/screen/saved/acticle/article_screen.dart';
@@ -89,7 +90,9 @@ class _LandingScreenState extends State<LandingScreen> {
             builder: (context) => const DetailReadingListScreen());
       case ArticleScreen.routeName:
         return MaterialPageRoute(builder: (context) => const ArticleScreen());
-
+      case JoinForumDiscussionScreen.routeName:
+        return MaterialPageRoute(
+            builder: (context) => const JoinForumDiscussionScreen());
       default:
         return MaterialPageRoute(builder: (context) => const HomeScreen());
     }
