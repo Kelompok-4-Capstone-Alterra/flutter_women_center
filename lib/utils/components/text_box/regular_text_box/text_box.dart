@@ -22,6 +22,8 @@ class TextBox extends StatelessWidget {
   final bool? last;
   final void Function(String)? onFieldSubmitted;
   final double? width;
+  final IconButton? suffixIcon;
+  final bool? isReadOnly;
 
   const TextBox({
     super.key,
@@ -43,6 +45,8 @@ class TextBox extends StatelessWidget {
     this.hintMaxLines,
     this.inputFormatters,
     this.validator,
+    this.suffixIcon,
+    this.isReadOnly,
   });
 
   @override
@@ -67,7 +71,7 @@ class TextBox extends StatelessWidget {
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w400,
-          color: MyColor.neutralMediumLow,
+          color: MyColor.neutralHigh,
         ),
         autofocus: autoFocus == null || autoFocus == false ? false : true,
         obscureText: obscureText == null || obscureText == false ? false : true,
@@ -118,9 +122,11 @@ class TextBox extends StatelessWidget {
               width: .25,
             ),
           ),
+          suffixIcon: suffixIcon,
         ),
         inputFormatters: inputFormatters,
         validator: validator,
+        readOnly: isReadOnly == null || isReadOnly == false ? false : true,
       ),
     );
   }
