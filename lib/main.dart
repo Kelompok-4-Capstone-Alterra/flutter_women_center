@@ -1,3 +1,5 @@
+import 'package:capstone_project/model/article_model.dart';
+import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
@@ -66,8 +68,10 @@ class MyApp extends StatelessWidget {
           DetailReadingListScreen.routeName: (context) =>
               const DetailReadingListScreen(),
           ArticleScreen.routeName: (context) => const ArticleScreen(),
-          // ArticleDetailsScreen.routename: (context) => ArticleDetailsScreen(
-          //     articles: ModalRoute.of(context)!.settings.arguments as Articles),
+          ArticleDetailsScreen.routename: (context) => ArticleDetailsScreen(
+                articles: Articles(
+                    title: '', author: '', date: '', desc: '', image: ''),
+              ),
         },
       ),
     );

@@ -93,11 +93,6 @@ class _LandingScreenState extends State<LandingScreen> {
       case ArticleListScreen.routename:
         return MaterialPageRoute(
             builder: (context) => const ArticleListScreen());
-      // case ArticleDetailsScreen.routename:
-      //   return MaterialPageRoute(
-      //       builder: (context) => ArticleDetailsScreen(
-      //           articles:
-      //               ModalRoute.of(context)!.settings.arguments as Articles));
 
       default:
         return MaterialPageRoute(builder: (context) => const HomeScreen());
