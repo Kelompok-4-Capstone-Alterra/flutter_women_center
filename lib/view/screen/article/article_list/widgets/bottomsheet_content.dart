@@ -69,7 +69,7 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
                           },
                         ),
                         const SizedBox(
-                          height: 16,
+                          height: 26,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(16),
