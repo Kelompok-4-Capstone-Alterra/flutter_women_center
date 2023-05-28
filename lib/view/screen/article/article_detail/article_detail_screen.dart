@@ -1,16 +1,19 @@
 import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
+import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
+
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
-import 'package:capstone_project/view/screen/article_detail/comment_content.dart';
-import 'package:capstone_project/view/screen/article_detail/save_content.dart';
+import 'package:capstone_project/view/screen/article/article_detail/widget/comment_content.dart';
+import 'package:capstone_project/view/screen/article/widget/save_content.dart';
 import 'package:flutter/material.dart';
 
 class ArticleDetailsScreen extends StatelessWidget {
   static const String routename = '/article_details_screen';
-
   final Articles articles;
-  const ArticleDetailsScreen({super.key, required this.articles});
+
+  const ArticleDetailsScreen({Key? key, required this.articles})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +21,7 @@ class ArticleDetailsScreen extends StatelessWidget {
       appBar: CustomAppBar(
         preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
         home: false,
-        title: 'Articles',
-        action: false,
+        judul: 'Articles',
         searchField: false,
         tabBar: false,
         actions: [
@@ -30,8 +32,8 @@ class ArticleDetailsScreen extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     showModalBottomSheet(
+                        useRootNavigator: true,
                         isScrollControlled: true,
-                        useSafeArea: true,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.vertical(
                             top: Radius.circular(16),
@@ -39,7 +41,19 @@ class ArticleDetailsScreen extends StatelessWidget {
                         ),
                         context: context,
                         builder: (BuildContext context) {
-                          return const CommentContent();
+                          return Wrap(
+                            children: [
+                              CustomBottomSheetBuilder(
+                                tinggi:
+                                    MediaQuery.of(context).size.height * 0.9,
+                                isi: const [
+                                  CommentContent(),
+                                ],
+                                header: true,
+                                judul: 'Comments',
+                              ),
+                            ],
+                          );
                         });
                   },
                   icon: const Icon(Icons.comment),
@@ -47,61 +61,17 @@ class ArticleDetailsScreen extends StatelessWidget {
                 const SizedBox(
                   width: 20,
                 ),
-                PopupMenuButton(
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 1,
-                      // row has two child icon and text.
-                      child: Row(
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return const SaveContent();
-                                  });
-                            },
-                            child: Text(
-                              'Save to ...',
-                              style: TextStyle(color: MyColor.neutralHigh),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 2,
-                      // row has two child icon and text.
-                      child: Row(
-                        children: [
-                          TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                'Show less like this',
-                                style: TextStyle(color: MyColor.neutralHigh),
-                              ))
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 3,
-                      // row has two child icon and text.
-                      child: Row(
-                        children: [
-                          TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              "Report",
-                              style: TextStyle(
-                                color: MyColor.danger,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
+                IconButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                        useRootNavigator: true,
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Wrap(children: const [SaveContent()]);
+                        });
+                  },
+                  icon: const Icon(Icons.bookmark_border),
                 ),
               ],
             ),

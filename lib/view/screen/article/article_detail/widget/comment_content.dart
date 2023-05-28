@@ -1,8 +1,7 @@
 import 'package:capstone_project/model/comment_model.dart';
-import 'package:capstone_project/utils/components/buttons/text_action_button.dart';
+import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_pop_up_menu_button.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/components/text_box/text_box.dart';
-import 'package:capstone_project/utils/my_size.dart';
 import 'package:flutter/material.dart';
 
 class CommentContent extends StatelessWidget {
@@ -11,39 +10,13 @@ class CommentContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController commentController = TextEditingController();
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 16,
-      ),
+
+    return ConstrainedBox(
+      constraints:
+          BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.7),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            height: MySize.screenHeight(context) * 0.08,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: MyColor.neutralMediumLow,
-                  width: 0.3,
-                ),
-              ),
-            ),
-            child: Row(
-              children: [
-                const Text(
-                  "Comments",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const Spacer(),
-                TextActionButton(
-                  teks: 'cancel',
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: ListView.builder(
               itemBuilder: ((context, index) {
@@ -90,7 +63,7 @@ class CommentContent extends StatelessWidget {
                               ),
                             ),
                             const Spacer(),
-                            PopupMenuButton(
+                            CustomPopupMenuButton(
                                 itemBuilder: (context) => [
                                       PopupMenuItem(
                                         value: 1,
@@ -106,7 +79,10 @@ class CommentContent extends StatelessWidget {
                                           ],
                                         ),
                                       ),
-                                    ])
+                                    ],
+                                onSelected: (value) {
+                                  if (value == 1) {}
+                                }),
                           ],
                         ),
                         const SizedBox(
@@ -125,7 +101,8 @@ class CommentContent extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: MediaQuery.of(context).viewInsets,
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             child: TextBox(
               textEditingController: commentController,
               hintText: 'Type what are you thinking here ...',
@@ -134,7 +111,7 @@ class CommentContent extends StatelessWidget {
                 icon: const Icon(Icons.send),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
