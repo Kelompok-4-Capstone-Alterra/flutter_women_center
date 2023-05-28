@@ -66,6 +66,8 @@ class MyApp extends StatelessWidget {
           DetailReadingListScreen.routeName: (context) =>
               const DetailReadingListScreen(),
           ArticleScreen.routeName: (context) => const ArticleScreen(),
+          // ArticleDetailsScreen.routename: (context) => ArticleDetailsScreen(
+          //     articles: ModalRoute.of(context)!.settings.arguments as Articles),
         },
       ),
     );
