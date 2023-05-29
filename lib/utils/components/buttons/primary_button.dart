@@ -6,12 +6,17 @@ class PrimaryButton extends StatelessWidget {
   final String teks;
   final double? customWidth;
   final double? customHeight;
+  final Color? customBackgroundColor;
+  final Color? customTextColor;
   final void Function()? onPressed;
 
   const PrimaryButton({
     super.key,
     this.customWidth,
     this.customHeight,
+    this.customBackgroundColor,
+    this.customTextColor,
+
     required this.teks,
     required this.onPressed,
   });
@@ -29,7 +34,8 @@ class PrimaryButton extends StatelessWidget {
             } else if (states.contains(MaterialState.disabled)) {
               return MyColor.primarySurface;
             }
-            return MyColor.primaryMain;
+            return customBackgroundColor ?? MyColor.primaryMain;
+
           },
         ),
         foregroundColor: MaterialStatePropertyAll<Color>(MyColor.white),
@@ -47,7 +53,8 @@ class PrimaryButton extends StatelessWidget {
         style: TextStyle(
           fontSize: 14.0,
           fontWeight: FontWeight.w500,
-          color: MyColor.white,
+          color: customTextColor ?? MyColor.white,
+
         ),
       ),
     );
