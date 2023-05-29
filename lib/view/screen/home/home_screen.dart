@@ -3,6 +3,12 @@ import 'package:capstone_project/utils/components/text_box/search_text_box.dart'
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:capstone_project/utils/my_size.dart';
+import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../auth/login/login_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

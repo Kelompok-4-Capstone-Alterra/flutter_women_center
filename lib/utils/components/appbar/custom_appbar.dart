@@ -5,9 +5,10 @@ import '../text_box/search_text_box.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool searchField;
+
+  final String judul;
   final bool tabBar;
   final bool home;
-  final String judul;
   final List<Widget>? actions;
   final List<Widget>? tabs;
   final SearchTextBox? searchTextBox;

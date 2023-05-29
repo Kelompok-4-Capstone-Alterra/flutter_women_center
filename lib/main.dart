@@ -1,3 +1,4 @@
+
 import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
@@ -5,6 +6,15 @@ import 'package:capstone_project/view/screen/article/article_list/article_list_v
 import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_view_model.dart';
+import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_screen.dart';
+import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_view_model.dart';
+import 'package:capstone_project/view/screen/home/home_screen.dart';
+import 'package:capstone_project/view/screen/landing/landing_screen.dart';
+import 'package:capstone_project/view/screen/landing/landing_view_model.dart';
+import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
+import 'package:capstone_project/view/screen/auth/login/login_view_model.dart';
+import 'package:capstone_project/view/screen/onboarding/onboarding_screen.dart';
+import 'package:capstone_project/view/screen/onboarding/onboarding_view_model.dart';
 import 'package:capstone_project/view/screen/profile/profile_screen.dart';
 import 'package:capstone_project/view/screen/saved/acticle/article_screen.dart';
 import 'package:capstone_project/view/screen/saved/acticle/article_view_model.dart';
@@ -16,6 +26,14 @@ import 'package:capstone_project/view/screen/transaction/transaction_screen.dart
 import 'package:capstone_project/view/screen/transaction/transaction_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:capstone_project/view/screen/auth/signup/signup_screen.dart';
+import 'package:capstone_project/view/screen/auth/signup/signup_view_model.dart';
+import 'package:capstone_project/view/screen/auth/verification/verification_screen.dart';
+import 'package:capstone_project/view/screen/auth/verification/verification_veiw_model.dart';
+import 'package:capstone_project/view/screen/auth/verification/widgets/otp_form_view_model.dart';
+import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
+import 'package:capstone_project/view/screen/transaction/transaction_view_model.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -50,7 +68,26 @@ class MyApp extends StatelessWidget {
           create: (context) => ArticleViewModel(),
         ),
         ChangeNotifierProvider(
+
           create: (context) => ArticleListProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LoginViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SignupViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => VerificationViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => OtpFormViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ForgotPasswordViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => OnboardingViewModel(),
         ),
       ],
       child: MaterialApp(
@@ -64,6 +101,7 @@ class MyApp extends StatelessWidget {
           TransactionScreen.routeName: (context) => const TransactionScreen(),
           SavedScreen.routeName: (context) => const SavedScreen(),
           ProfileScreen.routeName: (context) => const ProfileScreen(),
+
           ArticleListScreen.routename: (context) => const ArticleListScreen(),
           DetailReadingListScreen.routeName: (context) =>
               const DetailReadingListScreen(),
@@ -72,6 +110,15 @@ class MyApp extends StatelessWidget {
                 articles: Articles(
                     title: '', author: '', date: '', desc: '', image: ''),
               ),
+          DetailReadingListScreen.routeName: (context) =>
+              const DetailReadingListScreen(),
+          ArticleScreen.routeName: (context) => const ArticleScreen(),
+          LoginScreen.routeName: (context) => const LoginScreen(),
+          SignupScreen.routeName: (context) => const SignupScreen(),
+          VerificationScreen.routeName: (context) => const VerificationScreen(),
+          ForgotPasswordScreen.routeName: (context) =>
+              const ForgotPasswordScreen(),
+          OnboardingScreen.routeName: (context) => const OnboardingScreen(),
         },
       ),
     );
