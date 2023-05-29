@@ -1,10 +1,10 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/view/screen/forum/join_forum_discussion_screen.dart';
+import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/components/buttons/circle_button.dart';
-import '../../../utils/components/text_box/search_text_box.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
