@@ -3,13 +3,13 @@ import 'package:capstone_project/utils/my_color.dart';
 import 'package:flutter/material.dart';
 
 class TransactionCard extends StatelessWidget {
-  final bool ratingDone;
+  final bool showButton;
   final String labelButton;
   final void Function()? onPressed;
 
   const TransactionCard({
     super.key,
-    required this.ratingDone,
+    required this.showButton,
     required this.labelButton,
     this.onPressed,
   });
@@ -18,7 +18,7 @@ class TransactionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 196,
+      height: showButton == true ? 196 : 144,
       child: Card(
         elevation: 0.0,
         color: MyColor.white,
@@ -121,12 +121,12 @@ class TransactionCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    ratingDone == false
+                    showButton == true
                         ? const SizedBox(
                             height: 16,
                           )
                         : const SizedBox(),
-                    ratingDone == false
+                    showButton == true
                         ? PrimaryButton(
                             teks: labelButton,
                             onPressed: onPressed,

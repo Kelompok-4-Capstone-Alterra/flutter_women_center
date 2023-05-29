@@ -4,6 +4,7 @@ import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/view/screen/saved/acticle/article_screen.dart';
 import 'package:capstone_project/view/screen/saved/widgets/article_list_popup_menu_button.dart';
 import 'package:capstone_project/view/screen/saved/widgets/horizontal_article_card.dart';
+import 'package:capstone_project/view/screen/saved/widgets/vertical_article_card.dart';
 import 'package:flutter/material.dart';
 
 class DetailReadingListScreen extends StatefulWidget {
@@ -208,7 +209,7 @@ class _DetailReadingListScreenState extends State<DetailReadingListScreen> {
                     onTap: () {
                       Navigator.pushNamed(context, ArticleScreen.routeName);
                     },
-                    child: const HorizontalArticleCard(),
+                    child: const VerticalArticleCard(),
                   );
                 },
                 separatorBuilder: (context, index) {

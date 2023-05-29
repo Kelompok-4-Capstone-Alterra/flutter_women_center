@@ -1,6 +1,7 @@
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
+import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_screen.dart';
 import 'package:capstone_project/view/screen/onboarding/onboarding_view_model.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final contactProvider =
+
+    final onboardingProvider =
         Provider.of<OnboardingViewModel>(context, listen: false);
 
     return Scaffold(
@@ -34,9 +36,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           controller: _pageController,
           onPageChanged: (int page) {
             if (page == 2) {
-              contactProvider.setIsLastPage(true);
+              onboardingProvider.setIsLastPage(true);
             } else {
-              contactProvider.setIsLastPage(false);
+              onboardingProvider.setIsLastPage(false);
             }
           },
           children: [
@@ -198,7 +200,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     teks: 'Skip',
                     onPressed: () {
                       Navigator.pushNamedAndRemoveUntil(
-                          context, LandingScreen.routeName, (route) => false);
+                          context, HomeScreen.routeName, (route) => false);
                     },
                     customWidth: MediaQuery.of(context).size.width * 0.45,
                     customBackgroundColor: MyColor.white,
