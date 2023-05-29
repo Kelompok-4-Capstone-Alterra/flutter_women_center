@@ -69,7 +69,7 @@ class TextBox extends StatelessWidget {
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w400,
-          color: MyColor.neutralMediumLow,
+          color: MyColor.neutralHigh,
         ),
         autofocus: autoFocus == null || autoFocus == false ? false : true,
         obscureText: obscureText == null || obscureText == false ? false : true,
