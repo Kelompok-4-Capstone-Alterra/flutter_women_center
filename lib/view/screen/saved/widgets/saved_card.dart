@@ -1,4 +1,4 @@
-import 'package:capstone_project/view/screen/saved/widgets/vertical_article_card.dart';
+import 'package:capstone_project/view/screen/saved/widgets/horizontal_article_card.dart';
 import 'package:capstone_project/view/screen/saved/widgets/article_list_popup_menu_button.dart';
 import 'package:flutter/material.dart';
 import '../../../../utils/my_color.dart';
@@ -8,9 +8,11 @@ class SavedCard extends StatelessWidget {
   final TextEditingController editDescriptionTextEditingController;
   final FocusNode editListNameFocusNode;
   final FocusNode editDescriptionFocusNode;
+  final String judulList;
 
   const SavedCard({
     super.key,
+    required this.judulList,
     required this.editListNameTextEditingController,
     required this.editDescriptionTextEditingController,
     required this.editListNameFocusNode,
@@ -21,7 +23,7 @@ class SavedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 338,
+      height: 361,
       child: Card(
         elevation: 0.0,
         color: MyColor.white,
@@ -37,7 +39,7 @@ class SavedCard extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              height: 134,
+              height: 157,
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -58,7 +60,7 @@ class SavedCard extends StatelessWidget {
                           width: 8,
                         ),
                         Text(
-                          'John Doe',
+                          judulList,
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -101,6 +103,17 @@ class SavedCard extends StatelessWidget {
                       ],
                     ),
                   ),
+                  const SizedBox(
+                    height: 9,
+                  ),
+                  Text(
+                    'This is a description of this reading list.',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w500,
+                      color: MyColor.neutralHigh,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -117,7 +130,7 @@ class SavedCard extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: 5,
                 itemBuilder: (context, index) {
-                  return const VerticalArticleCard();
+                  return const HorizontalArticleCard();
                 },
                 separatorBuilder: (context, index) {
                   return const SizedBox(
