@@ -109,14 +109,7 @@ class OptionSortBy extends StatelessWidget {
             PrimaryButton(
               teks: 'Save',
               onPressed: () {
-                if (radioModel.selectedSortBy == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: MyColor.danger,
-                      content: const Text('Please select one of the options'),
-                    ),
-                  );
-                } else {
+                if (radioModel.selectedSortBy != null) {
                   debugPrint('Pilihan: ${radioModel.selectedSortBy}');
                   radioModel.selectedSortBy = null;
                   Navigator.pop(context);
