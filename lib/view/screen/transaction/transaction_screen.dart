@@ -58,7 +58,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
               ListView.separated(
                 itemBuilder: (context, index) {
                   return TransactionCard(
-                    ratingDone: false,
+                    showButton: true,
                     labelButton: 'Link',
                     onPressed: () {},
                   );
@@ -72,246 +72,178 @@ class _TransactionScreenState extends State<TransactionScreen> {
               ),
               ListView.separated(
                 itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return const TransactionCard(
-                      ratingDone: true,
+                  return Consumer<TransactionViewModel>(
+                      builder: (context, transactionProvider, _) {
+                    return TransactionCard(
+                      showButton: transactionProvider.history[index] == true
+                          ? false
+                          : true,
                       labelButton: 'Rate & Review',
+                      onPressed: () {
+                        showModalBottomSheet(
+                          isDismissible: false,
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (context) {
+                            for (int i = 0;
+                                i < provider.counselorRate.length;
+                                i++) {
+                              provider.counselorRate[i] = false;
+                            }
+                            provider.counselorTotalRate = 0;
+                            return CustomBottomSheetBuilder(
+                              tinggi: 680,
+                              header: true,
+                              judul: 'Give Rate & Review',
+                              isi: [
+                                SizedBox(
+                                  height: 103,
+                                  width: double.infinity,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'How was your counselor?',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: MyColor.neutralHigh,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 250,
+                                          height: 50,
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                provider.counselorRate.length,
+                                            itemBuilder: (context, index) {
+                                              return Consumer<
+                                                  TransactionViewModel>(
+                                                builder: (context,
+                                                    transactionProvider, _) {
+                                                  if (transactionProvider
+                                                              .counselorRate[
+                                                          index] ==
+                                                      true) {
+                                                    return IconButton(
+                                                      onPressed: () {
+                                                        transactionProvider
+                                                            .changeCounselorRate(
+                                                                index);
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.star,
+                                                        size: 32,
+                                                        color: MyColor.warning,
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    return IconButton(
+                                                      onPressed: () {
+                                                        transactionProvider
+                                                            .changeCounselorRate(
+                                                                index);
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.star,
+                                                        size: 32,
+                                                        color:
+                                                            MyColor.neutralLow,
+                                                      ),
+                                                    );
+                                                  }
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        Text(
+                                          'Please give us the rating',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            color: MyColor.danger,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                SizedBox(
+                                  height: 86,
+                                  width: double.infinity,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Any words about your counseling or counselor?',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: MyColor.neutralHigh,
+                                          ),
+                                        ),
+                                        TextBox(
+                                          textEditingController:
+                                              _counselingCounselorController,
+                                          hintText:
+                                              'Type what you are thinking here ...',
+                                          last: true,
+                                          currentFocus:
+                                              _counselingCounselorNode,
+                                          validator: null,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                Consumer<TransactionViewModel>(
+                                    builder: (context, transactionProvider, _) {
+                                  return PrimaryButton(
+                                    teks: 'Done',
+                                    onPressed:
+                                        transactionProvider.counselorRate[0] ==
+                                                false
+                                            ? null
+                                            : () {
+                                                Navigator.pop(context);
+                                                transactionProvider
+                                                    .changeRatingStatus(index);
+                                              },
+                                  );
+                                }),
+                              ],
+                            );
+                          },
+                        );
+                      },
                     );
-                  }
-                  return TransactionCard(
-                    ratingDone: false,
-                    labelButton: 'Rate & Review',
-                    onPressed: () {
-                      showModalBottomSheet(
-                        isDismissible: false,
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (context) {
-                          for (int i = 0;
-                              i < provider.counselingSessionRate.length;
-                              i++) {
-                            provider.counselingSessionRate[i] = false;
-                          }
-                          for (int i = 0;
-                              i < provider.counselorRate.length;
-                              i++) {
-                            provider.counselorRate[i] = false;
-                          }
-                          provider.counselingSessionTotalRate = 0;
-                          provider.counselorTotalRate = 0;
-                          return CustomBottomSheetBuilder(
-                            tinggi: 680,
-                            header: true,
-                            judul: 'Give Rate & Review',
-                            isi: [
-                              SizedBox(
-                                height: 103,
-                                width: double.infinity,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'How was your counseling session?',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: MyColor.neutralHigh,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 50,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          itemCount: provider
-                                              .counselingSessionRate.length,
-                                          itemBuilder: (context, index) {
-                                            return Consumer<
-                                                TransactionViewModel>(
-                                              builder: (context,
-                                                  transactionProvider, _) {
-                                                if (transactionProvider
-                                                            .counselingSessionRate[
-                                                        index] ==
-                                                    true) {
-                                                  return IconButton(
-                                                    onPressed: () {
-                                                      transactionProvider
-                                                          .changeCounselingSessionRate(
-                                                              index: index);
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.star,
-                                                      size: 32,
-                                                      color: MyColor.warning,
-                                                    ),
-                                                  );
-                                                } else {
-                                                  return IconButton(
-                                                    onPressed: () {
-                                                      transactionProvider
-                                                          .changeCounselingSessionRate(
-                                                              index: index);
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.star,
-                                                      size: 32,
-                                                      color: MyColor.neutralLow,
-                                                    ),
-                                                  );
-                                                }
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      Text(
-                                        'Please give us the rating',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400,
-                                          color: MyColor.danger,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              SizedBox(
-                                height: 86,
-                                width: double.infinity,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'How was your counselor?',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: MyColor.neutralHigh,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 250,
-                                        height: 50,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          itemCount:
-                                              provider.counselorRate.length,
-                                          itemBuilder: (context, index) {
-                                            return Consumer<
-                                                TransactionViewModel>(
-                                              builder: (context,
-                                                  transactionProvider, _) {
-                                                if (transactionProvider
-                                                        .counselorRate[index] ==
-                                                    true) {
-                                                  return IconButton(
-                                                    onPressed: () {
-                                                      transactionProvider
-                                                          .changeCounselorRate(
-                                                              index: index);
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.star,
-                                                      size: 32,
-                                                      color: MyColor.warning,
-                                                    ),
-                                                  );
-                                                } else {
-                                                  return IconButton(
-                                                    onPressed: () {
-                                                      transactionProvider
-                                                          .changeCounselorRate(
-                                                              index: index);
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.star,
-                                                      size: 32,
-                                                      color: MyColor.neutralLow,
-                                                    ),
-                                                  );
-                                                }
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              SizedBox(
-                                height: 86,
-                                width: double.infinity,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Any words about your counseling or counselor?',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: MyColor.neutralHigh,
-                                        ),
-                                      ),
-                                      TextBox(
-                                        textEditingController:
-                                            _counselingCounselorController,
-                                        hintText:
-                                            'Type what you are thinking here ...',
-                                        last: true,
-                                        currentFocus: _counselingCounselorNode,
-                                        validator: null,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              PrimaryButton(
-                                teks: 'Done',
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                  );
+                  });
                 },
                 separatorBuilder: (context, index) {
                   return const SizedBox(
                     height: 8,
                   );
                 },
-                itemCount: 5,
+                itemCount: provider.history.length,
               ),
             ],
           ),
