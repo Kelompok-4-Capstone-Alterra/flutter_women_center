@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class MyColor {
@@ -20,4 +21,10 @@ class MyColor {
   static final neutralMediumHigh = HexColor('#504949');
   static final neutralHigh = HexColor('#282424');
   static final white = HexColor('#FDFCFC');
+  static final Gradient background = LinearGradient(
+    colors: [
+      HexColor("#F9DAD9"),
+      HexColor("#DAD29C"),
+    ],
+  );
 }
