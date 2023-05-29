@@ -1,8 +1,0 @@
-# Ignore all files/folders except lib/
-/*
-!/lib/
-!/assets/
-
-# Include pubspec files
-!/pubspec.yaml
-!/pubspec.lock
