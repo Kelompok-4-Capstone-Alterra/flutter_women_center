@@ -22,7 +22,7 @@ class TextBox extends StatelessWidget {
   final bool? last;
   final void Function(String)? onFieldSubmitted;
   final double? width;
-  final IconButton? suffixIcon;
+  final Widget? suffixIcon;
 
   const TextBox({
     super.key,
@@ -69,7 +69,7 @@ class TextBox extends StatelessWidget {
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w400,
-          color: MyColor.neutralHigh,
+          color: MyColor.neutralMediumLow,
         ),
         autofocus: autoFocus == null || autoFocus == false ? false : true,
         obscureText: obscureText == null || obscureText == false ? false : true,
@@ -81,6 +81,7 @@ class TextBox extends StatelessWidget {
         maxLength: maxLength,
         onChanged: onChanged,
         decoration: InputDecoration(
+          suffixIcon: suffixIcon,
           contentPadding: const EdgeInsets.symmetric(
             vertical: 14.0,
             horizontal: 24.0,
@@ -99,28 +100,9 @@ class TextBox extends StatelessWidget {
             fontWeight: FontWeight.w400,
             color: MyColor.danger,
           ),
-          enabledBorder: OutlineInputBorder(
+          border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(3),
-            borderSide: BorderSide(
-              color: MyColor.neutralMediumLow,
-              width: .25,
-            ),
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(3),
-            borderSide: BorderSide(
-              color: MyColor.primaryMain,
-              width: .25,
-            ),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(3),
-            borderSide: BorderSide(
-              color: MyColor.danger,
-              width: .25,
-            ),
-          ),
-          suffixIcon: suffixIcon,
         ),
         inputFormatters: inputFormatters,
         validator: validator,
