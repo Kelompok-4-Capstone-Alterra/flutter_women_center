@@ -1,10 +1,10 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
+import 'package:flutter/material.dart';
 import 'package:capstone_project/utils/components/text_box/read_only_text_box.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/view/screen/onboarding/onboarding_screen.dart';
 import 'package:capstone_project/view/screen/profile/edit_profile/edit_profile_screen.dart';
 import 'package:capstone_project/view/screen/profile/profilel_view_model.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/components/buttons/primary_button.dart';
@@ -70,6 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
@@ -79,6 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         searchField: false,
         tabBar: false,
       ),
+
       body: Container(
         decoration: BoxDecoration(
           gradient: MyColor.background,
@@ -257,64 +259,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       );
                     },
                   ),
-
-                  // TextBox(
-                  //   textEditingController: _usernameController,
-                  //   hintText: "Ex : johndoe",
-                  //   keyboardType: TextInputType.text,
-                  //   validator: (p0) {
-                  //     if (p0 == null || p0.isEmpty) {
-                  //       return 'username tidak boleh kosong';
-                  //     }
-                  //     return null;
-                  //   },
-                  // ),
-                  // Consumer<LoginViewModel>(
-                  //   builder: (context, value, _) {
-                  //     return TextBox(
-                  //       textEditingController: _passwordController,
-                  //       hintText: "Sstt Its a Secret",
-                  //       keyboardType: TextInputType.text,
-                  //       obscureText: !value.passwordVisibility,
-                  //       obscureChar: '*',
-                  //       suffixIcon: IconButton(
-                  //         onPressed: () {
-                  //           value.setPasswordVisibility();
-                  //         },
-                  //         icon: Icon(
-                  //           value.passwordVisibility
-                  //               ? Icons.visibility
-                  //               : Icons.visibility_off,
-                  //           size: 22,
-                  //         ),
-                  //       ),
-                  //       validator: (p0) {
-                  //         if (p0 == null || p0.isEmpty) {
-                  //           return 'password tidak boleh kosong';
-                  //         }
-                  //         return null;
-                  //       },
-                  //     );
-                  //   },
-                  // ),
-
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     Navigator.pushNamed(
-                  //         context, ForgotPasswordScreen.routeName);
-                  //   },
-                  //   child: Align(
-                  //     alignment: Alignment.centerRight,
-                  //     child: Text(
-                  //       'Change Password',
-                  //       style: TextStyle(
-                  //         fontSize: 12,
-                  //         fontWeight: FontWeight.w400,
-                  //         color: MyColor.secondaryPressed,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.03,
                   ),

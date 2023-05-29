@@ -5,6 +5,7 @@ import '../text_box/search_text_box.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool searchField;
+
   final String judul;
   final bool tabBar;
   final bool home;
@@ -35,10 +36,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 42,
-          ),
           AppBar(
+            scrolledUnderElevation: 0,
             toolbarHeight: 40,
             title: Text(
               judul,
@@ -75,7 +74,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               : const SizedBox(),
           searchField == true || home == true
               ? Padding(
-                  padding: const EdgeInsets.only(left: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: searchTextBox)
               : const SizedBox(),
           const SizedBox(

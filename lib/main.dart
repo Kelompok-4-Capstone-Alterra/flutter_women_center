@@ -1,3 +1,11 @@
+
+import 'package:capstone_project/model/article_model.dart';
+import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
+import 'package:capstone_project/view/screen/home/home_screen.dart';
+import 'package:capstone_project/view/screen/landing/landing_screen.dart';
+import 'package:capstone_project/view/screen/landing/landing_view_model.dart';
 import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_screen.dart';
 import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_view_model.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
@@ -14,6 +22,10 @@ import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_re
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_view_model.dart';
 import 'package:capstone_project/view/screen/saved/saved_screen.dart';
 import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
+import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
+import 'package:capstone_project/view/screen/transaction/transaction_view_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:capstone_project/view/screen/auth/signup/signup_screen.dart';
 import 'package:capstone_project/view/screen/auth/signup/signup_view_model.dart';
 import 'package:capstone_project/view/screen/auth/verification/verification_screen.dart';
@@ -32,6 +44,12 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -48,6 +66,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => ArticleViewModel(),
+        ),
+        ChangeNotifierProvider(
+
+          create: (context) => ArticleListProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => LoginViewModel(),
@@ -72,13 +94,22 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Woman Center',
         theme: ThemeData.light(useMaterial3: true),
-        initialRoute: OnboardingScreen.routeName,
+        initialRoute: LandingScreen.routeName,
         routes: {
           LandingScreen.routeName: (context) => const LandingScreen(),
           HomeScreen.routeName: (context) => const HomeScreen(),
           TransactionScreen.routeName: (context) => const TransactionScreen(),
           SavedScreen.routeName: (context) => const SavedScreen(),
           ProfileScreen.routeName: (context) => const ProfileScreen(),
+
+          ArticleListScreen.routename: (context) => const ArticleListScreen(),
+          DetailReadingListScreen.routeName: (context) =>
+              const DetailReadingListScreen(),
+          ArticleScreen.routeName: (context) => const ArticleScreen(),
+          ArticleDetailsScreen.routename: (context) => ArticleDetailsScreen(
+                articles: Articles(
+                    title: '', author: '', date: '', desc: '', image: ''),
+              ),
           DetailReadingListScreen.routeName: (context) =>
               const DetailReadingListScreen(),
           ArticleScreen.routeName: (context) => const ArticleScreen(),
