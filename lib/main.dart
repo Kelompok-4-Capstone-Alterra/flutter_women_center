@@ -1,3 +1,7 @@
+import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
+import 'package:capstone_project/view/screen/counselor_detail/counselor_detail_view_model.dart';
+import 'package:capstone_project/view/screen/counselor_list/counselor_list_screen.dart';
+import 'package:capstone_project/view/screen/counselor_list/counselor_list_view_model.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_view_model.dart';
@@ -12,6 +16,9 @@ import 'package:capstone_project/view/screen/transaction/transaction_screen.dart
 import 'package:capstone_project/view/screen/transaction/transaction_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'view/screen/counseling_topic/counseling_topic_view_model.dart';
+import 'view/screen/counselor_detail/counselor_detail_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,12 +45,21 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => ArticleViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => CounselingTopicViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CounselorListViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CounselorDetailViewModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Woman Center',
         theme: ThemeData.light(useMaterial3: true),
-        initialRoute: LandingScreen.routeName,
+        initialRoute: HomeScreen.routeName,
         routes: {
           LandingScreen.routeName: (context) => const LandingScreen(),
           HomeScreen.routeName: (context) => const HomeScreen(),
@@ -53,6 +69,14 @@ class MyApp extends StatelessWidget {
           DetailReadingListScreen.routeName: (context) =>
               const DetailReadingListScreen(),
           ArticleScreen.routeName: (context) => const ArticleScreen(),
+          CounselingTopicScreen.routeName: (context) =>
+              const CounselingTopicScreen(),
+          CounselorListScreen.routeName: (context) =>
+              const CounselorListScreen(),
+          CounselorDetailScreen.routeName: (context) =>
+              const CounselorDetailScreen(
+                id: 0,
+              ),
         },
       ),
     );

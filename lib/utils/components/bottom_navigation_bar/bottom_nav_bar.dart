@@ -1,4 +1,8 @@
 import 'package:capstone_project/utils/my_color.dart';
+import 'package:capstone_project/view/screen/home/home_screen.dart';
+import 'package:capstone_project/view/screen/profile/profile_screen.dart';
+import 'package:capstone_project/view/screen/saved/saved_screen.dart';
+import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -8,7 +12,7 @@ class BottomNavBar extends StatefulWidget {
   const BottomNavBar({
     super.key,
     required this.currentIndex,
-    required this.onTap,
+    this.onTap,
   });
 
   @override
@@ -19,7 +23,26 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      onTap: widget.onTap,
+      onTap: (int tabIndex) {
+        if (tabIndex == widget.currentIndex) {
+          return;
+        }
+        switch (tabIndex) {
+          case 0:
+            Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+            break;
+          case 1:
+            Navigator.pushReplacementNamed(
+                context, TransactionScreen.routeName);
+            break;
+          case 2:
+            Navigator.pushReplacementNamed(context, SavedScreen.routeName);
+            break;
+          case 3:
+            Navigator.pushReplacementNamed(context, ProfileScreen.routeName);
+            break;
+        }
+      },
       backgroundColor: MyColor.white,
       elevation: 0.0,
       currentIndex: widget.currentIndex,
