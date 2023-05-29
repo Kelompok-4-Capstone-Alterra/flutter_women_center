@@ -23,7 +23,6 @@ class TextBox extends StatelessWidget {
   final void Function(String)? onFieldSubmitted;
   final double? width;
   final IconButton? suffixIcon;
-  final bool? isReadOnly;
 
   const TextBox({
     super.key,
@@ -46,7 +45,6 @@ class TextBox extends StatelessWidget {
     this.inputFormatters,
     this.validator,
     this.suffixIcon,
-    this.isReadOnly,
   });
 
   @override
@@ -126,7 +124,6 @@ class TextBox extends StatelessWidget {
         ),
         inputFormatters: inputFormatters,
         validator: validator,
-        readOnly: isReadOnly == null || isReadOnly == false ? false : true,
       ),
     );
   }
