@@ -1,3 +1,5 @@
+import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_screen.dart';
+import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_view_model.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
 import 'package:capstone_project/view/screen/counselor_detail/counselor_detail_view_model.dart';
 import 'package:capstone_project/view/screen/counselor_list/counselor_list_screen.dart';
@@ -101,6 +103,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => OnboardingViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => CounselingAppointmentViewModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -138,6 +143,8 @@ class MyApp extends StatelessWidget {
           ForgotPasswordScreen.routeName: (context) =>
               const ForgotPasswordScreen(),
           OnboardingScreen.routeName: (context) => const OnboardingScreen(),
+          CounselingAppointment.routeName: (context) =>
+              const CounselingAppointment(),
         },
       ),
     );
