@@ -8,6 +8,12 @@ class CounselingAppointmentViewModel extends ChangeNotifier {
 
   List availableTime = [];
 
+  List voucher = [];
+
+  int selectedVoucher = 0;
+
+  List useVoucher = [];
+
   List counselorListData = [
     {
       'id': 1,
@@ -121,6 +127,53 @@ class CounselingAppointmentViewModel extends ChangeNotifier {
     },
   ];
 
+  List voucherData = [
+    {
+      'id': 1,
+      'type': 'Refund Voucher',
+      'name': 'Counseling Discount Rp 50.000',
+      'paymentMethod': 'All payment method accepted',
+      'discount': 50000,
+    },
+    {
+      'id': 2,
+      'type': 'Refund Voucher',
+      'name': 'Counseling Discount Rp 50.000',
+      'paymentMethod': 'All payment method accepted',
+      'discount': 50000,
+    },
+    {
+      'id': 3,
+      'type': 'New User Voucher',
+      'name': 'Counseling Discount Rp 50.000',
+      'paymentMethod': 'All payment method accepted',
+      'discount': 80000,
+    },
+    {
+      'id': 4,
+      'type': 'Refund Voucher',
+      'name': 'Counseling Discount Rp 50.000',
+      'paymentMethod': 'All payment method accepted',
+      'discount': 50000,
+    },
+    {
+      'id': 5,
+      'type': 'Refund Voucher',
+      'name': 'Counseling Discount Rp. 50.000',
+      'paymentMethod': 'All payment method accepted',
+      'discount': 50000,
+    },
+    {
+      'id': 1,
+      'type': 'Refund Voucher',
+      'name': 'Counseling Discount Rp. 50.000',
+      'paymentMethod': 'All payment method accepted',
+      'discount': 50000,
+    },
+  ];
+
+  num total = 0;
+
   void getCounselorDetail(int id) {
     myState = MyState.loading;
     notifyListeners();
@@ -145,6 +198,57 @@ class CounselingAppointmentViewModel extends ChangeNotifier {
           avaibleTimeData.where((element) => element['id'] == id).toList());
       myState = MyState.loaded;
       notifyListeners();
+    } catch (e) {
+      myState = MyState.failed;
+      notifyListeners();
+    }
+  }
+
+  void setVoucher(int id) {
+    myState = MyState.loading;
+    notifyListeners();
+    try {
+      selectedVoucher = id;
+
+      myState = MyState.loaded;
+      notifyListeners();
+    } catch (e) {
+      myState = MyState.failed;
+      notifyListeners();
+    }
+  }
+
+  void decideVoucher(Map data) {
+    print(data);
+    myState = MyState.loading;
+    notifyListeners();
+    try {
+      if (data['decide'] == 'choose') {
+        selectedVoucher = data['id'];
+      } else if (data['decide'] == 'cancel') {
+        selectedVoucher = 0;
+      }
+      myState = MyState.loaded;
+      notifyListeners();
+    } catch (e) {
+      myState = MyState.failed;
+      notifyListeners();
+    }
+  }
+
+  void countTotal({
+    required int id,
+    required int price,
+  }) {
+    try {
+      useVoucher.clear();
+      useVoucher
+          .addAll(voucherData.where((element) => element['id'] == id).toList());
+      if (useVoucher.isNotEmpty) {
+        total = price - useVoucher[0]['discount'];
+      } else {
+        total = price;
+      }
     } catch (e) {
       myState = MyState.failed;
       notifyListeners();

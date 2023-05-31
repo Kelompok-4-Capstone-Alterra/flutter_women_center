@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 class MoneyFormatter {
-  String formatRupiah(int price) {
+  String formatRupiah(num price) {
     final formatter = NumberFormat("#,###");
     return "Rp. ${formatter.format(price)}";
   }

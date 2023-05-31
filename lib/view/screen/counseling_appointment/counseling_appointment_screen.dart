@@ -4,6 +4,9 @@ import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_view_model.dart';
+import 'package:capstone_project/view/screen/home/home_screen.dart';
+import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
+import 'package:capstone_project/view/screen/voucher/voucher_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,8 +17,12 @@ class CounselingAppointment extends StatefulWidget {
   final int? selectedTimeId;
   final String? selectedMethod;
 
-  const CounselingAppointment(
-      {super.key, this.counselorId, this.selectedTimeId, this.selectedMethod});
+  const CounselingAppointment({
+    super.key,
+    this.counselorId,
+    this.selectedTimeId,
+    this.selectedMethod,
+  });
 
   @override
   State<CounselingAppointment> createState() => _CounselingAppointmentState();
@@ -262,60 +269,99 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
             const SizedBox(
               height: 16,
             ),
-            InkWell(
-              onTap: () {
-                print('Voucher Clicked');
-              },
-              child: Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.07,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 0.1,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 16,
-                  ),
-                  child: Row(
-                    children: [
-                      Transform(
-                        transform: Matrix4.rotationZ(0.8),
-                        alignment: Alignment.center,
-                        child: Icon(
-                          Icons.book_online,
-                          color: MyColor.primaryMain,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 14,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        child: const Text(
-                          'Apply Voucher',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
+            Consumer<CounselingAppointmentViewModel>(
+                builder: (context, provider, _) {
+              switch (provider.myState) {
+                case MyState.loading:
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                case MyState.loaded:
+                  return InkWell(
+                    onTap: () async {
+                      if (provider.selectedVoucher != 0) {
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VoucherScreen(
+                              voucherId: provider.selectedVoucher,
+                            ),
                           ),
+                        );
+                        if (result != null) {
+                          provider.decideVoucher(result);
+                        }
+                      } else {
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const VoucherScreen(),
+                          ),
+                        );
+                        if (result != null) {
+                          // convert result to map
+                          provider.decideVoucher(result);
+                        }
+                      }
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 0.1,
                         ),
                       ),
-                      Transform(
-                        transform: Matrix4.rotationZ(0.8),
-                        alignment: Alignment.center,
-                        child: Icon(
-                          Icons.outbond,
-                          color: MyColor.primaryMain,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 16,
+                        ),
+                        child: Row(
+                          children: [
+                            Transform(
+                              transform: Matrix4.rotationZ(0.8),
+                              alignment: Alignment.center,
+                              child: Icon(
+                                Icons.book_online,
+                                color: MyColor.primaryMain,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 14,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              child: Text(
+                                provider.selectedVoucher == 0
+                                    ? 'Apply Voucher'
+                                    : 'Voucher Applied',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Transform(
+                              transform: Matrix4.rotationZ(0.8),
+                              alignment: Alignment.center,
+                              child: Icon(
+                                Icons.outbond,
+                                color: MyColor.primaryMain,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+                    ),
+                  );
+                default:
+                  return const Center(
+                    child: Text('Data Not Avaible'),
+                  );
+              }
+            }),
             const SizedBox(
               height: 24,
             ),
@@ -371,27 +417,72 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                           Text('free'),
                         ],
                       ),
-                      const SizedBox(
-                        height: 18,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Total',
-                            style: TextStyle(
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            MoneyFormatter().formatRupiah(245000),
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
+                      Consumer<CounselingAppointmentViewModel>(
+                          builder: (context, provider, _) {
+                        final total = provider.countTotal(
+                            id: provider.selectedVoucher, price: 245000);
+                        switch (provider.myState) {
+                          case MyState.loading:
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          case MyState.loaded:
+                            return provider.selectedVoucher == 0
+                                ? const SizedBox()
+                                : Column(
+                                    children: [
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text(
+                                            'Discount',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          Text(
+                                            '-${MoneyFormatter().formatRupiah(provider.useVoucher[0]['discount'])}',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: MyColor.success,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 18,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text(
+                                            'Total',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          Text(
+                                            MoneyFormatter()
+                                                .formatRupiah(provider.total),
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                          default:
+                            return const SizedBox();
+                        }
+                      }),
                     ],
                   ),
                 ),
@@ -406,7 +497,11 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                   context: context,
                   builder: (BuildContext context) {
                     return const AlertDialog(
-                      shape: RoundedRectangleBorder(),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(3),
+                        ),
+                      ),
                       backgroundColor: Colors.white,
                       content: Text(
                         "If the consultant is unable to attend, we offer a refund in the form of a voucher. This voucher can be used towards future transactions. We understand that circumstances may prevent the consultant from fulfilling the appointment, and we want to ensure that you still receive the value of your payment. The voucher will be provided to you, and you can redeem it during your next transaction with us.",
@@ -448,7 +543,91 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
               width: double.infinity,
               height: MediaQuery.of(context).size.height * 0.06,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  bool isTrue = true;
+                  if (isTrue) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(3),
+                            ),
+                          ),
+                          backgroundColor: Colors.white,
+                          content: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.check_circle,
+                                  size: 50,
+                                  color: MyColor.success,
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                const Text(
+                                  "Payment has been received",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.justify,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ).then((value) {
+                      // pop all screen
+                      Navigator.popUntil(
+                          context, ModalRoute.withName(HomeScreen.routeName));
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const TransactionScreen()),
+                      );
+                    });
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(3),
+                            ),
+                          ),
+                          backgroundColor: Colors.white,
+                          content: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.sms_failed,
+                                  size: 50,
+                                  color: MyColor.danger,
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                const Text(
+                                  "Please complete your payment",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.justify,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: MyColor.primaryMain,
                   shape: const RoundedRectangleBorder(),

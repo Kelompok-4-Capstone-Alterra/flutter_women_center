@@ -27,6 +27,8 @@ import 'package:capstone_project/view/screen/saved/saved_screen.dart';
 import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_view_model.dart';
+import 'package:capstone_project/view/screen/voucher/voucher_screen.dart';
+import 'package:capstone_project/view/screen/voucher/voucher_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:capstone_project/view/screen/auth/signup/signup_screen.dart';
@@ -34,9 +36,6 @@ import 'package:capstone_project/view/screen/auth/signup/signup_view_model.dart'
 import 'package:capstone_project/view/screen/auth/verification/verification_screen.dart';
 import 'package:capstone_project/view/screen/auth/verification/verification_veiw_model.dart';
 import 'package:capstone_project/view/screen/auth/verification/widgets/otp_form_view_model.dart';
-import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
-import 'package:capstone_project/view/screen/transaction/transaction_view_model.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'view/screen/counseling_topic/counseling_topic_view_model.dart';
@@ -106,6 +105,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => CounselingAppointmentViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => VoucherViewModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -134,9 +136,6 @@ class MyApp extends StatelessWidget {
                 articles: Articles(
                     title: '', author: '', date: '', desc: '', image: ''),
               ),
-          DetailReadingListScreen.routeName: (context) =>
-              const DetailReadingListScreen(),
-          ArticleScreen.routeName: (context) => const ArticleScreen(),
           LoginScreen.routeName: (context) => const LoginScreen(),
           SignupScreen.routeName: (context) => const SignupScreen(),
           VerificationScreen.routeName: (context) => const VerificationScreen(),
@@ -145,6 +144,7 @@ class MyApp extends StatelessWidget {
           OnboardingScreen.routeName: (context) => const OnboardingScreen(),
           CounselingAppointment.routeName: (context) =>
               const CounselingAppointment(),
+          VoucherScreen.routeName: (context) => const VoucherScreen(),
         },
       ),
     );
