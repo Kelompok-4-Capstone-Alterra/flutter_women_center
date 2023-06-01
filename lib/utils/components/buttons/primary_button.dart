@@ -16,7 +16,6 @@ class PrimaryButton extends StatelessWidget {
     this.customHeight,
     this.customBackgroundColor,
     this.customTextColor,
-
     required this.teks,
     required this.onPressed,
   });
@@ -35,7 +34,6 @@ class PrimaryButton extends StatelessWidget {
               return MyColor.primarySurface;
             }
             return customBackgroundColor ?? MyColor.primaryMain;
-
           },
         ),
         foregroundColor: MaterialStatePropertyAll<Color>(MyColor.white),
@@ -54,7 +52,6 @@ class PrimaryButton extends StatelessWidget {
           fontSize: 14.0,
           fontWeight: FontWeight.w500,
           color: customTextColor ?? MyColor.white,
-
         ),
       ),
     );
