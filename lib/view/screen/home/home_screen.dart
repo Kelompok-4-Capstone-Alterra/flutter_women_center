@@ -1,10 +1,14 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
-import 'package:capstone_project/utils/my_size.dart';
-import 'package:capstone_project/view/screen/forum/join_forum_discussion_screen.dart';
 import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
+import 'package:capstone_project/utils/my_size.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:capstone_project/utils/my_size.dart';
+import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../../utils/components/buttons/circle_button.dart';
+import '../auth/login/login_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,60 +20,27 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController _searchHomeController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final TextEditingController searchController = TextEditingController();
     return Scaffold(
       appBar: CustomAppBar(
         preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
-        judul: 'Home',
-        home: true,
+        home: false,
         searchField: true,
         tabBar: false,
-        searchTextBox: SearchTextBox(
-          textEditingController: _searchHomeController,
-        ),
+        judul: 'Home',
+        searchTextBox: SearchTextBox(textEditingController: searchController),
       ),
       body: Column(
         children: [
-          const SizedBox(
-            height: 32,
-          ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              CircleButton(
-                widget: const Icon(
-                  Icons.article_rounded,
-                  color: Colors.white,
-                ),
-                onPressed: () {},
-              ),
-              CircleButton(
-                widget: const Icon(
-                  Icons.person_rounded,
-                  color: Colors.white,
-                ),
-                onPressed: () {},
-              ),
-              CircleButton(
-                widget: const Icon(
-                  Icons.work_rounded,
-                  color: Colors.white,
-                ),
-                onPressed: () {},
-              ),
-              CircleButton(
-                widget: const Icon(
-                  Icons.chat_rounded,
-                  color: Colors.white,
-                ),
+              IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    JoinForumDiscussionScreen.routeName,
-                  );
+                  Navigator.pushNamed(context, ArticleListScreen.routename);
                 },
+                icon: const Icon(Icons.ac_unit_sharp),
               ),
             ],
           ),
