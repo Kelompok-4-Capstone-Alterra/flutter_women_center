@@ -5,6 +5,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/components/appbar/custom_appbar.dart';
+import '../../../utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 import '../../../utils/components/buttons/floating_button.dart';
 
 import '../../../utils/components/buttons/primary_button.dart';
@@ -257,6 +258,9 @@ class _JoinForumDiscussionScreenState extends State<JoinForumDiscussionScreen> {
           },
           teks: 'Sort By',
           widget: const Icon(Icons.sort),
+        ),
+        bottomNavigationBar: const BottomNavBar(
+          currentIndex: 0,
         ),
       ),
     );

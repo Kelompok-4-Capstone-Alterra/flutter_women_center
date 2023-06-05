@@ -1,10 +1,18 @@
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/material.dart';
 
-class CounselorListViewModel extends ChangeNotifier {
+class CounselingAppointmentViewModel extends ChangeNotifier {
   MyState myState = MyState.initial;
 
-  List counselorList = [];
+  List counselorDetail = [];
+
+  List availableTime = [];
+
+  List voucher = [];
+
+  int selectedVoucher = 0;
+
+  List useVoucher = [];
 
   List counselorListData = [
     {
@@ -86,55 +94,164 @@ class CounselorListViewModel extends ChangeNotifier {
     },
   ];
 
-  String sortValue = 'Highest Rating';
+  List avaibleTimeData = [
+    {
+      'id': 1,
+      'time': '09 : 00',
+      'status': 'active',
+    },
+    {
+      'id': 2,
+      'time': '12 : 00',
+      'status': 'active',
+    },
+    {
+      'id': 3,
+      'time': '14 : 00',
+      'status': 'notActive',
+    },
+    {
+      'id': 4,
+      'time': '16 : 00',
+      'status': 'active',
+    },
+    {
+      'id': 5,
+      'time': '18 : 00',
+      'status': 'active',
+    },
+    {
+      'id': 6,
+      'time': '20 : 00',
+      'status': 'active',
+    },
+  ];
 
-  void filterHighestRating() {
+  List voucherData = [
+    {
+      'id': 1,
+      'type': 'Refund Voucher',
+      'name': 'Counseling Discount Rp 50.000',
+      'paymentMethod': 'All payment method accepted',
+      'discount': 50000,
+    },
+    {
+      'id': 2,
+      'type': 'Refund Voucher',
+      'name': 'Counseling Discount Rp 50.000',
+      'paymentMethod': 'All payment method accepted',
+      'discount': 50000,
+    },
+    {
+      'id': 3,
+      'type': 'New User Voucher',
+      'name': 'Counseling Discount Rp 50.000',
+      'paymentMethod': 'All payment method accepted',
+      'discount': 80000,
+    },
+    {
+      'id': 4,
+      'type': 'Refund Voucher',
+      'name': 'Counseling Discount Rp 50.000',
+      'paymentMethod': 'All payment method accepted',
+      'discount': 50000,
+    },
+    {
+      'id': 5,
+      'type': 'Refund Voucher',
+      'name': 'Counseling Discount Rp. 50.000',
+      'paymentMethod': 'All payment method accepted',
+      'discount': 50000,
+    },
+    {
+      'id': 1,
+      'type': 'Refund Voucher',
+      'name': 'Counseling Discount Rp. 50.000',
+      'paymentMethod': 'All payment method accepted',
+      'discount': 50000,
+    },
+  ];
+
+  num total = 0;
+
+  void getCounselorDetail(int id) {
     myState = MyState.loading;
     notifyListeners();
-
-    counselorList = counselorListData;
-    counselorList.sort((a, b) => b['rating'].compareTo(a['rating']));
-    sortValue = 'Highest Rating';
-
-    myState = MyState.loaded;
-    notifyListeners();
+    try {
+      counselorDetail.clear();
+      counselorDetail
+          .addAll(counselorListData.where((element) => element['id'] == id));
+      myState = MyState.loaded;
+      notifyListeners();
+    } catch (e) {
+      myState = MyState.failed;
+      notifyListeners();
+    }
   }
 
-  void filterHighestPrice() {
+  void getAvailableTime(int id) {
     myState = MyState.loading;
     notifyListeners();
-
-    counselorList = counselorListData;
-    counselorList.sort((a, b) => b['price'].compareTo(a['price']));
-    sortValue = 'Highest Price';
-
-    myState = MyState.loaded;
-    notifyListeners();
+    try {
+      availableTime.clear();
+      availableTime.addAll(
+          avaibleTimeData.where((element) => element['id'] == id).toList());
+      myState = MyState.loaded;
+      notifyListeners();
+    } catch (e) {
+      myState = MyState.failed;
+      notifyListeners();
+    }
   }
 
-  void filterLowestPrice() {
+  void setVoucher(int id) {
     myState = MyState.loading;
     notifyListeners();
+    try {
+      selectedVoucher = id;
 
-    counselorList = counselorListData;
-    counselorList.sort((a, b) => a['price'].compareTo(b['price']));
-    sortValue = 'Lowest Price';
-
-    myState = MyState.loaded;
-    notifyListeners();
+      myState = MyState.loaded;
+      notifyListeners();
+    } catch (e) {
+      myState = MyState.failed;
+      notifyListeners();
+    }
   }
 
-  void filterByName(String name) {
+  void decideVoucher(Map data) {
+    print(data);
     myState = MyState.loading;
     notifyListeners();
+    try {
+      if (data['decide'] == 'choose') {
+        selectedVoucher = data['id'];
+      } else if (data['decide'] == 'cancel') {
+        selectedVoucher = 0;
+      }
+      myState = MyState.loaded;
+      notifyListeners();
+    } catch (e) {
+      myState = MyState.failed;
+      notifyListeners();
+    }
+  }
 
-    // filter counselorList from counselorListData
-    counselorList = counselorListData
-        .where((element) =>
-            element['name'].toLowerCase().contains(name.toLowerCase()))
-        .toList();
-
-    myState = MyState.loaded;
-    notifyListeners();
+  void countTotal({
+    required int id,
+    required int price,
+  }) {
+    try {
+      useVoucher.clear();
+      useVoucher
+          .addAll(voucherData.where((element) => element['id'] == id).toList());
+      if (useVoucher.isNotEmpty) {
+        total = price - useVoucher[0]['discount'];
+      } else {
+        total = price;
+      }
+    } catch (e) {
+      myState = MyState.failed;
+      notifyListeners();
+    }
   }
 }
