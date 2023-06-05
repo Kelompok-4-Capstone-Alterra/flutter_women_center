@@ -86,14 +86,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
-  flutter_rating_stars:
-    dependency: "direct main"
-    description:
-      name: flutter_rating_stars
-      sha256: e03a85bd5c360fd27ef29faa931c98dc58e16387e328071c07bcf3a4c10000af
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.3+4"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -112,14 +104,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
-  intl:
-    dependency: "direct main"
-    description:
-      name: intl
-      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.18.1"
   js:
     dependency: transitive
     description:
@@ -294,14 +278,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  smooth_star_rating_nsafe:
-    dependency: "direct main"
-    description:
-      name: smooth_star_rating_nsafe
-      sha256: "11bb1e4736c0be3bd510a67598e94166c155cbf01ee8cef0c745bcc6ee315fdd"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0+1"
   source_span:
     dependency: transitive
     description:
@@ -318,14 +294,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.0"
-  star_rating:
-    dependency: "direct main"
-    description:
-      name: star_rating
-      sha256: "8944bad655403a2f92a80903db669532f72616e3ba2939b9bc25dc2156c41d5c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.11.0"
   stream_channel:
     dependency: transitive
     description:

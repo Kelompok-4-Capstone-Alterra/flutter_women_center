@@ -184,8 +184,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   PrimaryButton(
                     teks: 'Get Started',
                     onPressed: () {
+                      onboardingProvider.appStarted();
                       Navigator.pushNamedAndRemoveUntil(
-                          context, LandingScreen.routeName, (route) => false);
+                          context, HomeScreen.routeName, (route) => false);
                     },
                     customWidth: MediaQuery.of(context).size.width * 0.45,
                   ),
@@ -198,6 +199,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   PrimaryButton(
                     teks: 'Skip',
                     onPressed: () {
+                      onboardingProvider.appStarted();
                       Navigator.pushNamedAndRemoveUntil(
                           context, HomeScreen.routeName, (route) => false);
                     },

@@ -42,6 +42,7 @@ dependencies:
   star_rating: ^0.11.0
   intl: ^0.18.1
   shared_preferences: ^2.1.0
+  flutter_rating_bar: ^4.0.1
   dropdown_search: ^5.0.6
   url_launcher: ^6.1.11
 

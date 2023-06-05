@@ -87,640 +87,132 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.6,
               child: Consumer<CounselorListViewModel>(
-                  builder: (context, provider, _) {
-                switch (provider.myState) {
-                  case MyState.loading:
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  case MyState.loaded:
-                    return ListView.builder(
-                      itemCount: provider.counselorList.length,
-                      shrinkWrap: true,
-                      // add spacing between cards
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) {
-                                return CounselorDetailScreen(
-                                  id: provider.counselorList[index]['id'],
-                                );
-                              },
-                            ));
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 16, right: 16),
-                            margin: const EdgeInsets.only(bottom: 8),
-                            height: MediaQuery.of(context).size.height * 0.15,
-                            width: double.infinity,
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 0.5,
+                builder: (context, provider, _) {
+                  switch (provider.myState) {
+                    case MyState.loading:
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    case MyState.loaded:
+                      return ListView.builder(
+                        itemCount: provider.counselorList.length,
+                        shrinkWrap: true,
+                        // add spacing between cards
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return CounselorDetailScreen(
+                                    id: provider.counselorList[index]['id'],
+                                  );
+                                },
+                              ));
+                            },
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.only(left: 16, right: 16),
+                              margin: const EdgeInsets.only(bottom: 8),
+                              height: MediaQuery.of(context).size.height * 0.15,
+                              width: double.infinity,
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 0.5,
+                                  ),
                                 ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.2,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.4,
-                                    decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                            'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80'),
-                                        fit: BoxFit.cover,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.2,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
+                                      decoration: const BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80'),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    width: 8,
-                                  ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.5,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.2,
-                                    padding: const EdgeInsets.only(
-                                        top: 16, bottom: 16, left: 8, right: 8),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          provider.counselorList[index]['name'],
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        Text(
-                                          provider.counselorList[index]
-                                              ['specialist'],
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        StarRating(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          length: 5,
-                                          rating: provider.counselorList[index]
-                                                  ['rating']
-                                              .toDouble(),
-                                          between: 2,
-                                          starSize: 20,
-                                          color: MyColor.warning,
-                                        ),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        Text(
-                                          moneyFormatter.formatRupiah(provider
-                                              .counselorList[index]['price']),
-                                          style: const TextStyle(
-                                              color: Color(0xFFAF1582),
-                                              fontSize: 12),
-                                        ),
-                                      ],
+                                    const SizedBox(
+                                      width: 8,
                                     ),
-                                  ),
-                                ],
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.2,
+                                      padding: const EdgeInsets.only(
+                                          top: 16,
+                                          bottom: 16,
+                                          left: 8,
+                                          right: 8),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            provider.counselorList[index]
+                                                ['name'],
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            provider.counselorList[index]
+                                                ['specialist'],
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          StarRating(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            length: 5,
+                                            rating: provider
+                                                .counselorList[index]['rating']
+                                                .toDouble(),
+                                            between: 2,
+                                            starSize: 20,
+                                            color: MyColor.warning,
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            moneyFormatter.formatRupiah(provider
+                                                .counselorList[index]['price']),
+                                            style: const TextStyle(
+                                                color: Color(0xFFAF1582),
+                                                fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  default:
-                    return const Text('No Data Found');
-                }
-              }),
-
-              // ListView(
-              //   shrinkWrap: true,
-              //   children: [
-              //     Container(
-              //       padding: const EdgeInsets.only(left: 16, right: 16),
-              //       height: MediaQuery.of(context).size.height * 0.15,
-              //       width: double.infinity,
-              //       child: DecoratedBox(
-              //         decoration: BoxDecoration(
-              //           border: Border.all(
-              //             color: Colors.grey,
-              //             width: 0.5,
-              //           ),
-              //         ),
-              //         child: Row(
-              //           children: [
-              //             Container(
-              //               height: MediaQuery.of(context).size.height * 0.2,
-              //               width: MediaQuery.of(context).size.width * 0.4,
-              //               decoration: const BoxDecoration(
-              //                 image: DecorationImage(
-              //                   image: NetworkImage(
-              //                       'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80'),
-              //                   fit: BoxFit.cover,
-              //                 ),
-              //               ),
-              //             ),
-              //             const SizedBox(
-              //               width: 8,
-              //             ),
-              //             Container(
-              //               width: MediaQuery.of(context).size.width * 0.5,
-              //               height: MediaQuery.of(context).size.height * 0.2,
-              //               padding: const EdgeInsets.only(
-              //                   top: 16, bottom: 16, left: 8, right: 8),
-              //               child: Column(
-              //                 crossAxisAlignment: CrossAxisAlignment.start,
-              //                 children: [
-              //                   const Text(
-              //                     'John Doe',
-              //                     style: TextStyle(
-              //                       fontWeight: FontWeight.bold,
-              //                       fontSize: 12,
-              //                     ),
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 8,
-              //                   ),
-              //                   const Text(
-              //                     'Self Improvement',
-              //                     style: TextStyle(
-              //                       fontSize: 12,
-              //                     ),
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 8,
-              //                   ),
-              //                   Row(
-              //                     children: const [
-              //                       // star icon filled
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                     ],
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 8,
-              //                   ),
-              //                   const Text(
-              //                     'Rp. 125,000',
-              //                     style: TextStyle(
-              //                         color: Color(0xFFAF1582), fontSize: 12),
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //     const SizedBox(
-              //       height: 8,
-              //     ),
-              //     Container(
-              //       padding: const EdgeInsets.only(left: 16, right: 16),
-              //       height: MediaQuery.of(context).size.height * 0.15,
-              //       width: double.infinity,
-              //       child: DecoratedBox(
-              //         decoration: BoxDecoration(
-              //           border: Border.all(
-              //             color: Colors.grey,
-              //             width: 0.5,
-              //           ),
-              //         ),
-              //         child: Row(
-              //           children: [
-              //             Container(
-              //               height: MediaQuery.of(context).size.height * 0.2,
-              //               width: MediaQuery.of(context).size.width * 0.4,
-              //               decoration: const BoxDecoration(
-              //                 image: DecorationImage(
-              //                   image: NetworkImage(
-              //                       'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80'),
-              //                   fit: BoxFit.cover,
-              //                 ),
-              //               ),
-              //             ),
-              //             const SizedBox(
-              //               width: 8,
-              //             ),
-              //             Container(
-              //               width: MediaQuery.of(context).size.width * 0.5,
-              //               height: MediaQuery.of(context).size.height * 0.2,
-              //               padding: const EdgeInsets.only(
-              //                   top: 16, bottom: 16, left: 8, right: 8),
-              //               child: Column(
-              //                 crossAxisAlignment: CrossAxisAlignment.start,
-              //                 children: [
-              //                   const Text(
-              //                     'John Doe',
-              //                     style: TextStyle(
-              //                       fontWeight: FontWeight.bold,
-              //                       fontSize: 12,
-              //                     ),
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 8,
-              //                   ),
-              //                   const Text(
-              //                     'Self Improvement',
-              //                     style: TextStyle(
-              //                       fontSize: 12,
-              //                     ),
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 8,
-              //                   ),
-              //                   Row(
-              //                     children: const [
-              //                       // star icon filled
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                     ],
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 8,
-              //                   ),
-              //                   const Text(
-              //                     'Rp. 125,000',
-              //                     style: TextStyle(
-              //                         color: Color(0xFFAF1582), fontSize: 12),
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //     const SizedBox(
-              //       height: 8,
-              //     ),
-              //     Container(
-              //       padding: const EdgeInsets.only(left: 16, right: 16),
-              //       height: MediaQuery.of(context).size.height * 0.15,
-              //       width: double.infinity,
-              //       child: DecoratedBox(
-              //         decoration: BoxDecoration(
-              //           border: Border.all(
-              //             color: Colors.grey,
-              //             width: 0.5,
-              //           ),
-              //         ),
-              //         child: Row(
-              //           children: [
-              //             Container(
-              //               height: MediaQuery.of(context).size.height * 0.2,
-              //               width: MediaQuery.of(context).size.width * 0.4,
-              //               decoration: const BoxDecoration(
-              //                 image: DecorationImage(
-              //                   image: NetworkImage(
-              //                       'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80'),
-              //                   fit: BoxFit.cover,
-              //                 ),
-              //               ),
-              //             ),
-              //             const SizedBox(
-              //               width: 8,
-              //             ),
-              //             Container(
-              //               width: MediaQuery.of(context).size.width * 0.5,
-              //               height: MediaQuery.of(context).size.height * 0.2,
-              //               padding: const EdgeInsets.only(
-              //                   top: 16, bottom: 16, left: 8, right: 8),
-              //               child: Column(
-              //                 crossAxisAlignment: CrossAxisAlignment.start,
-              //                 children: [
-              //                   const Text(
-              //                     'John Doe',
-              //                     style: TextStyle(
-              //                       fontWeight: FontWeight.bold,
-              //                       fontSize: 12,
-              //                     ),
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 8,
-              //                   ),
-              //                   const Text(
-              //                     'Self Improvement',
-              //                     style: TextStyle(
-              //                       fontSize: 12,
-              //                     ),
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 8,
-              //                   ),
-              //                   Row(
-              //                     children: const [
-              //                       // star icon filled
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                     ],
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 8,
-              //                   ),
-              //                   const Text(
-              //                     'Rp. 125,000',
-              //                     style: TextStyle(
-              //                         color: Color(0xFFAF1582), fontSize: 12),
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //     const SizedBox(
-              //       height: 8,
-              //     ),
-              //     Container(
-              //       padding: const EdgeInsets.only(left: 16, right: 16),
-              //       height: MediaQuery.of(context).size.height * 0.15,
-              //       width: double.infinity,
-              //       child: DecoratedBox(
-              //         decoration: BoxDecoration(
-              //           border: Border.all(
-              //             color: Colors.grey,
-              //             width: 0.5,
-              //           ),
-              //         ),
-              //         child: Row(
-              //           children: [
-              //             Container(
-              //               height: MediaQuery.of(context).size.height * 0.2,
-              //               width: MediaQuery.of(context).size.width * 0.4,
-              //               decoration: const BoxDecoration(
-              //                 image: DecorationImage(
-              //                   image: NetworkImage(
-              //                       'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80'),
-              //                   fit: BoxFit.cover,
-              //                 ),
-              //               ),
-              //             ),
-              //             const SizedBox(
-              //               width: 8,
-              //             ),
-              //             Container(
-              //               width: MediaQuery.of(context).size.width * 0.5,
-              //               height: MediaQuery.of(context).size.height * 0.2,
-              //               padding: const EdgeInsets.only(
-              //                   top: 16, bottom: 16, left: 8, right: 8),
-              //               child: Column(
-              //                 crossAxisAlignment: CrossAxisAlignment.start,
-              //                 children: [
-              //                   const Text(
-              //                     'John Doe',
-              //                     style: TextStyle(
-              //                       fontWeight: FontWeight.bold,
-              //                       fontSize: 12,
-              //                     ),
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 8,
-              //                   ),
-              //                   const Text(
-              //                     'Self Improvement',
-              //                     style: TextStyle(
-              //                       fontSize: 12,
-              //                     ),
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 8,
-              //                   ),
-              //                   Row(
-              //                     children: const [
-              //                       // star icon filled
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                     ],
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 8,
-              //                   ),
-              //                   const Text(
-              //                     'Rp. 125,000',
-              //                     style: TextStyle(
-              //                         color: Color(0xFFAF1582), fontSize: 12),
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //     const SizedBox(
-              //       height: 8,
-              //     ),
-              //     Container(
-              //       padding: const EdgeInsets.only(left: 16, right: 16),
-              //       height: MediaQuery.of(context).size.height * 0.15,
-              //       width: double.infinity,
-              //       child: DecoratedBox(
-              //         decoration: BoxDecoration(
-              //           border: Border.all(
-              //             color: Colors.grey,
-              //             width: 0.5,
-              //           ),
-              //         ),
-              //         child: Row(
-              //           children: [
-              //             Container(
-              //               height: MediaQuery.of(context).size.height * 0.2,
-              //               width: MediaQuery.of(context).size.width * 0.4,
-              //               decoration: const BoxDecoration(
-              //                 image: DecorationImage(
-              //                   image: NetworkImage(
-              //                       'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80'),
-              //                   fit: BoxFit.cover,
-              //                 ),
-              //               ),
-              //             ),
-              //             const SizedBox(
-              //               width: 8,
-              //             ),
-              //             Container(
-              //               width: MediaQuery.of(context).size.width * 0.5,
-              //               height: MediaQuery.of(context).size.height * 0.2,
-              //               padding: const EdgeInsets.only(
-              //                   top: 16, bottom: 16, left: 8, right: 8),
-              //               child: Column(
-              //                 crossAxisAlignment: CrossAxisAlignment.start,
-              //                 children: [
-              //                   const Text(
-              //                     'John Doe',
-              //                     style: TextStyle(
-              //                       fontWeight: FontWeight.bold,
-              //                       fontSize: 12,
-              //                     ),
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 8,
-              //                   ),
-              //                   const Text(
-              //                     'Self Improvement',
-              //                     style: TextStyle(
-              //                       fontSize: 12,
-              //                     ),
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 8,
-              //                   ),
-              //                   Row(
-              //                     children: const [
-              //                       // star icon filled
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                       Icon(
-              //                         Icons.star,
-              //                         color: Color(0xFFFFCB14),
-              //                         size: 16,
-              //                       ),
-              //                     ],
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 8,
-              //                   ),
-              //                   const Text(
-              //                     'Rp. 125,000',
-              //                     style: TextStyle(
-              //                         color: Color(0xFFAF1582), fontSize: 12),
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //     const SizedBox(
-              //       height: 100,
-              //     ),
-              //   ],
-              // ),
+                          );
+                        },
+                      );
+                    default:
+                      return const Text('No Data Found');
+                  }
+                },
+              ),
             ),
           ],
         ),

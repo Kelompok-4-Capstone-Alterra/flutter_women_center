@@ -1,4 +1,6 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
+import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
+import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone_project/utils/components/text_box/read_only_text_box.dart';
 import 'package:capstone_project/utils/my_size.dart';
@@ -47,11 +49,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           actions: [
             PrimaryButton(
-                teks: 'Sure',
-                onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, OnboardingScreen.routeName, (route) => false);
-                }),
+              teks: 'Sure',
+              onPressed: () {
+                Provider.of<ProfileViewModel>(context, listen: false).logout();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, HomeScreen.routeName, (route) => false);
+              },
+            ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.01,
             ),
@@ -70,7 +74,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
@@ -80,7 +83,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         searchField: false,
         tabBar: false,
       ),
-
       body: Container(
         decoration: BoxDecoration(
           gradient: MyColor.background,
@@ -277,6 +279,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: const BottomNavBar(currentIndex: 3),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_screen.dart';
 import 'package:capstone_project/view/screen/auth/login/login_view_model.dart';
 import 'package:capstone_project/view/screen/auth/signup/signup_screen.dart';
+import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -184,17 +185,19 @@ class _LogniScreenState extends State<LoginScreen> {
                       height: MediaQuery.of(context).size.height * 0.02,
                     ),
                     PrimaryButton(
-                        teks: 'Login',
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            loginProvider.login(
-                              LoginModel(
-                                  username: _usernameController.text,
-                                  password: _passwordController.text),
-                            );
-                            Navigator.pop(context);
-                          }
-                        }),
+                      teks: 'Login',
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          loginProvider.login(
+                            LoginModel(
+                                username: _usernameController.text,
+                                password: _passwordController.text),
+                          );
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, HomeScreen.routeName, (route) => false);
+                        }
+                      },
+                    ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),

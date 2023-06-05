@@ -3,16 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginViewModel with ChangeNotifier {
-  bool passwordVisibility = false;
-  late SharedPreferences loginData;
+  bool _passwordVisibility = false;
+  late SharedPreferences _loginData;
+
+  bool get passwordVisibility => _passwordVisibility;
 
   void setPasswordVisibility() {
-    passwordVisibility = !passwordVisibility;
+    _passwordVisibility = !_passwordVisibility;
     notifyListeners();
   }
 
   void login(LoginModel inputCredential) async {
-    loginData = await SharedPreferences.getInstance();
+    _loginData = await SharedPreferences.getInstance();
+    if (inputCredential.username == 'user' &&
+        inputCredential.password == 'user') {
+      _loginData.setString('token', 'token');
+    } else {
+      _loginData.setString('token', '');
+    }
     notifyListeners();
   }
 }

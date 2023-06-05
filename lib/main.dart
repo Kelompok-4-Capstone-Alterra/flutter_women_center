@@ -6,11 +6,16 @@ import 'package:capstone_project/view/screen/counselor_list/counselor_list_scree
 import 'package:capstone_project/view/screen/counselor_list/counselor_list_view_model.dart';
 
 import 'package:capstone_project/model/article_model.dart';
+import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar_view_model.dart';
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
+import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
+import 'package:capstone_project/view/screen/counselor_list/counselor_list_screen.dart';
+import 'package:capstone_project/view/screen/forum/join_forum_discussion_screen.dart';
 import 'package:capstone_project/view/screen/forum/join_forum_discussion_view_model.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
+import 'package:capstone_project/view/screen/home/search/search_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_view_model.dart';
 import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_screen.dart';
@@ -19,7 +24,12 @@ import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
 import 'package:capstone_project/view/screen/auth/login/login_view_model.dart';
 import 'package:capstone_project/view/screen/onboarding/onboarding_screen.dart';
 import 'package:capstone_project/view/screen/onboarding/onboarding_view_model.dart';
+import 'package:capstone_project/view/screen/profile/change_password/change_password_screen.dart';
+import 'package:capstone_project/view/screen/profile/change_password/change_password_view_model.dart';
+import 'package:capstone_project/view/screen/profile/edit_profile/edit_profile_screen.dart';
+import 'package:capstone_project/view/screen/profile/edit_profile/edit_profile_view_model.dart';
 import 'package:capstone_project/view/screen/profile/profile_screen.dart';
+import 'package:capstone_project/view/screen/profile/profilel_view_model.dart';
 import 'package:capstone_project/view/screen/saved/acticle/article_screen.dart';
 import 'package:capstone_project/view/screen/saved/acticle/article_view_model.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_screen.dart';
@@ -38,10 +48,8 @@ import 'package:capstone_project/view/screen/auth/verification/verification_scre
 import 'package:capstone_project/view/screen/auth/verification/verification_veiw_model.dart';
 import 'package:capstone_project/view/screen/auth/verification/widgets/otp_form_view_model.dart';
 import 'package:provider/provider.dart';
-
 import 'view/screen/counseling_topic/counseling_topic_view_model.dart';
 import 'view/screen/counselor_detail/counselor_detail_screen.dart';
-import 'view/screen/profile/profilel_view_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -111,8 +119,29 @@ class MyApp extends StatelessWidget {
           create: (context) => VoucherViewModel(),
         ),
         ChangeNotifierProvider(
-            create: (context) => JoinForumDiscussionViewModel()),
-        ChangeNotifierProvider(create: (context) => ProfileViewModel()),
+          create: (context) => CounselingAppointmentViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => VoucherViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProfileViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => EditProfileViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ChangePasswordViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => JoinForumDiscussionViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProfileViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => BottomNavBarViewModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -147,6 +176,12 @@ class MyApp extends StatelessWidget {
           ForgotPasswordScreen.routeName: (context) =>
               const ForgotPasswordScreen(),
           OnboardingScreen.routeName: (context) => const OnboardingScreen(),
+          SearchScreen.routeName: (context) => const SearchScreen(),
+          EditProfileScreen.routeName: (context) => const EditProfileScreen(),
+          ChangePasswordScreen.routeName: (context) =>
+              const ChangePasswordScreen(),
+          JoinForumDiscussionScreen.routeName: (context) =>
+              const JoinForumDiscussionScreen(),
           CounselingAppointment.routeName: (context) =>
               const CounselingAppointment(),
           VoucherScreen.routeName: (context) => const VoucherScreen(),
