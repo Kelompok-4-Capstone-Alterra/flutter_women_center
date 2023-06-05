@@ -192,6 +192,39 @@ class CounselorDetailViewModel extends ChangeNotifier {
           'He is a very good listener and has a lot of experience in dealing with various problems. He is also a very friendly person and easy to talk to.',
       'createdAt': '2021-08-01'
     },
+    {
+      'id': 7,
+      'counselorId': 1,
+      'name': 'Gerard Zee',
+      'image':
+          'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
+      'rating': 4,
+      'review':
+          'He is a very good listener and has a lot of experience in dealing with various problems. He is also a very friendly person and easy to talk to.',
+      'createdAt': '2021-08-01'
+    },
+    {
+      'id': 8,
+      'counselorId': 1,
+      'name': 'Gerard Infe',
+      'image':
+          'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
+      'rating': 4,
+      'review':
+          'He is a very good listener and has a lot of experience in dealing with various problems. He is also a very friendly person and easy to talk to.',
+      'createdAt': '2021-08-01'
+    },
+    {
+      'id': 9,
+      'counselorId': 1,
+      'name': 'Gerard Way',
+      'image':
+          'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
+      'rating': 4,
+      'review':
+          'He is a very good listener and has a lot of experience in dealing with various problems. He is also a very friendly person and easy to talk to.',
+      'createdAt': '2021-08-01'
+    },
   ];
 
   void getCounselorDetail(int id) {
@@ -241,8 +274,51 @@ class CounselorDetailViewModel extends ChangeNotifier {
       myState = MyState.loading;
       notifyListeners();
       customerReview.clear();
-      customerReview.addAll(
-          customerReviewData.where((element) => element['counselorId'] == id));
+      // count customerReviewData where counselorId == id
+      if (customerReviewData
+              .where((element) => element['counselorId'] == id)
+              .length >
+          5) {
+        for (int i = 0; i < 5; i++) {
+          customerReview.add(customerReviewData
+              .where((element) => element['counselorId'] == id)
+              .toList()[i]);
+        }
+      } else {
+        customerReview.addAll(customerReviewData
+            .where((element) => element['counselorId'] == id)
+            .toList());
+      }
+
+      myState = MyState.loaded;
+      notifyListeners();
+    } catch (e) {
+      myState = MyState.failed;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  void loadMoreCustomerReview(int id) {
+    try {
+      myState = MyState.loading;
+      notifyListeners();
+
+      if (customerReviewData
+              .where((element) => element['counselorId'] == id)
+              .length >
+          5) {
+        for (int i = 0; i < 5; i++) {
+          customerReview.add(customerReviewData
+              .where((element) => element['counselorId'] == id)
+              .toList()[i]);
+        }
+      } else {
+        customerReview.addAll(customerReviewData
+            .where((element) => element['counselorId'] == id)
+            .toList());
+      }
+
       myState = MyState.loaded;
       notifyListeners();
     } catch (e) {

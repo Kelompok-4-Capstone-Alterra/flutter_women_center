@@ -419,7 +419,7 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                       ),
                       Consumer<CounselingAppointmentViewModel>(
                           builder: (context, provider, _) {
-                        final total = provider.countTotal(
+                        provider.countTotal(
                             id: provider.selectedVoucher, price: 245000);
                         switch (provider.myState) {
                           case MyState.loading:
@@ -454,35 +454,48 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                                           ),
                                         ],
                                       ),
-                                      const SizedBox(
-                                        height: 18,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text(
-                                            'Total',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                          Text(
-                                            MoneyFormatter()
-                                                .formatRupiah(provider.total),
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
                                     ],
                                   );
                           default:
                             return const SizedBox();
                         }
                       }),
+                      const SizedBox(
+                        height: 18,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Total',
+                            style: TextStyle(
+                              fontSize: 12,
+                            ),
+                          ),
+                          Consumer<CounselingAppointmentViewModel>(
+                              builder: (context, provider, _) {
+                            switch (provider.myState) {
+                              case MyState.loading:
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              case MyState.loaded:
+                                return Text(
+                                  MoneyFormatter().formatRupiah(
+                                      provider.selectedVoucher == 0
+                                          ? 245000
+                                          : provider.total),
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              default:
+                                return const SizedBox();
+                            }
+                          }),
+                        ],
+                      ),
                     ],
                   ),
                 ),

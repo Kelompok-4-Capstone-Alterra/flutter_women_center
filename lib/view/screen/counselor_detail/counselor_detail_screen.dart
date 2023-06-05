@@ -349,7 +349,7 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                 height: 16,
               ),
               const Text(
-                "Customer's customerReview:",
+                "Customer's Review:",
                 style: TextStyle(fontSize: 12),
               ),
               const SizedBox(
@@ -363,16 +363,115 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                       child: CircularProgressIndicator(),
                     );
                   case MyState.loaded:
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: ListView.builder(
+                    // return SizedBox(
+                    //   height: MediaQuery.of(context).size.height * 0.1,
+                    //   child: ListView.builder(
+                    //     itemCount: provider.customerReview.length,
+                    //     scrollDirection: Axis.horizontal,
+                    //     shrinkWrap: true,
+                    //     itemBuilder: (context, index) {
+                    //       // return Placeholder();
+                    //       return Container(
+                    //         margin: const EdgeInsets.only(right: 16),
+                    //         padding: const EdgeInsets.only(
+                    //             left: 8, right: 8, top: 8, bottom: 8),
+                    //         decoration: BoxDecoration(
+                    //           border: Border.all(
+                    //             color: MyColor.neutralLow,
+                    //             width: 1,
+                    //           ),
+                    //           borderRadius: BorderRadius.circular(3),
+                    //         ),
+                    //         child: Row(
+                    //           children: [
+                    //             CircleAvatar(
+                    //               radius: 20,
+                    //               backgroundImage: NetworkImage(
+                    //                 provider.customerReview[index]['image'],
+                    //               ),
+                    //             ),
+                    //             const SizedBox(
+                    //               width: 20,
+                    //             ),
+                    //             SizedBox(
+                    //               width: 200,
+                    //               child: Column(
+                    //                 crossAxisAlignment:
+                    //                     CrossAxisAlignment.start,
+                    //                 children: [
+                    //                   Row(
+                    //                     mainAxisAlignment:
+                    //                         MainAxisAlignment.spaceBetween,
+                    //                     children: [
+                    //                       StarRating(
+                    //                         mainAxisAlignment:
+                    //                             MainAxisAlignment.start,
+                    //                         length: 5,
+                    //                         rating: provider
+                    //                             .customerReview[index]['rating']
+                    //                             .toDouble(),
+                    //                         between: 2,
+                    //                         starSize: 12,
+                    //                         color: MyColor.warning,
+                    //                       ),
+                    //                       Text(
+                    //                         DateFormatter.format(
+                    //                             provider.customerReview[index]
+                    //                                 ['createdAt']),
+                    //                         style: TextStyle(
+                    //                             fontSize: 8,
+                    //                             color: MyColor.neutralHigh),
+                    //                       ),
+                    //                     ],
+                    //                   ),
+                    //                   const SizedBox(
+                    //                     height: 5,
+                    //                   ),
+                    //                   Text(
+                    //                     provider.customerReview[index]['name'],
+                    //                     style: TextStyle(
+                    //                       fontSize: 12,
+                    //                       color: MyColor.neutralHigh,
+                    //                       fontWeight: FontWeight.bold,
+                    //                     ),
+                    //                   ),
+                    //                   const SizedBox(
+                    //                     height: 5,
+                    //                   ),
+                    //                   SizedBox(
+                    //                     height:
+                    //                         MediaQuery.of(context).size.height *
+                    //                             0.035,
+                    //                     child: Text(
+                    //                       provider.customerReview[index]
+                    //                           ['review'],
+                    //                       style: TextStyle(
+                    //                         fontSize: 12,
+                    //                         color: MyColor.neutralHigh,
+                    //                       ),
+                    //                       overflow: TextOverflow.ellipsis,
+                    //                       maxLines: 2,
+                    //                     ),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       );
+
+                    //     },
+                    //   ),
+                    // );
+                    return Column(children: [
+                      ListView.builder(
                         itemCount: provider.customerReview.length,
-                        scrollDirection: Axis.horizontal,
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           // return Placeholder();
                           return Container(
-                            margin: const EdgeInsets.only(right: 16),
+                            margin: const EdgeInsets.only(bottom: 16),
                             padding: const EdgeInsets.only(
                                 left: 8, right: 8, top: 8, bottom: 8),
                             decoration: BoxDecoration(
@@ -394,7 +493,8 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                                   width: 20,
                                 ),
                                 SizedBox(
-                                  width: 200,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.72,
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -461,7 +561,7 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                           );
                         },
                       ),
-                    );
+                    ]);
                   default:
                     return const SizedBox(
                       height: 50,
@@ -469,6 +569,25 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                     );
                 }
               }),
+              ElevatedButton(
+                onPressed: () {
+                  Provider.of<CounselorDetailViewModel>(context, listen: false)
+                      .loadMoreCustomerReview(widget.id);
+                },
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(MediaQuery.of(context).size.width, 40),
+                  backgroundColor: MyColor.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                  side: BorderSide(color: MyColor.primaryMain, width: 1),
+                  elevation: 0,
+                ),
+                child: Text(
+                  'Load More',
+                  style: TextStyle(color: MyColor.primaryMain),
+                ),
+              ),
             ],
           ),
         ),
