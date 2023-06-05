@@ -42,7 +42,8 @@ dependencies:
   star_rating: ^0.11.0
   intl: ^0.18.1
   shared_preferences: ^2.1.0
-
+  dropdown_search: ^5.0.6
+  url_launcher: ^6.1.11
 
 dev_dependencies:
   flutter_test:
@@ -68,10 +69,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
-    - assets/images/tes.jpg
-    - assets/images/profile.jpg
-    - assets/images/customer_support.png
-    - assets/images/thank_you.png
+    - assets/icons/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
