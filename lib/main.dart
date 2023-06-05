@@ -1,9 +1,11 @@
 import 'package:capstone_project/model/article_model.dart';
+import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar_view_model.dart';
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
 import 'package:capstone_project/view/screen/counselor_list/counselor_list_screen.dart';
+import 'package:capstone_project/view/screen/forum/join_forum_discussion_screen.dart';
 import 'package:capstone_project/view/screen/forum/join_forum_discussion_view_model.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:capstone_project/view/screen/home/search/search_screen.dart';
@@ -102,16 +104,22 @@ class MyApp extends StatelessWidget {
           create: (context) => ChangePasswordViewModel(),
         ),
         ChangeNotifierProvider(
-            create: (context) => JoinForumDiscussionViewModel()),
-        ChangeNotifierProvider(create: (context) => ProfileViewModel()),
+          create: (context) => JoinForumDiscussionViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProfileViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => BottomNavBarViewModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Woman Center',
         theme: ThemeData.light(useMaterial3: true),
-        initialRoute: OnboardingScreen.routeName,
+        initialRoute: LandingScreen.routeName,
         routes: {
-          // LandingScreen.routeName: (context) => const LandingScreen(),
+          LandingScreen.routeName: (context) => const LandingScreen(),
           HomeScreen.routeName: (context) => const HomeScreen(),
           TransactionScreen.routeName: (context) => const TransactionScreen(),
           SavedScreen.routeName: (context) => const SavedScreen(),
@@ -138,6 +146,8 @@ class MyApp extends StatelessWidget {
               const CounselingTopicScreen(),
           CounselorListScreen.routeName: (context) =>
               const CounselorListScreen(),
+          JoinForumDiscussionScreen.routeName: (context) =>
+              const JoinForumDiscussionScreen(),
         },
       ),
     );

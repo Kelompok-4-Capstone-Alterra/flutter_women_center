@@ -184,6 +184,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   PrimaryButton(
                     teks: 'Get Started',
                     onPressed: () {
+                      onboardingProvider.appStarted();
                       Navigator.pushNamedAndRemoveUntil(
                           context, HomeScreen.routeName, (route) => false);
                     },
@@ -198,6 +199,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   PrimaryButton(
                     teks: 'Skip',
                     onPressed: () {
+                      onboardingProvider.appStarted();
                       Navigator.pushNamedAndRemoveUntil(
                           context, HomeScreen.routeName, (route) => false);
                     },

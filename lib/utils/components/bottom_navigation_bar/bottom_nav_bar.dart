@@ -1,11 +1,13 @@
+import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar_view_model.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:capstone_project/view/screen/profile/profile_screen.dart';
 import 'package:capstone_project/view/screen/saved/saved_screen.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class BottomNavBar extends StatelessWidget {
+class BottomNavBar extends StatefulWidget {
   final int currentIndex;
 
   const BottomNavBar({
@@ -14,7 +16,20 @@ class BottomNavBar extends StatelessWidget {
   });
 
   @override
+  State<BottomNavBar> createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar> {
+  @override
+  void initState() {
+    Provider.of<BottomNavBarViewModel>(context, listen: false).init();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final buttomNavBarProvider =
+        Provider.of<BottomNavBarViewModel>(context, listen: false);
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -27,7 +42,7 @@ class BottomNavBar extends StatelessWidget {
       child: BottomNavigationBar(
         backgroundColor: MyColor.white,
         elevation: 0.0,
-        currentIndex: currentIndex,
+        currentIndex: widget.currentIndex,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: MyColor.primaryMain,
         unselectedItemColor: MyColor.neutralMediumHigh,
@@ -62,7 +77,7 @@ class BottomNavBar extends StatelessWidget {
           ),
         ],
         onTap: (value) {
-          if (value == currentIndex) {
+          if (value == widget.currentIndex) {
             return;
           }
           switch (value) {
@@ -77,7 +92,12 @@ class BottomNavBar extends StatelessWidget {
               Navigator.pushReplacementNamed(context, SavedScreen.routeName);
               break;
             case 3:
-              Navigator.pushReplacementNamed(context, ProfileScreen.routeName);
+              if (buttomNavBarProvider.token == '') {
+                Navigator.pushNamed(context, '/login_screen');
+              } else {
+                Navigator.pushReplacementNamed(
+                    context, ProfileScreen.routeName);
+              }
               break;
           }
         },

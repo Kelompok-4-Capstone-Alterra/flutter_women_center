@@ -5,6 +5,7 @@ import 'package:capstone_project/utils/components/text_box/search_text_box.dart'
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
+import 'package:capstone_project/view/screen/forum/join_forum_discussion_screen.dart';
 import 'package:capstone_project/view/screen/home/search/search_screen.dart';
 import 'package:capstone_project/view/screen/home/widget/home_list.dart';
 import 'package:capstone_project/view/screen/home/widget/home_list_item.dart';
@@ -72,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               HomeMenu(
                 icon: Icons.forum,
-                direction: '',
+                direction: JoinForumDiscussionScreen.routeName,
                 title: 'Forum',
               ),
             ],
@@ -158,10 +159,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+          // article
           HomeList(
             title: 'Newest Articles',
             subtitle: 'These are our best new articles of the week!',
-            direction: '',
+            direction: ArticleListScreen.routename,
             listItem: ListView.builder(
               itemCount: 10,
               scrollDirection: Axis.horizontal,
@@ -177,10 +179,11 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
+          // counselor
           HomeList(
             title: 'Our Best Counselors',
             subtitle: "The best counselors based on user's rate and review",
-            direction: '',
+            direction: CounselingTopicScreen.routeName,
             listItem: ListView.builder(
               itemCount: 10,
               scrollDirection: Axis.horizontal,
@@ -217,6 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
+          // career
           HomeList(
             title: 'Newest Career Information',
             subtitle: 'We have the newest career information for you!',
@@ -247,10 +251,11 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
+          // forum
           HomeList(
             title: 'Newest Forum',
             subtitle: "Let's join to the newest forum discussion!",
-            direction: '',
+            direction: JoinForumDiscussionScreen.routeName,
             listItem: ListView.builder(
               itemCount: 10,
               scrollDirection: Axis.horizontal,
