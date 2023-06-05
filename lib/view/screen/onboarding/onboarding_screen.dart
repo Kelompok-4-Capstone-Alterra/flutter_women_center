@@ -185,7 +185,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     teks: 'Get Started',
                     onPressed: () {
                       Navigator.pushNamedAndRemoveUntil(
-                          context, LandingScreen.routeName, (route) => false);
+                          context, HomeScreen.routeName, (route) => false);
                     },
                     customWidth: MediaQuery.of(context).size.width * 0.45,
                   ),

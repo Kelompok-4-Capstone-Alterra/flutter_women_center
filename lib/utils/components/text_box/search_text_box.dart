@@ -14,6 +14,8 @@ class SearchTextBox extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final String? Function(String?)? validator;
   final double? width;
+  final Function()? onTap;
+  final bool? readOnly;
 
   const SearchTextBox({
     super.key,
@@ -27,6 +29,8 @@ class SearchTextBox extends StatelessWidget {
     this.hintMaxLines,
     this.inputFormatters,
     this.validator,
+    this.onTap,
+    this.readOnly,
   });
 
   @override
@@ -75,6 +79,8 @@ class SearchTextBox extends StatelessWidget {
         ),
         inputFormatters: inputFormatters,
         validator: validator,
+        onTap: onTap,
+        readOnly: readOnly == null ? false : readOnly!,
       ),
     );
   }

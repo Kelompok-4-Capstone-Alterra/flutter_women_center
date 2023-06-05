@@ -1,4 +1,5 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
+import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button_icon.dart';
 import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
@@ -162,60 +163,63 @@ class _SavedScreenState extends State<SavedScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Consumer<SavedViewModel>(builder: (context, savedProvider, _) {
-          if (savedProvider.readingList.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset('assets/images/nothing_here.png'),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Text(
-                    'Woops! Sorry, no result found.',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: MyColor.neutralHigh,
+        child: Consumer<SavedViewModel>(
+          builder: (context, savedProvider, _) {
+            if (savedProvider.readingList.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/nothing_here.png'),
+                    const SizedBox(
+                      height: 16,
                     ),
-                  ),
-                ],
-              ),
-            );
-          } else {
-            return ListView.separated(
-              itemCount: provider.readingList.length,
-              itemBuilder: (context, index) {
-                return Consumer<SavedViewModel>(
-                    builder: (context, savedProvider, _) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                          context, DetailReadingListScreen.routeName);
-                    },
-                    child: SavedCard(
-                      judulList: savedProvider.readingList[index],
-                      editListNameTextEditingController:
-                          _editListNameController,
-                      editDescriptionTextEditingController:
-                          _editDescriptionController,
-                      editListNameFocusNode: _editListNameNode,
-                      editDescriptionFocusNode: _editDescriptionNode,
+                    Text(
+                      'Woops! Sorry, no result found.',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: MyColor.neutralHigh,
+                      ),
                     ),
+                  ],
+                ),
+              );
+            } else {
+              return ListView.separated(
+                itemCount: provider.readingList.length,
+                itemBuilder: (context, index) {
+                  return Consumer<SavedViewModel>(
+                      builder: (context, savedProvider, _) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, DetailReadingListScreen.routeName);
+                      },
+                      child: SavedCard(
+                        judulList: savedProvider.readingList[index],
+                        editListNameTextEditingController:
+                            _editListNameController,
+                        editDescriptionTextEditingController:
+                            _editDescriptionController,
+                        editListNameFocusNode: _editListNameNode,
+                        editDescriptionFocusNode: _editDescriptionNode,
+                      ),
+                    );
+                  });
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: 8,
                   );
-                });
-              },
-              separatorBuilder: (context, index) {
-                return const SizedBox(
-                  height: 8,
-                );
-              },
-            );
-          }
-        }),
+                },
+              );
+            }
+          },
+        ),
       ),
+      bottomNavigationBar: const BottomNavBar(currentIndex: 2),
     );
   }
 }
