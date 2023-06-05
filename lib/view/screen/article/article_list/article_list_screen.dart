@@ -97,6 +97,7 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
                                   );
                                 },
                                 child: Card(
+                                  elevation: 3,
                                   shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(3),
