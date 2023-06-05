@@ -12,6 +12,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final List<Widget>? tabs;
   final SearchTextBox? searchTextBox;
+  final void Function(int)? onTap;
 
   const CustomAppBar({
     super.key,
@@ -22,6 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.tabBar,
     this.searchTextBox,
     this.actions,
+    this.onTap,
     this.tabs,
   });
 
@@ -94,6 +96,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       dividerColor: Colors.transparent,
                       isScrollable: true,
                       indicatorWeight: 1,
+                      onTap: onTap,
                       indicatorColor: MyColor.primaryMain,
                       labelColor: MyColor.primaryMain,
                       labelPadding:
