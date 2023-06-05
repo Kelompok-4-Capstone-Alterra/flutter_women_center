@@ -1,3 +1,10 @@
+import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_screen.dart';
+import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_view_model.dart';
+import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
+import 'package:capstone_project/view/screen/counselor_detail/counselor_detail_view_model.dart';
+import 'package:capstone_project/view/screen/counselor_list/counselor_list_screen.dart';
+import 'package:capstone_project/view/screen/counselor_list/counselor_list_view_model.dart';
+
 import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
@@ -21,6 +28,8 @@ import 'package:capstone_project/view/screen/saved/saved_screen.dart';
 import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_view_model.dart';
+import 'package:capstone_project/view/screen/voucher/voucher_screen.dart';
+import 'package:capstone_project/view/screen/voucher/voucher_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:capstone_project/view/screen/auth/signup/signup_screen.dart';
@@ -30,6 +39,8 @@ import 'package:capstone_project/view/screen/auth/verification/verification_veiw
 import 'package:capstone_project/view/screen/auth/verification/widgets/otp_form_view_model.dart';
 import 'package:provider/provider.dart';
 
+import 'view/screen/counseling_topic/counseling_topic_view_model.dart';
+import 'view/screen/counselor_detail/counselor_detail_screen.dart';
 import 'view/screen/profile/profilel_view_model.dart';
 
 void main() {
@@ -64,6 +75,15 @@ class MyApp extends StatelessWidget {
           create: (context) => ArticleViewModel(),
         ),
         ChangeNotifierProvider(
+          create: (context) => CounselingTopicViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CounselorListViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CounselorDetailViewModel(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => ArticleListProvider(),
         ),
         ChangeNotifierProvider(
@@ -85,6 +105,12 @@ class MyApp extends StatelessWidget {
           create: (context) => OnboardingViewModel(),
         ),
         ChangeNotifierProvider(
+          create: (context) => CounselingAppointmentViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => VoucherViewModel(),
+        ),
+        ChangeNotifierProvider(
             create: (context) => JoinForumDiscussionViewModel()),
         ChangeNotifierProvider(create: (context) => ProfileViewModel()),
       ],
@@ -92,7 +118,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Woman Center',
         theme: ThemeData.light(useMaterial3: true),
-        initialRoute: LandingScreen.routeName,
+        initialRoute: HomeScreen.routeName,
         routes: {
           LandingScreen.routeName: (context) => const LandingScreen(),
           HomeScreen.routeName: (context) => const HomeScreen(),
@@ -103,19 +129,27 @@ class MyApp extends StatelessWidget {
           DetailReadingListScreen.routeName: (context) =>
               const DetailReadingListScreen(),
           ArticleScreen.routeName: (context) => const ArticleScreen(),
+          CounselingTopicScreen.routeName: (context) =>
+              const CounselingTopicScreen(),
+          CounselorListScreen.routeName: (context) =>
+              const CounselorListScreen(),
+          CounselorDetailScreen.routeName: (context) =>
+              const CounselorDetailScreen(
+                id: 0,
+              ),
           ArticleDetailsScreen.routename: (context) => ArticleDetailsScreen(
                 articles: Articles(
                     title: '', author: '', date: '', desc: '', image: ''),
               ),
-          DetailReadingListScreen.routeName: (context) =>
-              const DetailReadingListScreen(),
-          ArticleScreen.routeName: (context) => const ArticleScreen(),
           LoginScreen.routeName: (context) => const LoginScreen(),
           SignupScreen.routeName: (context) => const SignupScreen(),
           VerificationScreen.routeName: (context) => const VerificationScreen(),
           ForgotPasswordScreen.routeName: (context) =>
               const ForgotPasswordScreen(),
           OnboardingScreen.routeName: (context) => const OnboardingScreen(),
+          CounselingAppointment.routeName: (context) =>
+              const CounselingAppointment(),
+          VoucherScreen.routeName: (context) => const VoucherScreen(),
         },
       ),
     );
