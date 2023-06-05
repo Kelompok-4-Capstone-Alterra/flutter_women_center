@@ -2,6 +2,7 @@ import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
+import 'package:capstone_project/view/screen/article/widget/save_content_view_model.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_view_model.dart';
@@ -86,7 +87,7 @@ class MyApp extends StatelessWidget {
           create: (context) => OnboardingViewModel(),
         ),
         ChangeNotifierProvider(
-          create: (context) => SavedViewModel(),
+          create: (context) => SavedContentViewModel(),
         ),
       ],
       child: MaterialApp(
