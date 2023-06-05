@@ -4,15 +4,13 @@ import 'package:capstone_project/view/screen/article/article_list/article_list_s
 import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
 import 'package:capstone_project/view/screen/counselor_list/counselor_list_screen.dart';
+import 'package:capstone_project/view/screen/forum/join_forum_discussion_view_model.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:capstone_project/view/screen/home/search/search_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_view_model.dart';
 import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_screen.dart';
 import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_view_model.dart';
-import 'package:capstone_project/view/screen/home/home_screen.dart';
-import 'package:capstone_project/view/screen/landing/landing_screen.dart';
-import 'package:capstone_project/view/screen/landing/landing_view_model.dart';
 import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
 import 'package:capstone_project/view/screen/auth/login/login_view_model.dart';
 import 'package:capstone_project/view/screen/onboarding/onboarding_screen.dart';
@@ -38,10 +36,9 @@ import 'package:capstone_project/view/screen/auth/signup/signup_view_model.dart'
 import 'package:capstone_project/view/screen/auth/verification/verification_screen.dart';
 import 'package:capstone_project/view/screen/auth/verification/verification_veiw_model.dart';
 import 'package:capstone_project/view/screen/auth/verification/widgets/otp_form_view_model.dart';
-import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
-import 'package:capstone_project/view/screen/transaction/transaction_view_model.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'view/screen/profile/profilel_view_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -104,6 +101,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => ChangePasswordViewModel(),
         ),
+        ChangeNotifierProvider(
+            create: (context) => JoinForumDiscussionViewModel()),
+        ChangeNotifierProvider(create: (context) => ProfileViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

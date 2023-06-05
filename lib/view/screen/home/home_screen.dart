@@ -30,9 +30,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController _searchHomeController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final TextEditingController searchController = TextEditingController();
     return Scaffold(
       appBar: CustomAppBar(
         preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
         tabBar: false,
         judul: 'Home',
         searchTextBox: SearchTextBox(
-          textEditingController: searchController,
+          textEditingController: _searchHomeController,
           onTap: () {
             Navigator.pushNamed(context, SearchScreen.routeName);
           },
