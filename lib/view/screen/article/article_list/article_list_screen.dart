@@ -12,8 +12,7 @@ import 'package:capstone_project/view/screen/article/article_list/widgets/bottom
 import 'package:capstone_project/view/screen/article/widget/save_content.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
+import 'dart:core';
 
 class ArticleListScreen extends StatefulWidget {
   static const String routename = '/article_list_screen';
@@ -34,23 +33,6 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedText =
-        Provider.of<ArticleListProvider>(context, listen: false).selectedText;
-    // final selectedSortBy =
-    //     Provider.of<ArticleListProvider>(context).selectedSortBy;
-    // String selectedText = '';
-
-    // switch (selectedSortBy) {
-    //   case SortBy.mostViewed:
-    //     selectedText = 'Most Viewed';
-    //     break;
-    //   case SortBy.newest:
-    //     selectedText = 'Newest';
-    //     break;
-    //   case SortBy.older:
-    //     selectedText = 'Older';
-    //     break;
-    // }
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -60,6 +42,10 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
           judul: 'Article',
           searchField: true,
           tabBar: true,
+          onTap: (index) {
+            Provider.of<ArticleListProvider>(context, listen: false)
+                .changeSelectedTab(index);
+          },
           tabs: const [
             Tab(text: 'All'),
             Tab(text: 'Mental Health'),
@@ -96,112 +82,105 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
                           ),
                         ),
                         Expanded(
-                          child: Consumer<ArticleListProvider>(
-                              builder: (context, provider, child) {
-                            final articleList = provider.articles;
-                            return ListView.builder(
-                              itemBuilder: ((context, index) {
-                                final Articles articles = articleList[index];
-                                return InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ArticleDetailsScreen(
-                                                articles: articles),
-                                      ),
-                                    );
-                                  },
-                                  child: Card(
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(3),
-                                      ),
+                          child: ListView.builder(
+                            itemBuilder: (context, index) {
+                              final articles = provider.articles[index];
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ArticleDetailsScreen(
+                                              articles: articles),
                                     ),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Image.asset(
-                                            articles.image,
-                                            width: 135,
-                                            height: 128,
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Container(
-                                            padding: const EdgeInsets.all(16),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: <Widget>[
-                                                Text(
-                                                  articles.title,
-                                                  style: const TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                const SizedBox(
-                                                  height: 16,
-                                                ),
-                                                Text(
-                                                  articles.author,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w400,
-                                                    color:
-                                                        MyColor.neutralMedium,
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 16,
-                                                ),
-                                                Text(
-                                                  articles.date,
-                                                  style: TextStyle(
-                                                    fontSize: 10,
-                                                    fontWeight: FontWeight.w400,
-                                                    color:
-                                                        MyColor.neutralMedium,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            showModalBottomSheet(
-                                                useRootNavigator: true,
-                                                isScrollControlled: true,
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return Wrap(children: const [
-                                                    SaveContent()
-                                                  ]);
-                                                });
-                                          },
-                                          icon:
-                                              const Icon(Icons.bookmark_border),
-                                        )
-                                      ],
+                                  );
+                                },
+                                child: Card(
+                                  elevation: 3,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(3),
                                     ),
                                   ),
-                                );
-                              }),
-                              itemCount: articleList.length,
-                            );
-                          }),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Image.asset(
+                                          articles.image,
+                                          width: 135,
+                                          height: 128,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          padding: const EdgeInsets.all(16),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Text(
+                                                articles.title,
+                                                style: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              const SizedBox(
+                                                height: 16,
+                                              ),
+                                              Text(
+                                                articles.author,
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: MyColor.neutralMedium,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 16,
+                                              ),
+                                              Text(
+                                                articles.date,
+                                                style: TextStyle(
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: MyColor.neutralMedium,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          showModalBottomSheet(
+                                            useRootNavigator: true,
+                                            isScrollControlled: true,
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return Wrap(children: const [
+                                                SaveContent()
+                                              ]);
+                                            },
+                                          );
+                                        },
+                                        icon: const Icon(Icons.bookmark_border),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            itemCount: provider.articles.length,
+                          ),
                         ),
                       ],
                     ),
@@ -236,9 +215,6 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        bottomNavigationBar: const BottomNavBar(
-          currentIndex: 0,
-        ),
       ),
     );
   }

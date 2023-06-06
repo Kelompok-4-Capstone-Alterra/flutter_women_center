@@ -8,8 +8,6 @@ import 'package:capstone_project/view/screen/article/article_detail/widget/comme
 import 'package:capstone_project/view/screen/article/widget/save_content.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
-
 class ArticleDetailsScreen extends StatelessWidget {
   static const String routename = '/article_details_screen';
   final Articles articles;
@@ -137,9 +135,6 @@ class ArticleDetailsScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: const BottomNavBar(
-        currentIndex: 0,
       ),
     );
   }

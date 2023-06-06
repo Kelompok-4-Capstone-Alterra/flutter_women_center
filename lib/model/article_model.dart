@@ -3,6 +3,7 @@ class Articles {
   String author;
   String date;
   String image;
+  String category;
   String desc;
 
   Articles({
@@ -10,6 +11,7 @@ class Articles {
     required this.author,
     required this.date,
     required this.desc,
+    required this.category,
     required this.image,
   });
 }
