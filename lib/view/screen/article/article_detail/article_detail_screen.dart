@@ -95,7 +95,7 @@ class ArticleDetailsScreen extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    articles.date,
+                    articles.formattedDate,
                     style: TextStyle(
                       fontSize: 12,
                       color: MyColor.neutralMedium,
@@ -108,7 +108,7 @@ class ArticleDetailsScreen extends StatelessWidget {
                 height: 16,
               ),
               Text(
-                'Kategori Artikel (Mental Health)',
+                articles.category,
                 style: TextStyle(
                     fontSize: 14,
                     color: MyColor.neutralMedium,

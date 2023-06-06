@@ -60,135 +60,134 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
             },
           ),
         ),
-        body: Consumer<ArticleListProvider>(
-          builder: (context, provider, child) {
-            return Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: Text(
-                            provider.selectedText,
-                            style: TextStyle(
-                              color: MyColor.neutralMediumLow,
-                            ),
+        body: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Consumer<ArticleListProvider>(
+                          builder: (context, provider, child) {
+                        return Text(
+                          provider.sortValue,
+                          style: TextStyle(
+                            color: MyColor.neutralMediumLow,
                           ),
-                        ),
-                        Expanded(
-                          child: ListView.builder(
-                            itemBuilder: (context, index) {
-                              final articles = provider.articles[index];
-                              return InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ArticleDetailsScreen(
-                                              articles: articles),
-                                    ),
-                                  );
-                                },
-                                child: Card(
-                                  elevation: 3,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(3),
-                                    ),
+                        );
+                      }),
+                    ),
+                    Expanded(
+                      child: Consumer<ArticleListProvider>(
+                          builder: (context, provider, child) {
+                        return ListView.builder(
+                          itemBuilder: (context, index) {
+                            final articles = provider.articles[index];
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ArticleDetailsScreen(
+                                        articles: articles),
                                   ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Image.asset(
-                                          articles.image,
-                                          width: 135,
-                                          height: 128,
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Container(
-                                          padding: const EdgeInsets.all(16),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              Text(
-                                                articles.title,
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              const SizedBox(
-                                                height: 16,
-                                              ),
-                                              Text(
-                                                articles.author,
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: MyColor.neutralMedium,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 16,
-                                              ),
-                                              Text(
-                                                articles.date,
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: MyColor.neutralMedium,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      IconButton(
-                                        onPressed: () {
-                                          showModalBottomSheet(
-                                            useRootNavigator: true,
-                                            isScrollControlled: true,
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return Wrap(children: const [
-                                                SaveContent()
-                                              ]);
-                                            },
-                                          );
-                                        },
-                                        icon: const Icon(Icons.bookmark_border),
-                                      )
-                                    ],
+                                );
+                              },
+                              child: Card(
+                                elevation: 3,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(3),
                                   ),
                                 ),
-                              );
-                            },
-                            itemCount: provider.articles.length,
-                          ),
-                        ),
-                      ],
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Image.asset(
+                                        articles.image,
+                                        width: 135,
+                                        height: 128,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Text(
+                                              articles.title,
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            const SizedBox(
+                                              height: 16,
+                                            ),
+                                            Text(
+                                              articles.author,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                                color: MyColor.neutralMedium,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 16,
+                                            ),
+                                            Text(
+                                              articles.formattedDate,
+                                              style: TextStyle(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w400,
+                                                color: MyColor.neutralMedium,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        showModalBottomSheet(
+                                          useRootNavigator: true,
+                                          isScrollControlled: true,
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return Wrap(children: const [
+                                              SaveContent()
+                                            ]);
+                                          },
+                                        );
+                                      },
+                                      icon: const Icon(Icons.bookmark_border),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          itemCount: provider.articles.length,
+                        );
+                      }),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            );
-          },
+            ],
+          ),
         ),
         floatingActionButton: SizedBox(
           height: 50,
