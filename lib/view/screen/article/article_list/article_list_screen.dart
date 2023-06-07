@@ -101,7 +101,8 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
                                 );
                               },
                               child: Card(
-                                color: MyColor.white,
+                                surfaceTintColor: Colors.transparent,
+                                elevation: 2,
                                 shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(3),
