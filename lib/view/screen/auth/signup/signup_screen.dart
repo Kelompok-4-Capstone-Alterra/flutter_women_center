@@ -1,6 +1,8 @@
+import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
 import 'package:capstone_project/view/screen/auth/signup/signup_view_model.dart';
 import 'package:capstone_project/view/screen/auth/verification/verification_screen.dart';
+import 'package:capstone_project/view/screen/auth/verification/verification_veiw_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -27,6 +29,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late final SignupViewModel signupProvider;
+  late final VerificationViewModel verificationProvider;
 
   @override
   void dispose() {
@@ -37,10 +41,34 @@ class _SignupScreenState extends State<SignupScreen> {
     super.dispose();
   }
 
+  void clearText() {
+    _nameController.clear();
+    _emailController.clear();
+    _passwordController.clear();
+    _usernameController.clear();
+  }
+
+  @override
+  void initState() {
+    signupProvider = Provider.of<SignupViewModel>(context, listen: false);
+    verificationProvider =
+        Provider.of<VerificationViewModel>(context, listen: false);
+    signupProvider.addListener(
+      () {
+        if (signupProvider.state == MyState.loaded) {
+          verificationProvider.setEmail(_emailController.text);
+          Navigator.pushNamed(
+            context,
+            VerificationScreen.routeName,
+          );
+        }
+      },
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final signupProvider = Provider.of<SignupViewModel>(context, listen: false);
-
     return Scaffold(
       appBar: CustomAppBar(
         preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
@@ -214,20 +242,44 @@ class _SignupScreenState extends State<SignupScreen> {
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
                     PrimaryButton(
-                        teks: 'Sign Up',
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            signupProvider.signup(
-                              SignupModel(
-                                  name: _nameController.text,
-                                  email: _emailController.text,
-                                  username: _usernameController.text,
-                                  password: _passwordController.text),
+                      teks: 'Sign Up',
+                      customChild: Consumer<SignupViewModel>(
+                        builder: (context, value, _) {
+                          if (value.state == MyState.loading) {
+                            return SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: MyColor.white,
+                                strokeWidth: 2,
+                              ),
                             );
-                            Navigator.pushNamed(
-                                context, VerificationScreen.routeName);
+                          } else {
+                            return Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w500,
+                                color: MyColor.white,
+                              ),
+                            );
                           }
-                        }),
+                        },
+                      ),
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          signupProvider.setData(
+                            SignupModel(
+                              name: _nameController.text,
+                              email: _emailController.text,
+                              username: _usernameController.text,
+                              password: _passwordController.text,
+                              otp: '',
+                            ),
+                          );
+                        }
+                      },
+                    ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),

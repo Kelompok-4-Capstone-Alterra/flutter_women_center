@@ -3,6 +3,7 @@ import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
 import 'package:capstone_project/utils/components/text_box/regular_text_box/text_box.dart';
 import 'package:capstone_project/utils/my_color.dart';
+import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_screen.dart';
 import 'package:capstone_project/view/screen/auth/login/login_view_model.dart';
 import 'package:capstone_project/view/screen/auth/signup/signup_screen.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../utils/my_size.dart';
+import '../../home/home_view_model.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,6 +27,7 @@ class _LogniScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late final LoginViewModel loginProvider;
 
   @override
   void dispose() {
@@ -35,13 +38,25 @@ class _LogniScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
+    loginProvider = Provider.of<LoginViewModel>(context, listen: false);
+    loginProvider.init();
+    loginProvider.addListener(
+      () {
+        if (loginProvider.state == MyState.loaded) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            HomeScreen.routeName,
+            (route) => false,
+          );
+        }
+      },
+    );
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<LoginViewModel>(context, listen: false);
-
     return Scaffold(
       appBar: CustomAppBar(
         preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
@@ -193,10 +208,31 @@ class _LogniScreenState extends State<LoginScreen> {
                                 username: _usernameController.text,
                                 password: _passwordController.text),
                           );
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, HomeScreen.routeName, (route) => false);
                         }
                       },
+                      customChild: Consumer<LoginViewModel>(
+                        builder: (context, value, _) {
+                          if (value.state == MyState.loading) {
+                            return SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: MyColor.white,
+                                strokeWidth: 2,
+                              ),
+                            );
+                          } else {
+                            return Text(
+                              'Login',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w500,
+                                color: MyColor.white,
+                              ),
+                            );
+                          }
+                        },
+                      ),
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.01,
