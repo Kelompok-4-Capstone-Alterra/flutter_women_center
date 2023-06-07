@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:core';
 
+import '../../../../utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
+
 class ArticleListScreen extends StatefulWidget {
   static const String routename = '/article_list_screen';
   const ArticleListScreen({super.key});
@@ -214,6 +216,9 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        bottomNavigationBar: const BottomNavBar(
+          currentIndex: 0,
+        ),
       ),
     );
   }

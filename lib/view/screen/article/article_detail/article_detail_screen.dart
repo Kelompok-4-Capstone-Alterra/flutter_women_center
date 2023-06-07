@@ -1,5 +1,6 @@
 import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
+import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 
 import 'package:capstone_project/utils/my_color.dart';
@@ -135,6 +136,9 @@ class ArticleDetailsScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: const BottomNavBar(
+        currentIndex: 0,
       ),
     );
   }
