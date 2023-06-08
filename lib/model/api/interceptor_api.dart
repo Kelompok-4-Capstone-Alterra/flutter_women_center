@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
 import 'package:capstone_project/utils/key/naviagtor_key.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
@@ -68,7 +70,12 @@ class InterceptorApi {
                 e.response!.data['meta']['message'] ?? 'Something went wrong';
             showDialog(
               context: navigatorKey.currentContext!,
+              barrierDismissible: false,
               builder: (context) {
+                Timer(
+                  const Duration(seconds: 2),
+                  () => Navigator.of(context).pop(),
+                );
                 return AlertDialog(
                   insetPadding: const EdgeInsets.symmetric(horizontal: 90),
                   surfaceTintColor: MyColor.white,
@@ -83,21 +90,6 @@ class InterceptorApi {
                     textAlign: TextAlign.center,
                     style: TextStyle(color: MyColor.neutralHigh, fontSize: 12),
                   ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        'OK',
-                        style: TextStyle(
-                          color: MyColor.primaryMain,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
                 );
               },
             ).then(

@@ -141,7 +141,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       keyboardType: TextInputType.text,
                       validator: (p0) {
                         if (p0 == null || p0.isEmpty) {
-                          return 'nama tidak boleh kosong';
+                          return 'name is required';
                         }
                         return null;
                       },
@@ -166,7 +166,11 @@ class _SignupScreenState extends State<SignupScreen> {
                       keyboardType: TextInputType.text,
                       validator: (p0) {
                         if (p0 == null || p0.isEmpty) {
-                          return 'email tidak boleh kosong';
+                          return 'email is required';
+                        } else if (!RegExp(
+                          r"^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$",
+                        ).hasMatch(p0)) {
+                          return 'email is not valid';
                         }
                         return null;
                       },
@@ -191,7 +195,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       keyboardType: TextInputType.text,
                       validator: (p0) {
                         if (p0 == null || p0.isEmpty) {
-                          return 'usernama tidak boleh kosong';
+                          return 'username is required';
                         }
                         return null;
                       },
@@ -231,7 +235,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           validator: (p0) {
                             if (p0 == null || p0.isEmpty) {
-                              return 'password tidak boleh kosong';
+                              return 'password is required';
+                            } else if (p0.length < 8) {
+                              return 'password must be at least 8 characters';
                             }
                             return null;
                           },

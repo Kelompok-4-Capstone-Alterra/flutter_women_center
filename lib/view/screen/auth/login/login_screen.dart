@@ -129,7 +129,7 @@ class _LogniScreenState extends State<LoginScreen> {
                       keyboardType: TextInputType.text,
                       validator: (p0) {
                         if (p0 == null || p0.isEmpty) {
-                          return 'username tidak boleh kosong';
+                          return 'username is required';
                         }
                         return null;
                       },
@@ -169,7 +169,9 @@ class _LogniScreenState extends State<LoginScreen> {
                           ),
                           validator: (p0) {
                             if (p0 == null || p0.isEmpty) {
-                              return 'password tidak boleh kosong';
+                              return 'password is required';
+                            } else if (p0.length < 8) {
+                              return 'password must be at least 8 characters';
                             }
                             return null;
                           },

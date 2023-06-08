@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
 import 'package:capstone_project/view/screen/auth/verification/verification_veiw_model.dart';
@@ -52,6 +54,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
       barrierColor: Colors.transparent,
       context: context,
       builder: (context) {
+        Timer(
+          const Duration(seconds: 2),
+          () => Navigator.of(context).pop(),
+        );
         return AlertDialog(
           surfaceTintColor: MyColor.white,
           shape: RoundedRectangleBorder(
