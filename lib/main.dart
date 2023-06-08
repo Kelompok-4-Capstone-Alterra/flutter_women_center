@@ -10,8 +10,6 @@ import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_n
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
-import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
-import 'package:capstone_project/view/screen/counselor_list/counselor_list_screen.dart';
 import 'package:capstone_project/view/screen/forum/join_forum_discussion_screen.dart';
 import 'package:capstone_project/view/screen/forum/join_forum_discussion_view_model.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
@@ -168,7 +166,12 @@ class MyApp extends StatelessWidget {
               ),
           ArticleDetailsScreen.routename: (context) => ArticleDetailsScreen(
                 articles: Articles(
-                    title: '', author: '', date: '', desc: '', image: ''),
+                    title: '',
+                    author: '',
+                    date: '',
+                    desc: '',
+                    image: '',
+                    category: ''),
               ),
           LoginScreen.routeName: (context) => const LoginScreen(),
           SignupScreen.routeName: (context) => const SignupScreen(),
