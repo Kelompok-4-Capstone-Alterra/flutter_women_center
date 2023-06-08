@@ -175,7 +175,12 @@ class MyApp extends StatelessWidget {
               ),
           ArticleDetailsScreen.routename: (context) => ArticleDetailsScreen(
                 articles: Articles(
-                    title: '', author: '', date: '', desc: '', image: ''),
+                    title: '',
+                    author: '',
+                    date: '',
+                    desc: '',
+                    image: '',
+                    category: ''),
               ),
           LoginScreen.routeName: (context) => const LoginScreen(),
           SignupScreen.routeName: (context) => const SignupScreen(),

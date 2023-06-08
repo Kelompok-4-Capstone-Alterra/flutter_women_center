@@ -14,89 +14,90 @@ class BottomSheetContent extends StatefulWidget {
 class _BottomSheetContentState extends State<BottomSheetContent> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Theme(
-          data: ThemeData(unselectedWidgetColor: Colors.white),
-          child: Transform.scale(
-            scaleX: 1.1,
-            scaleY: 1.1,
-            child: Column(
-              children: [
-                Consumer<ArticleListProvider>(
-                  builder: ((context, provider, child) {
-                    final selectedSortBy = provider.selectedSortBy;
-
-                    return Column(
-                      children: [
-                        CheckboxListTile(
-                          activeColor: Colors.white,
-                          checkColor: MyColor.primaryMain,
-                          value: selectedSortBy == SortBy.mostViewed,
-                          title: const Text("Most Viewed"),
-                          controlAffinity: ListTileControlAffinity.trailing,
-                          onChanged: (bool? value) {
-                            if (value != null && value) {
-                              provider.setSelectedSortBy = SortBy.mostViewed;
-                              provider.setSelectedText = 'Most Viewed';
-                            }
-                          },
-                        ),
-                        CheckboxListTile(
-                          activeColor: Colors.white,
-                          checkColor: MyColor.primaryMain,
-                          value: selectedSortBy == SortBy.newest,
-                          title: const Text("Newest"),
-                          controlAffinity: ListTileControlAffinity.trailing,
-                          onChanged: (bool? value) {
-                            if (value != null && value) {
-                              provider.setSelectedSortBy = SortBy.newest;
-                              provider.setSelectedText = 'Newest';
-                            }
-                          },
-                        ),
-                        CheckboxListTile(
-                          activeColor: Colors.white,
-                          checkColor: MyColor.primaryMain,
-                          value: selectedSortBy == SortBy.older,
-                          title: const Text("Older"),
-                          controlAffinity: ListTileControlAffinity.trailing,
-                          onChanged: (bool? value) {
-                            if (value != null && value) {
-                              provider.setSelectedSortBy = SortBy.older;
-                              provider.setSelectedText = 'Older';
-                            }
-                          },
-                        ),
-                        const SizedBox(
-                          height: 26,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: SizedBox(
-                            height: 44,
-                            width: double.infinity,
-                            child: PrimaryButton(
-                              teks: 'Save',
-                              onPressed: () {
-                                provider.setSelectedSortBy =
-                                    provider.selectedSortBy;
-                                provider.setSelectedText =
-                                    provider.selectedText;
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ),
-                        )
-                      ],
-                    );
-                  }),
-                ),
-              ],
-            ),
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 16,
+        left: 16,
+        right: 16,
+      ),
+      child: Theme(
+        data: ThemeData(unselectedWidgetColor: Colors.white),
+        child: Transform.scale(
+          scaleX: 1.1,
+          scaleY: 1.1,
+          child: Column(
+            children: [
+              Consumer<ArticleListProvider>(builder: (context, provider, _) {
+                return Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        provider.filterMostViewed();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Most Viewed'),
+                          (provider.sortValue == 'Most Viewed')
+                              ? Icon(Icons.check, color: MyColor.primaryMain)
+                              : const SizedBox(),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 35,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        provider.filterNewest();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Newest'),
+                          (provider.sortValue == 'Newest')
+                              ? Icon(Icons.check, color: MyColor.primaryMain)
+                              : const SizedBox(),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 35,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        provider.filterOldest();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Oldest'),
+                          (provider.sortValue == 'Oldest')
+                              ? Icon(Icons.check, color: MyColor.primaryMain)
+                              : const SizedBox(),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 35,
+                    ),
+                    SizedBox(
+                      height: 44,
+                      width: double.infinity,
+                      child: PrimaryButton(
+                        teks: 'Save',
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              }),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }
