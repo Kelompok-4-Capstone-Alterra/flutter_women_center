@@ -25,6 +25,7 @@ class InterceptorApi {
           if (e.response!.statusCode == 401) {
             showDialog(
               context: navigatorKey.currentContext!,
+              barrierDismissible: false,
               builder: (context) {
                 return AlertDialog(
                   insetPadding: const EdgeInsets.symmetric(horizontal: 90),
@@ -86,7 +87,6 @@ class InterceptorApi {
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
-                        return handler.next(e);
                       },
                       child: Text(
                         'OK',
@@ -99,6 +99,10 @@ class InterceptorApi {
                     ),
                   ],
                 );
+              },
+            ).then(
+              (value) {
+                return handler.next(e);
               },
             );
           }
