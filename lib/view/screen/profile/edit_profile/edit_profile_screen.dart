@@ -1,5 +1,7 @@
 import 'package:capstone_project/view/screen/profile/change_password/change_password_screen.dart';
+import 'package:capstone_project/view/screen/profile/profilel_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../utils/components/appbar/custom_appbar.dart';
 import '../../../../utils/components/buttons/primary_button.dart';
@@ -77,6 +79,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final profileProvider =
+        Provider.of<ProfileViewModel>(context, listen: false);
+    _usernameController.text = profileProvider.userData.username ?? '';
+    _nameController.text = profileProvider.userData.name ?? '';
+    _emailController.text = profileProvider.userData.email ?? '';
+    _phoneController.text = profileProvider.userData.phone ?? '';
+
     return Scaffold(
       appBar: CustomAppBar(
         preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),

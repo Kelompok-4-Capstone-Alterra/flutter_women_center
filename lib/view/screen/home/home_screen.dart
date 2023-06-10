@@ -3,23 +3,21 @@ import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_n
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
 import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
 import 'package:capstone_project/utils/my_size.dart';
+import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
 import 'package:capstone_project/view/screen/forum/join_forum_discussion_screen.dart';
+import 'package:capstone_project/view/screen/home/home_view_model.dart';
 import 'package:capstone_project/view/screen/home/search/search_screen.dart';
 import 'package:capstone_project/view/screen/home/widget/home_list.dart';
 import 'package:capstone_project/view/screen/home/widget/home_list_item.dart';
 import 'package:capstone_project/view/screen/home/widget/home_menu.dart';
-import 'package:flutter/material.dart';
-import 'package:capstone_project/utils/my_size.dart';
-import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/my_color.dart';
-import '../auth/login/login_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -32,6 +30,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchHomeController = TextEditingController();
+  late final HomeViewModel homeProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    homeProvider = Provider.of<HomeViewModel>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      homeProvider.initUser();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +56,34 @@ class _HomeScreenState extends State<HomeScreen> {
             Navigator.pushNamed(context, SearchScreen.routeName);
           },
           readOnly: true,
+        ),
+        homeText: Consumer<HomeViewModel>(
+          builder: (context, value, _) {
+            if (value.state == MyState.loading) {
+              return Padding(
+                padding: const EdgeInsets.only(left: MySize.screenPadding),
+                child: SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(
+                    color: MyColor.primaryMain,
+                  ),
+                ),
+              );
+            } else {
+              return Padding(
+                padding: const EdgeInsets.only(left: MySize.screenPadding),
+                child: Text(
+                  'Hi, ${value.username}',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: MyColor.secondaryMain,
+                  ),
+                ),
+              );
+            }
+          },
         ),
       ),
       body: ListView(
