@@ -50,6 +50,10 @@ import 'package:capstone_project/view/screen/auth/verification/verification_scre
 import 'package:capstone_project/view/screen/auth/verification/verification_veiw_model.dart';
 import 'package:capstone_project/view/screen/auth/verification/widgets/otp_form_view_model.dart';
 import 'package:provider/provider.dart';
+import 'view/screen/career/career_detail/career_detail_screen.dart';
+import 'view/screen/career/career_detail/career_detail_view_model.dart';
+import 'view/screen/career/career_list/career_list_screen.dart';
+import 'view/screen/career/career_list/career_list_view_model.dart';
 import 'view/screen/counseling_topic/counseling_topic_view_model.dart';
 import 'view/screen/counselor_detail/counselor_detail_screen.dart';
 
@@ -148,6 +152,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => HomeViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => CareerListViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CareerDetailViewModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -197,6 +207,8 @@ class MyApp extends StatelessWidget {
           CounselingAppointment.routeName: (context) =>
               const CounselingAppointment(),
           VoucherScreen.routeName: (context) => const VoucherScreen(),
+          CareerListScreen.routeName: (context) => const CareerListScreen(),
+          CareerDetailScreen.routeName: (context) => const CareerDetailScreen(),
         },
       ),
     );
