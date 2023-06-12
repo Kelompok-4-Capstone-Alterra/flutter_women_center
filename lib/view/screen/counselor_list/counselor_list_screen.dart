@@ -1,7 +1,11 @@
+import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
 import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
+import 'package:capstone_project/utils/components/buttons/floating_button.dart';
 import 'package:capstone_project/utils/components/formarter/money_formater.dart';
 import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
+import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
 import 'package:capstone_project/utils/my_color.dart';
+import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/counselor_detail/counselor_detail_screen.dart';
 import 'package:capstone_project/view/screen/counselor_list/counselor_list_view_model.dart';
@@ -34,58 +38,37 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
     final MoneyFormatter moneyFormatter = MoneyFormatter();
     final provider =
         Provider.of<CounselorListViewModel>(context, listen: false);
+    TextEditingController searchController = TextEditingController();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Counselor',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
+      appBar: CustomAppBar(
+        preferredSize: Size(MySize.screenWidth(context), double.maxFinite),
+        home: false,
+        judul: 'Counselor',
+        searchField: true,
+        tabBar: false,
+        searchTextBox: SearchTextBox(
+          textEditingController: searchController,
+          onChanged: (value) {
+            provider.filterByName(value);
+          },
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.14,
-              width: double.infinity,
-              padding: const EdgeInsets.only(
-                left: 16,
-                right: 16,
-                top: 16,
-              ),
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                ),
-              ),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Find Something here ...',
-                  prefixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onChanged: (value) {
-                  provider.filterByName(value);
-                },
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.only(left: 16, top: 16, bottom: 8),
-              child: Text(
-                provider.sortValue,
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
-              ),
+              child: Consumer<CounselorListViewModel>(
+                  builder: (context, provider, _) {
+                return Text(
+                  provider.sortValue,
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                );
+              }),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.6,
+              height: MediaQuery.of(context).size.height * 0.7,
               child: Consumer<CounselorListViewModel>(
                 builder: (context, provider, _) {
                   switch (provider.myState) {
@@ -217,28 +200,19 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
           ],
         ),
       ),
-      // make a centered floating action bottom with icon and text
-      floatingActionButton: Container(
-        height: 40,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: SizedBox(
+        height: 50,
         width: 130,
-        margin: const EdgeInsets.only(right: 125, left: 125),
-        decoration: const BoxDecoration(
-          color: Color(0xFFAF1582),
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.all(
-            Radius.circular(5),
-          ),
-        ),
-        child: InkWell(
-          onTap: () {
-            showModalBottomSheet<void>(
+        child: FloatingButton(
+          onPressed: () {
+            showModalBottomSheet(
                 isScrollControlled: true,
+                useRootNavigator: true,
                 context: context,
                 builder: (BuildContext context) {
                   return CustomBottomSheetBuilder(
-                    header: true,
                     tinggi: MediaQuery.of(context).size.height * 0.8,
-                    judul: 'Sort By',
                     isi: [
                       Consumer<CounselorListViewModel>(
                           builder: (context, provider, _) {
@@ -305,25 +279,13 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
                         );
                       }),
                     ],
+                    header: true,
+                    judul: 'Sort By',
                   );
                 });
           },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
-                // 3 bar icon
-                Icons.sort,
-                color: Colors.white,
-              ),
-              Text(
-                'Sort By',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
+          teks: 'Sort By',
+          widget: const Icon(Icons.sort),
         ),
       ),
       bottomNavigationBar: const BottomNavBar(currentIndex: 0),
