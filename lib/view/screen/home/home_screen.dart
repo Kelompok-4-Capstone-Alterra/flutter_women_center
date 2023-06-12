@@ -18,6 +18,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/my_color.dart';
+import '../career/career_list/career_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -105,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               HomeMenu(
                 icon: Icons.home_repair_service,
-                direction: '',
+                direction: CareerListScreen.routeName,
                 title: 'Career',
               ),
               HomeMenu(
