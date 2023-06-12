@@ -78,6 +78,7 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
                       );
                     case MyState.loaded:
                       return ListView.builder(
+                        padding: const EdgeInsets.only(bottom: 60),
                         itemCount: provider.counselorList.length,
                         shrinkWrap: true,
                         // add spacing between cards
