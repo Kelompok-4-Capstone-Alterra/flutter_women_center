@@ -1,16 +1,17 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
 import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
+import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone_project/utils/components/text_box/read_only_text_box.dart';
 import 'package:capstone_project/utils/my_size.dart';
-import 'package:capstone_project/view/screen/onboarding/onboarding_screen.dart';
 import 'package:capstone_project/view/screen/profile/edit_profile/edit_profile_screen.dart';
 import 'package:capstone_project/view/screen/profile/profilel_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/components/buttons/primary_button.dart';
 import '../../../utils/my_color.dart';
+import '../home/home_view_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -22,9 +23,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  late final ProfileViewModel profileProvider;
   @override
   void initState() {
-    Provider.of<ProfileViewModel>(context, listen: false).reset();
+    profileProvider = Provider.of<ProfileViewModel>(context, listen: false);
+    profileProvider.reset();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      profileProvider.initProfile();
+    });
     super.initState();
   }
 
@@ -51,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             PrimaryButton(
               teks: 'Sure',
               onPressed: () {
-                Provider.of<ProfileViewModel>(context, listen: false).logout();
+                profileProvider.logout();
                 Navigator.pushNamedAndRemoveUntil(
                     context, HomeScreen.routeName, (route) => false);
               },
@@ -117,28 +123,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.02,
                   ),
-                  Center(
-                    child: Text(
-                      'John Doe',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: MyColor.neutralHigh,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.01,
-                  ),
-                  Center(
-                    child: Text(
-                      '+6281732613713',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: MyColor.neutralMediumLow,
-                      ),
-                    ),
+                  Consumer<ProfileViewModel>(
+                    builder: (context, value, _) {
+                      if (value.state == MyState.loading) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: MyColor.primaryMain,
+                          ),
+                        );
+                      } else {
+                        return Column(
+                          children: [
+                            Center(
+                              child: Text(
+                                value.userData.username ?? '-',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: MyColor.neutralHigh,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.01,
+                            ),
+                            Center(
+                              child: Text(
+                                value.userData.phone ?? '-',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: MyColor.neutralMediumLow,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                    },
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.05,

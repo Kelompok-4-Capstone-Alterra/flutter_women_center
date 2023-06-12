@@ -1,5 +1,4 @@
 import 'package:capstone_project/utils/my_color.dart';
-import 'package:capstone_project/utils/my_size.dart';
 import 'package:flutter/material.dart';
 import '../text_box/search_text_box.dart';
 
@@ -12,6 +11,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final List<Widget>? tabs;
   final SearchTextBox? searchTextBox;
+  final Widget? homeText;
+  final void Function(int)? onTap;
 
   const CustomAppBar({
     super.key,
@@ -23,6 +24,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.searchTextBox,
     this.actions,
     this.tabs,
+    this.homeText,
+    this.onTap,
   });
 
   @override
@@ -49,19 +52,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             actions: actions,
           ),
-          home == true
-              ? Padding(
-                  padding: const EdgeInsets.only(left: MySize.screenPadding),
-                  child: Text(
-                    'Hi,User!',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: MyColor.secondaryMain,
-                    ),
-                  ),
-                )
-              : const SizedBox(),
+          home == true ? homeText ?? const SizedBox() : const SizedBox(),
           searchField == true
               ? const SizedBox(
                   height: 16,
@@ -91,6 +82,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: TabBar(
+                      onTap: onTap,
                       dividerColor: Colors.transparent,
                       isScrollable: true,
                       indicatorWeight: 1,

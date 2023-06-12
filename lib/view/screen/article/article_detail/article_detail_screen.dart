@@ -1,5 +1,6 @@
 import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
+import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 
 import 'package:capstone_project/utils/my_color.dart';
@@ -7,8 +8,6 @@ import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/view/screen/article/article_detail/widget/comment_content.dart';
 import 'package:capstone_project/view/screen/article/widget/save_content.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 
 class ArticleDetailsScreen extends StatelessWidget {
   static const String routename = '/article_details_screen';
@@ -97,7 +96,7 @@ class ArticleDetailsScreen extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    articles.date,
+                    articles.formattedDate,
                     style: TextStyle(
                       fontSize: 12,
                       color: MyColor.neutralMedium,
@@ -110,7 +109,7 @@ class ArticleDetailsScreen extends StatelessWidget {
                 height: 16,
               ),
               Text(
-                'Kategori Artikel (Mental Health)',
+                articles.category,
                 style: TextStyle(
                     fontSize: 14,
                     color: MyColor.neutralMedium,

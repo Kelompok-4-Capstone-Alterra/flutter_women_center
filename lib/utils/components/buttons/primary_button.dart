@@ -9,6 +9,7 @@ class PrimaryButton extends StatelessWidget {
   final Color? customBackgroundColor;
   final Color? customTextColor;
   final void Function()? onPressed;
+  final Widget? customChild;
 
   const PrimaryButton({
     super.key,
@@ -16,7 +17,7 @@ class PrimaryButton extends StatelessWidget {
     this.customHeight,
     this.customBackgroundColor,
     this.customTextColor,
-
+    this.customChild,
     required this.teks,
     required this.onPressed,
   });
@@ -35,7 +36,6 @@ class PrimaryButton extends StatelessWidget {
               return MyColor.primarySurface;
             }
             return customBackgroundColor ?? MyColor.primaryMain;
-
           },
         ),
         foregroundColor: MaterialStatePropertyAll<Color>(MyColor.white),
@@ -48,15 +48,15 @@ class PrimaryButton extends StatelessWidget {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(3))),
       ),
       onPressed: onPressed,
-      child: Text(
-        teks,
-        style: TextStyle(
-          fontSize: 14.0,
-          fontWeight: FontWeight.w500,
-          color: customTextColor ?? MyColor.white,
-
-        ),
-      ),
+      child: customChild ??
+          Text(
+            teks,
+            style: TextStyle(
+              fontSize: 14.0,
+              fontWeight: FontWeight.w500,
+              color: customTextColor ?? MyColor.white,
+            ),
+          ),
     );
   }
 }

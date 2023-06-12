@@ -1,24 +1,24 @@
-class SignupModel {
+class UserModel {
+  String? id;
   String? name;
   String? email;
   String? username;
-  String? password;
-  String? otp;
+  String? phone;
 
-  SignupModel({
+  UserModel({
+    this.id,
     this.name,
     this.email,
     this.username,
-    this.password,
-    this.otp,
+    this.phone,
   });
 
-  SignupModel.fromJson(Map<String, dynamic> json) {
+  UserModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     name = json['name'];
     email = json['email'];
     username = json['username'];
-    password = json['password'];
-    otp = json['otp'];
+    phone = json['phone'];
   }
 
   Map<String, dynamic> toJson() {
@@ -26,8 +26,7 @@ class SignupModel {
     data['name'] = name;
     data['email'] = email;
     data['username'] = username;
-    data['password'] = password;
-    data['otp'] = otp;
+    data['phone'] = phone;
     return data;
   }
 }

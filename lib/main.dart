@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:capstone_project/utils/key/naviagtor_key.dart';
 import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_screen.dart';
 import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_view_model.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
@@ -13,6 +16,7 @@ import 'package:capstone_project/view/screen/article/article_list/article_list_v
 import 'package:capstone_project/view/screen/forum/join_forum_discussion_screen.dart';
 import 'package:capstone_project/view/screen/forum/join_forum_discussion_view_model.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
+import 'package:capstone_project/view/screen/home/home_view_model.dart';
 import 'package:capstone_project/view/screen/home/search/search_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_view_model.dart';
@@ -50,6 +54,7 @@ import 'view/screen/counseling_topic/counseling_topic_view_model.dart';
 import 'view/screen/counselor_detail/counselor_detail_screen.dart';
 
 void main() {
+  HttpOverrides.global = PostHttpOverrides();
   runApp(const MyApp());
 }
 
@@ -140,12 +145,16 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => BottomNavBarViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => HomeViewModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Woman Center',
         theme: ThemeData.light(useMaterial3: true),
-        initialRoute: HomeScreen.routeName,
+        initialRoute: LandingScreen.routeName,
+        navigatorKey: navigatorKey,
         routes: {
           LandingScreen.routeName: (context) => const LandingScreen(),
           HomeScreen.routeName: (context) => const HomeScreen(),
@@ -166,7 +175,12 @@ class MyApp extends StatelessWidget {
               ),
           ArticleDetailsScreen.routename: (context) => ArticleDetailsScreen(
                 articles: Articles(
-                    title: '', author: '', date: '', desc: '', image: ''),
+                    title: '',
+                    author: '',
+                    date: '',
+                    desc: '',
+                    image: '',
+                    category: ''),
               ),
           LoginScreen.routeName: (context) => const LoginScreen(),
           SignupScreen.routeName: (context) => const SignupScreen(),
@@ -186,5 +200,14 @@ class MyApp extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class PostHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
