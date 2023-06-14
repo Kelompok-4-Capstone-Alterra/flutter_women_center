@@ -81,12 +81,12 @@ class _CounselingTopicScreenState extends State<CounselingTopicScreen> {
                           return InkWell(
                             onTap: () {
                               provider.setSelectedTopic(
-                                  provider.topics[index]['id']);
+                                  provider.topics[index].id ?? 0);
                             },
                             child: Container(
                               padding: const EdgeInsets.all(10),
                               decoration: (provider.selectedTopic ==
-                                      provider.topics[index]['id'])
+                                      provider.topics[index].id)
                                   ? BoxDecoration(
                                       border: Border.all(
                                         color: Colors.grey,
@@ -111,7 +111,7 @@ class _CounselingTopicScreenState extends State<CounselingTopicScreen> {
                                       radius: 30,
                                       backgroundColor: Colors.grey,
                                       backgroundImage: NetworkImage(
-                                          provider.topics[index]['image']),
+                                          provider.topics[index].image ?? ''),
                                     ),
                                   ),
                                   const SizedBox(
@@ -121,12 +121,12 @@ class _CounselingTopicScreenState extends State<CounselingTopicScreen> {
                                     width:
                                         MediaQuery.of(context).size.width * 0.2,
                                     child: Text(
-                                      provider.topics[index]['title'],
+                                      provider.topics[index].name ?? '',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 12,
                                         color: (provider.selectedTopic ==
-                                                provider.topics[index]['id'])
+                                                provider.topics[index].id)
                                             ? Colors.white
                                             : Colors.black,
                                       ),

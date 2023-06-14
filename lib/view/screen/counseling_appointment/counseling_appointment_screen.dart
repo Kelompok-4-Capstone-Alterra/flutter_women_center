@@ -4,11 +4,13 @@ import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_view_model.dart';
+import 'package:capstone_project/view/screen/counseling_appointment/widgets/webview_container.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
 import 'package:capstone_project/view/screen/voucher/voucher_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class CounselingAppointment extends StatefulWidget {
   static const String routeName = '/counseling_appointment_screen';
@@ -39,6 +41,28 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
       provider.getCounselorDetail(widget.counselorId!);
     });
   }
+
+  // final controller = WebViewController()
+  //   ..setJavaScriptMode(JavaScriptMode.unrestricted)
+  //   ..setBackgroundColor(const Color(0x00000000))
+  //   ..setNavigationDelegate(
+  //     NavigationDelegate(
+  //       onProgress: (int progress) {
+  //         // Update loading bar.
+  //         const CircularProgressIndicator();
+  //       },
+  //       onPageStarted: (String url) {},
+  //       onPageFinished: (String url) {},
+  //       onWebResourceError: (WebResourceError error) {},
+  //       onNavigationRequest: (NavigationRequest request) {
+  //         if (request.url.startsWith('https://www.youtube.com/')) {
+  //           return NavigationDecision.prevent;
+  //         }
+  //         return NavigationDecision.navigate;
+  //       },
+  //     ),
+  //   )
+  //   ..loadRequest(Uri.parse('https://flutter.dev'));
 
   @override
   Widget build(BuildContext context) {
@@ -557,89 +581,97 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
               height: MediaQuery.of(context).size.height * 0.06,
               child: ElevatedButton(
                 onPressed: () async {
-                  bool isTrue = true;
-                  if (isTrue) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3),
-                            ),
-                          ),
-                          backgroundColor: Colors.white,
-                          content: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Icon(
-                                  Icons.check_circle,
-                                  size: 50,
-                                  color: MyColor.success,
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                const Text(
-                                  "Payment has been received",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.justify,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ).then((value) {
-                      // pop all screen
-                      Navigator.popUntil(
-                          context, ModalRoute.withName(HomeScreen.routeName));
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const TransactionScreen()),
-                      );
-                    });
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3),
-                            ),
-                          ),
-                          backgroundColor: Colors.white,
-                          content: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Icon(
-                                  Icons.sms_failed,
-                                  size: 50,
-                                  color: MyColor.danger,
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                const Text(
-                                  "Please complete your payment",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.justify,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  }
+                  // bool isTrue = true;
+                  // if (isTrue) {
+                  //   showDialog(
+                  //     context: context,
+                  //     builder: (BuildContext context) {
+                  //       return AlertDialog(
+                  //         shape: const RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.all(
+                  //             Radius.circular(3),
+                  //           ),
+                  //         ),
+                  //         backgroundColor: Colors.white,
+                  //         content: SingleChildScrollView(
+                  //           child: Column(
+                  //             children: [
+                  //               Icon(
+                  //                 Icons.check_circle,
+                  //                 size: 50,
+                  //                 color: MyColor.success,
+                  //               ),
+                  //               const SizedBox(
+                  //                 height: 16,
+                  //               ),
+                  //               const Text(
+                  //                 "Payment has been received",
+                  //                 style: TextStyle(
+                  //                   color: Colors.black,
+                  //                   fontSize: 12,
+                  //                 ),
+                  //                 textAlign: TextAlign.justify,
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       );
+                  //   },
+                  // ).then((value) {
+                  //   // pop all screen
+                  //   Navigator.popUntil(
+                  //       context, ModalRoute.withName(HomeScreen.routeName));
+                  //   Navigator.pushReplacement(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => const TransactionScreen()),
+                  //   );
+                  // });
+                  // } else {
+                  //   showDialog(
+                  //     context: context,
+                  //     builder: (BuildContext context) {
+                  //       return AlertDialog(
+                  //         shape: const RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.all(
+                  //             Radius.circular(3),
+                  //           ),
+                  //         ),
+                  //         backgroundColor: Colors.white,
+                  //         content: SingleChildScrollView(
+                  //           child: Column(
+                  //             children: [
+                  //               Icon(
+                  //                 Icons.sms_failed,
+                  //                 size: 50,
+                  //                 color: MyColor.danger,
+                  //               ),
+                  //               const SizedBox(
+                  //                 height: 16,
+                  //               ),
+                  //               const Text(
+                  //                 "Please complete your payment",
+                  //                 style: TextStyle(
+                  //                   color: Colors.black,
+                  //                   fontSize: 12,
+                  //                 ),
+                  //                 textAlign: TextAlign.justify,
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       );
+                  //     },
+                  //   );
+                  // }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const WebViewContainer(),
+                    ),
+                  ).then((_) {
+                    print('testing');
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: MyColor.primaryMain,
