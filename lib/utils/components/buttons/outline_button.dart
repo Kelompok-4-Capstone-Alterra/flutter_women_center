@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../../my_color.dart';
@@ -26,18 +25,6 @@ class OutlineButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith<Color>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.pressed)) {
-              return MyColor.primaryPressed;
-            } else if (states.contains(MaterialState.hovered)) {
-              return MyColor.primaryHover;
-            } else if (states.contains(MaterialState.disabled)) {
-              return MyColor.primarySurface;
-            }
-            return customBackgroundColor ?? MyColor.primaryMain;
-          },
-        ),
         foregroundColor: MaterialStateProperty.resolveWith<Color>(
           (Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed)) {

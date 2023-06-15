@@ -7,7 +7,7 @@ class HorizontalArticleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 164,
+      height: 157,
       width: 135,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(3),

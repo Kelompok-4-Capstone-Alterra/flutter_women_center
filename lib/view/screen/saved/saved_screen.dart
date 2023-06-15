@@ -4,6 +4,7 @@ import 'package:capstone_project/utils/components/buttons/primary_button.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button_icon.dart';
 import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 import 'package:capstone_project/utils/components/text_box/regular_text_box/text_box.dart';
+import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_screen.dart';
@@ -29,6 +30,7 @@ class _SavedScreenState extends State<SavedScreen> {
   final TextEditingController _editListNameController = TextEditingController();
   final TextEditingController _editDescriptionController =
       TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   final FocusNode _editListNameNode = FocusNode();
   final FocusNode _editDescriptionNode = FocusNode();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -49,8 +51,9 @@ class _SavedScreenState extends State<SavedScreen> {
         preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
         judul: 'Reading List',
         home: false,
-        searchField: false,
+        searchField: true,
         tabBar: false,
+        searchTextBox: SearchTextBox(textEditingController: _searchController),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
@@ -205,6 +208,7 @@ class _SavedScreenState extends State<SavedScreen> {
                             _editDescriptionController,
                         editListNameFocusNode: _editListNameNode,
                         editDescriptionFocusNode: _editDescriptionNode,
+                        sureOnPressed: null,
                       ),
                     );
                   });

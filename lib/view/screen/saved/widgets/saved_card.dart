@@ -9,6 +9,7 @@ class SavedCard extends StatelessWidget {
   final FocusNode editListNameFocusNode;
   final FocusNode editDescriptionFocusNode;
   final String judulList;
+  final void Function()? sureOnPressed;
 
   const SavedCard({
     super.key,
@@ -17,13 +18,18 @@ class SavedCard extends StatelessWidget {
     required this.editDescriptionTextEditingController,
     required this.editListNameFocusNode,
     required this.editDescriptionFocusNode,
+    required this.sureOnPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 361,
+      //nunggu API
+      //
+      //
+      //
+      // height: 321,
       child: Card(
         elevation: 0.0,
         color: MyColor.white,
@@ -39,39 +45,14 @@ class SavedCard extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              height: 157,
+              height: 117,
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 40,
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const CircleAvatar(
-                          radius: 20,
-                          backgroundImage: NetworkImage(
-                              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80'),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          judulList,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: MyColor.neutralHigh,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   Text(
-                    'List\'s Name',
+                    judulList,
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -85,7 +66,7 @@ class SavedCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '2 Articles',
+                          '0 Articles',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -99,6 +80,7 @@ class SavedCard extends StatelessWidget {
                               editDescriptionTextEditingController,
                           editListNameFocusNode: editListNameFocusNode,
                           editDescriptionFocusNode: editDescriptionFocusNode,
+                          sureOnPressed: sureOnPressed,
                         ),
                       ],
                     ),
@@ -108,6 +90,8 @@ class SavedCard extends StatelessWidget {
                   ),
                   Text(
                     'This is a description of this reading list.',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
@@ -117,28 +101,32 @@ class SavedCard extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              height: 196,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(width: .25, color: MyColor.neutralMediumLow),
-                ),
-              ),
-              padding: const EdgeInsets.all(16),
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return const HorizontalArticleCard();
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(
-                    width: 8,
-                  );
-                },
-              ),
-            ),
+            //nunggu API
+            //
+            //
+            //
+            // Container(
+            //   height: 196,
+            //   width: double.infinity,
+            //   decoration: BoxDecoration(
+            //     border: Border(
+            //       top: BorderSide(width: .25, color: MyColor.neutralMediumLow),
+            //     ),
+            //   ),
+            //   padding: const EdgeInsets.all(16),
+            //   child: ListView.separated(
+            //     scrollDirection: Axis.horizontal,
+            //     itemCount: 5,
+            //     itemBuilder: (context, index) {
+            //       return const HorizontalArticleCard();
+            //     },
+            //     separatorBuilder: (context, index) {
+            //       return const SizedBox(
+            //         width: 8,
+            //       );
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),

@@ -106,7 +106,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.start,
                                       children: [
                                         Text(
                                           'How was your counselor?',
@@ -165,14 +165,22 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                             },
                                           ),
                                         ),
-                                        Text(
-                                          'Please give us the rating',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            color: MyColor.danger,
-                                          ),
-                                        ),
+                                        Consumer<TransactionViewModel>(builder:
+                                            (context, transactionProvider2, _) {
+                                          if (transactionProvider2
+                                                  .counselorRate[0] ==
+                                              true) {
+                                            return const SizedBox();
+                                          }
+                                          return Text(
+                                            'Please give us the rating',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                              color: MyColor.danger,
+                                            ),
+                                          );
+                                        }),
                                       ],
                                     ),
                                   ),
@@ -226,6 +234,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                             ? null
                                             : () {
                                                 Navigator.pop(context);
+                                                _counselingCounselorController
+                                                    .clear();
                                                 transactionProvider
                                                     .changeRatingStatus(index);
                                               },

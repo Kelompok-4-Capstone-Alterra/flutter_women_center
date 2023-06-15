@@ -1,5 +1,5 @@
 import 'package:capstone_project/model/comment_model.dart';
-import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_pop_up_menu_button.dart';
+import 'package:capstone_project/utils/components/pop_up_menu_button/custom_pop_up_menu_button.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/components/text_box/text_box.dart';
 import 'package:flutter/material.dart';
