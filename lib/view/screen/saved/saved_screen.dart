@@ -1,5 +1,6 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
 import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
+import 'package:capstone_project/utils/components/buttons/floating_button.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button_icon.dart';
 import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
@@ -9,6 +10,7 @@ import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_screen.dart';
 import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
+import 'package:capstone_project/view/screen/saved/widgets/reading_list_sort_by_bottom_sheet_content.dart';
 import 'package:capstone_project/view/screen/saved/widgets/saved_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -164,6 +166,19 @@ class _SavedScreenState extends State<SavedScreen> {
           ),
         ],
       ),
+      floatingActionButton: FloatingButton(
+        widget: const Icon(Icons.sort),
+        teks: 'Sort By',
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return const ReadingListSortByBottomSheetBuilder();
+            },
+          );
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Consumer<SavedViewModel>(
