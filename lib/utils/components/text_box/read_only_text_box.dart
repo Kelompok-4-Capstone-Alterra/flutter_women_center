@@ -6,12 +6,14 @@ class ReadOnlyTextBox extends StatelessWidget {
   final String value;
   final double? width;
   final IconButton? suffixIcon;
+  final Color? textColor;
 
   const ReadOnlyTextBox({
     super.key,
     required this.value,
     this.width,
     this.suffixIcon,
+    this.textColor,
   });
 
   @override
@@ -23,7 +25,7 @@ class ReadOnlyTextBox extends StatelessWidget {
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w400,
-          color: MyColor.neutralHigh,
+          color: textColor ?? MyColor.neutralHigh,
         ),
         maxLines: null,
         decoration: InputDecoration(
