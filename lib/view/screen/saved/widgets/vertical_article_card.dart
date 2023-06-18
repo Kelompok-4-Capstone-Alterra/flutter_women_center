@@ -2,8 +2,15 @@ import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/view/screen/saved/widgets/article_popup_menu_button.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../utils/components/alert_dialog/custom_alert_dialog_builder.dart';
+
 class VerticalArticleCard extends StatelessWidget {
-  const VerticalArticleCard({super.key});
+  final void Function()? sureOnPressed;
+
+  const VerticalArticleCard({
+    super.key,
+    required this.sureOnPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +22,8 @@ class VerticalArticleCard extends StatelessWidget {
         border: Border.all(color: MyColor.neutralLow, width: .5),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.only(
@@ -43,6 +51,7 @@ class VerticalArticleCard extends StatelessWidget {
                   Text(
                     'How to improve your skill as a woman?',
                     overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
@@ -71,7 +80,17 @@ class VerticalArticleCard extends StatelessWidget {
               ),
             ),
           ),
-          const ArticlePopupMenuButton(deleteEvent: null),
+          SizedBox(
+            height: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ArticlePopupMenuButton(
+                  sureOnPressed: sureOnPressed,
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

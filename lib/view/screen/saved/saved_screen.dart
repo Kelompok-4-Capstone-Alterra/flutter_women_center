@@ -1,13 +1,16 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
 import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
+import 'package:capstone_project/utils/components/buttons/floating_button.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button_icon.dart';
 import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 import 'package:capstone_project/utils/components/text_box/regular_text_box/text_box.dart';
+import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_screen.dart';
 import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
+import 'package:capstone_project/view/screen/saved/widgets/reading_list_sort_by_bottom_sheet_content.dart';
 import 'package:capstone_project/view/screen/saved/widgets/saved_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +32,7 @@ class _SavedScreenState extends State<SavedScreen> {
   final TextEditingController _editListNameController = TextEditingController();
   final TextEditingController _editDescriptionController =
       TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   final FocusNode _editListNameNode = FocusNode();
   final FocusNode _editDescriptionNode = FocusNode();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -49,8 +53,9 @@ class _SavedScreenState extends State<SavedScreen> {
         preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
         judul: 'Reading List',
         home: false,
-        searchField: false,
+        searchField: true,
         tabBar: false,
+        searchTextBox: SearchTextBox(textEditingController: _searchController),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
@@ -161,6 +166,19 @@ class _SavedScreenState extends State<SavedScreen> {
           ),
         ],
       ),
+      floatingActionButton: FloatingButton(
+        widget: const Icon(Icons.sort),
+        teks: 'Sort By',
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return const ReadingListSortByBottomSheetBuilder();
+            },
+          );
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Consumer<SavedViewModel>(
@@ -205,6 +223,7 @@ class _SavedScreenState extends State<SavedScreen> {
                             _editDescriptionController,
                         editListNameFocusNode: _editListNameNode,
                         editDescriptionFocusNode: _editDescriptionNode,
+                        sureOnPressed: null,
                       ),
                     );
                   });

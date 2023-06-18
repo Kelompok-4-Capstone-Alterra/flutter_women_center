@@ -17,7 +17,7 @@ class TransactionViewModel with ChangeNotifier {
           counselorTotalRate++;
         }
       }
-      for (int i = index; i < counselorTotalRate; i++) {
+      for (int i = index + 1; i < counselorTotalRate; i++) {
         counselorRate[i] = false;
       }
     }

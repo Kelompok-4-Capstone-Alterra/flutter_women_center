@@ -1,7 +1,9 @@
+import 'package:capstone_project/utils/components/alert_dialog/custom_alert_dialog_builder.dart';
 import 'package:flutter/material.dart';
 import '../../../../utils/components/buttons/primary_button.dart';
 import '../../../../utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
-import '../../../../utils/components/modal_bottom_sheet/custom_pop_up_menu_button.dart';
+import '../../../../utils/components/pop_up_menu_button/custom_pop_up_menu_button.dart';
+
 import '../../../../utils/my_color.dart';
 import 'package:capstone_project/utils/components/text_box/regular_text_box/text_box.dart';
 
@@ -10,6 +12,7 @@ class ArticleListPopupMenuButton extends StatelessWidget {
   final TextEditingController editDescriptionTextEditingController;
   final FocusNode editListNameFocusNode;
   final FocusNode editDescriptionFocusNode;
+  final void Function()? sureOnPressed;
 
   const ArticleListPopupMenuButton({
     super.key,
@@ -17,6 +20,7 @@ class ArticleListPopupMenuButton extends StatelessWidget {
     required this.editDescriptionTextEditingController,
     required this.editListNameFocusNode,
     required this.editDescriptionFocusNode,
+    required this.sureOnPressed,
   });
 
   @override
@@ -127,7 +131,17 @@ class ArticleListPopupMenuButton extends StatelessWidget {
             },
           );
         } else {
-          //untuk delete event
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            barrierColor: Colors.black12,
+            builder: (context) {
+              return CustomAlertDialogBuilder(
+                judul: 'Are you sure want to delete this list?',
+                sureOnPressed: sureOnPressed,
+              );
+            },
+          );
         }
       },
     );
