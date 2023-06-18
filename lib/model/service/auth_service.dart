@@ -7,7 +7,7 @@ class AuthService extends InterceptorApi {
   Future<String> verify(String email) async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.verify;
-      var response = await dio.post(
+      final response = await dio.post(
         url,
         data: {
           'email': email,
@@ -22,7 +22,7 @@ class AuthService extends InterceptorApi {
   Future<String> login(LoginModel loginData) async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.login;
-      var response = await dio.post(
+      final response = await dio.post(
         url,
         data: {
           'username': loginData.username,
@@ -39,7 +39,7 @@ class AuthService extends InterceptorApi {
   Future<String> register(SignupModel registerData) async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.register;
-      var response = await dio.post(
+      final response = await dio.post(
         url,
         data: registerData.toJson(),
       );
