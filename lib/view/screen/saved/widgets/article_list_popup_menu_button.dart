@@ -1,18 +1,16 @@
 import 'package:capstone_project/utils/components/alert_dialog/custom_alert_dialog_builder.dart';
 import 'package:flutter/material.dart';
-import '../../../../utils/components/buttons/primary_button.dart';
-import '../../../../utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 import '../../../../utils/components/pop_up_menu_button/custom_pop_up_menu_button.dart';
-
 import '../../../../utils/my_color.dart';
-import 'package:capstone_project/utils/components/text_box/regular_text_box/text_box.dart';
 
 class ArticleListPopupMenuButton extends StatelessWidget {
   final TextEditingController editListNameTextEditingController;
   final TextEditingController editDescriptionTextEditingController;
   final FocusNode editListNameFocusNode;
   final FocusNode editDescriptionFocusNode;
-  final void Function()? sureOnPressed;
+  final void Function()? deleteEvent;
+  final void Function()? cancelEvent;
+  final Widget Function(BuildContext) editReadingListBottomSheetBuilder;
 
   const ArticleListPopupMenuButton({
     super.key,
@@ -20,7 +18,9 @@ class ArticleListPopupMenuButton extends StatelessWidget {
     required this.editDescriptionTextEditingController,
     required this.editListNameFocusNode,
     required this.editDescriptionFocusNode,
-    required this.sureOnPressed,
+    required this.deleteEvent,
+    required this.editReadingListBottomSheetBuilder,
+    this.cancelEvent,
   });
 
   @override
@@ -58,77 +58,7 @@ class ArticleListPopupMenuButton extends StatelessWidget {
             isDismissible: false,
             isScrollControlled: true,
             context: context,
-            builder: (context) {
-              return CustomBottomSheetBuilder(
-                header: true,
-                tinggi: 680,
-                judul: 'Edit List Info',
-                isi: [
-                  SizedBox(
-                    height: 72,
-                    width: double.infinity,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'List Name',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: MyColor.neutralHigh,
-                          ),
-                        ),
-                        TextBox(
-                          textEditingController:
-                              editListNameTextEditingController,
-                          hintText:
-                              'Ex : How to heal my traumatized inner child',
-                          currentFocus: editListNameFocusNode,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  SizedBox(
-                    height: 72,
-                    width: double.infinity,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Description (optional)',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: MyColor.neutralHigh,
-                          ),
-                        ),
-                        TextBox(
-                          textEditingController:
-                              editDescriptionTextEditingController,
-                          last: true,
-                          hintText: 'Ex : This is an important list',
-                          currentFocus: editDescriptionFocusNode,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  PrimaryButton(
-                    teks: 'Save Changes',
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              );
-            },
+            builder: editReadingListBottomSheetBuilder,
           );
         } else {
           showDialog(
@@ -138,7 +68,7 @@ class ArticleListPopupMenuButton extends StatelessWidget {
             builder: (context) {
               return CustomAlertDialogBuilder(
                 judul: 'Are you sure want to delete this list?',
-                sureOnPressed: sureOnPressed,
+                sureOnPressed: deleteEvent,
               );
             },
           );

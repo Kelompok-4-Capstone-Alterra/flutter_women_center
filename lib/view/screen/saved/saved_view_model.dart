@@ -1,29 +1,23 @@
+import 'package:capstone_project/model/reading_list_model.dart';
+import 'package:capstone_project/model/service/reading_list_service.dart';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../utils/state/finite_state.dart';
 
 class SavedViewModel with ChangeNotifier {
-  List<String> readingList = [];
-  bool buttonIsActive = false;
   MyState myState = MyState.initial;
   bool oldestCheckStatus = true;
-  bool sortByOldest = true;
+  bool sortingByOldest = true;
 
-  void newList(String judulList) {
-    readingList.add(judulList);
+  late SharedPreferences _loginData;
+  MyState _state = MyState.initial;
+  String _message = '';
+  final ReadingListService _readingListService = ReadingListService();
+  List<ReadingListModel> _allReadingListData = <ReadingListModel>[];
 
-    notifyListeners();
-  }
-
-  void activateButton() {
-    buttonIsActive = true;
-    notifyListeners();
-  }
-
-  void deactivateButton() {
-    buttonIsActive = false;
-    notifyListeners();
-  }
+  MyState get state => _state;
+  String get message => _message;
+  List<ReadingListModel> get allReadingListData => _allReadingListData;
 
   void checkNewest() {
     myState = MyState.loading;
@@ -45,7 +39,7 @@ class SavedViewModel with ChangeNotifier {
     myState = MyState.loading;
     notifyListeners();
 
-    sortByOldest = true;
+    sortingByOldest = true;
 
     myState = MyState.loaded;
     notifyListeners();
@@ -55,9 +49,89 @@ class SavedViewModel with ChangeNotifier {
     myState = MyState.loading;
     notifyListeners();
 
-    sortByOldest = false;
+    sortingByOldest = false;
 
     myState = MyState.loaded;
     notifyListeners();
+  }
+
+  void changeState(MyState state) {
+    _state = state;
+    notifyListeners();
+  }
+
+  Future<void> showAllReadingList() async {
+    try {
+      changeState(MyState.loading);
+      _loginData = await SharedPreferences.getInstance();
+      final token = _loginData.getString('token') ?? '';
+      _allReadingListData =
+          await _readingListService.getAllReadingList(token: token);
+      changeState(MyState.loaded);
+    } catch (e) {
+      _message = e.toString();
+      changeState(MyState.failed);
+    }
+  }
+
+  Future<void> showReadingListSortByOldestOrNewest(
+      {required bool sortByOldest}) async {
+    try {
+      changeState(MyState.loading);
+      _loginData = await SharedPreferences.getInstance();
+      final token = _loginData.getString('token') ?? '';
+      _allReadingListData =
+          await _readingListService.getReadingListSortByOldestOrNewest(
+              token: token, sortByOldest: sortByOldest);
+      changeState(MyState.loaded);
+    } catch (e) {
+      _message = e.toString();
+      changeState(MyState.failed);
+    }
+  }
+
+  Future<void> createReadingList(
+      {required String name, required String description}) async {
+    try {
+      changeState(MyState.loading);
+      _loginData = await SharedPreferences.getInstance();
+      final token = _loginData.getString('token') ?? '';
+      await _readingListService.postReadingList(
+          token: token, name: name, description: description);
+      changeState(MyState.loaded);
+    } catch (e) {
+      _message = e.toString();
+      changeState(MyState.failed);
+    }
+  }
+
+  Future<void> updateReadingList(
+      {required String id,
+      required String name,
+      required String description}) async {
+    try {
+      changeState(MyState.loading);
+      _loginData = await SharedPreferences.getInstance();
+      final token = _loginData.getString('token') ?? '';
+      await _readingListService.putReadingList(
+          token: token, id: id, name: name, description: description);
+      changeState(MyState.loaded);
+    } catch (e) {
+      _message = e.toString();
+      changeState(MyState.failed);
+    }
+  }
+
+  Future<void> removeReadingList({required String id}) async {
+    try {
+      changeState(MyState.loading);
+      _loginData = await SharedPreferences.getInstance();
+      final token = _loginData.getString('token') ?? '';
+      await _readingListService.deleteReadingList(token: token, id: id);
+      changeState(MyState.loaded);
+    } catch (e) {
+      _message = e.toString();
+      changeState(MyState.failed);
+    }
   }
 }

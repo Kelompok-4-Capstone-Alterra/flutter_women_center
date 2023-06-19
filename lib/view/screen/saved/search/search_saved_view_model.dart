@@ -1,32 +1,36 @@
+import 'package:capstone_project/model/reading_list_model.dart';
+import 'package:capstone_project/model/service/reading_list_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../model/reading_list_model.dart';
-import '../../../../model/service/reading_list_service.dart';
 import '../../../../utils/state/finite_state.dart';
 
-class DetailReadingListViewmodel with ChangeNotifier {
+class SearchSavedViewModel with ChangeNotifier {
+  MyState myState = MyState.initial;
+  bool oldestCheckStatus = true;
+  bool sortingByOldest = true;
+
   late SharedPreferences _loginData;
   MyState _state = MyState.initial;
   String _message = '';
   final ReadingListService _readingListService = ReadingListService();
-  ReadingListModel _readingListData = ReadingListModel();
+  List<ReadingListModel> _allReadingListData = <ReadingListModel>[];
 
   MyState get state => _state;
   String get message => _message;
-  ReadingListModel get readingListData => _readingListData;
+  List<ReadingListModel> get allReadingListData => _allReadingListData;
 
   void changeState(MyState state) {
     _state = state;
     notifyListeners();
   }
 
-  Future<void> showReadingList({required String id}) async {
+  Future<void> showReadingListByName({required String name}) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      _readingListData =
-          await _readingListService.getReadingList(token: token, id: id);
+      _allReadingListData = await _readingListService.getReadingListByName(
+          token: token, name: name);
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
@@ -57,20 +61,6 @@ class DetailReadingListViewmodel with ChangeNotifier {
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       await _readingListService.deleteReadingList(token: token, id: id);
-      changeState(MyState.loaded);
-    } catch (e) {
-      _message = e.toString();
-      changeState(MyState.failed);
-    }
-  }
-
-  Future<void> removeArticleFromReadingList({required String id}) async {
-    try {
-      changeState(MyState.loading);
-      _loginData = await SharedPreferences.getInstance();
-      final token = _loginData.getString('token') ?? '';
-      await _readingListService.deleteArticleFromReadingList(
-          token: token, id: id);
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();

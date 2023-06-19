@@ -4,11 +4,11 @@ import '../../../../utils/components/pop_up_menu_button/custom_pop_up_menu_butto
 import '../../../../utils/my_color.dart';
 
 class ArticlePopupMenuButton extends StatelessWidget {
-  final void Function()? sureOnPressed;
+  final void Function()? deleteEvent;
 
   const ArticlePopupMenuButton({
     super.key,
-    required this.sureOnPressed,
+    required this.deleteEvent,
   });
 
   @override
@@ -37,7 +37,7 @@ class ArticlePopupMenuButton extends StatelessWidget {
           builder: (context) {
             return CustomAlertDialogBuilder(
               judul: 'Are you sure want to delete this from the list?',
-              sureOnPressed: sureOnPressed,
+              sureOnPressed: deleteEvent,
             );
           },
         );

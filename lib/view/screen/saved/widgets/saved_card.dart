@@ -1,4 +1,3 @@
-import 'package:capstone_project/view/screen/saved/widgets/horizontal_article_card.dart';
 import 'package:capstone_project/view/screen/saved/widgets/article_list_popup_menu_button.dart';
 import 'package:flutter/material.dart';
 import '../../../../utils/my_color.dart';
@@ -9,27 +8,33 @@ class SavedCard extends StatelessWidget {
   final FocusNode editListNameFocusNode;
   final FocusNode editDescriptionFocusNode;
   final String judulList;
-  final void Function()? sureOnPressed;
+  final int totalArtikel;
+  final String deskripsi;
+  final Widget? daftarArtikel;
+  final void Function()? deleteEvent;
+  final void Function()? cancelEvent;
+  final Widget Function(BuildContext) editReadingListBottomSheetBuilder;
 
   const SavedCard({
     super.key,
     required this.judulList,
+    required this.totalArtikel,
+    required this.deskripsi,
+    required this.daftarArtikel,
     required this.editListNameTextEditingController,
     required this.editDescriptionTextEditingController,
     required this.editListNameFocusNode,
     required this.editDescriptionFocusNode,
-    required this.sureOnPressed,
+    required this.deleteEvent,
+    required this.editReadingListBottomSheetBuilder,
+    this.cancelEvent,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      //nunggu API
-      //
-      //
-      //
-      // height: 321,
+      height: daftarArtikel == null ? 126 : 322,
       child: Card(
         elevation: 0.0,
         color: MyColor.white,
@@ -45,7 +50,7 @@ class SavedCard extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              height: 117,
+              height: 118,
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -66,7 +71,11 @@ class SavedCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '0 Articles',
+                          totalArtikel == 0
+                              ? 'No Article Yet'
+                              : totalArtikel == 1
+                                  ? '${totalArtikel.toString()} Article'
+                                  : '${totalArtikel.toString()} Articles',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -80,7 +89,10 @@ class SavedCard extends StatelessWidget {
                               editDescriptionTextEditingController,
                           editListNameFocusNode: editListNameFocusNode,
                           editDescriptionFocusNode: editDescriptionFocusNode,
-                          sureOnPressed: sureOnPressed,
+                          editReadingListBottomSheetBuilder:
+                              editReadingListBottomSheetBuilder,
+                          deleteEvent: deleteEvent,
+                          cancelEvent: cancelEvent,
                         ),
                       ],
                     ),
@@ -89,7 +101,7 @@ class SavedCard extends StatelessWidget {
                     height: 9,
                   ),
                   Text(
-                    'This is a description of this reading list.',
+                    deskripsi,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: TextStyle(
@@ -101,32 +113,20 @@ class SavedCard extends StatelessWidget {
                 ],
               ),
             ),
-            //nunggu API
-            //
-            //
-            //
-            // Container(
-            //   height: 196,
-            //   width: double.infinity,
-            //   decoration: BoxDecoration(
-            //     border: Border(
-            //       top: BorderSide(width: .25, color: MyColor.neutralMediumLow),
-            //     ),
-            //   ),
-            //   padding: const EdgeInsets.all(16),
-            //   child: ListView.separated(
-            //     scrollDirection: Axis.horizontal,
-            //     itemCount: 5,
-            //     itemBuilder: (context, index) {
-            //       return const HorizontalArticleCard();
-            //     },
-            //     separatorBuilder: (context, index) {
-            //       return const SizedBox(
-            //         width: 8,
-            //       );
-            //     },
-            //   ),
-            // ),
+            daftarArtikel == null
+                ? const SizedBox()
+                : Container(
+                    height: 196,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                            width: .25, color: MyColor.neutralMediumLow),
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(16),
+                    child: daftarArtikel,
+                  ),
           ],
         ),
       ),
