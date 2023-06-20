@@ -2,14 +2,20 @@ import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/view/screen/saved/widgets/article_popup_menu_button.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../utils/components/alert_dialog/custom_alert_dialog_builder.dart';
-
 class VerticalArticleCard extends StatelessWidget {
-  final void Function()? sureOnPressed;
+  final void Function()? deleteEvent;
+  final String articleImageLink;
+  final String articleTitle;
+  final String articleAuthor;
+  final String articleCategory;
 
   const VerticalArticleCard({
     super.key,
-    required this.sureOnPressed,
+    required this.deleteEvent,
+    required this.articleImageLink,
+    required this.articleTitle,
+    required this.articleAuthor,
+    required this.articleCategory,
   });
 
   @override
@@ -30,11 +36,13 @@ class VerticalArticleCard extends StatelessWidget {
               topLeft: Radius.circular(3),
               topRight: Radius.circular(3),
             ),
-            child: Image.network(
-              'https://images.unsplash.com/photo-1542435503-956c469947f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80',
-              fit: BoxFit.fill,
-              width: 135,
-            ),
+            child: !articleImageLink.startsWith('https://')
+                ? const Placeholder()
+                : Image.network(
+                    articleImageLink,
+                    fit: BoxFit.fill,
+                    width: 135,
+                  ),
           ),
           SizedBox(
             height: double.infinity,
@@ -49,7 +57,7 @@ class VerticalArticleCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'How to improve your skill as a woman?',
+                    articleTitle,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     style: TextStyle(
@@ -59,7 +67,7 @@ class VerticalArticleCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Kim Jennie',
+                    articleAuthor,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 12,
@@ -68,7 +76,7 @@ class VerticalArticleCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '23 March 2023',
+                    articleCategory,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 8,
@@ -86,7 +94,7 @@ class VerticalArticleCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 ArticlePopupMenuButton(
-                  sureOnPressed: sureOnPressed,
+                  deleteEvent: deleteEvent,
                 ),
               ],
             ),

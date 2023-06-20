@@ -16,10 +16,14 @@ class SearchTextBox extends StatelessWidget {
   final double? width;
   final Function()? onTap;
   final bool? readOnly;
+  final bool? autoFocus;
+  final FocusNode? focusNode;
 
   const SearchTextBox({
     super.key,
     this.width,
+    this.autoFocus,
+    this.focusNode,
     required this.textEditingController,
     this.keyboardType,
     this.textCapitalization,
@@ -39,6 +43,8 @@ class SearchTextBox extends StatelessWidget {
       width: width == null ? MySize.bodyWidth(context) : width!,
       height: 48,
       child: TextFormField(
+        focusNode: focusNode,
+        autofocus: autoFocus == null || autoFocus == false ? false : true,
         controller: textEditingController,
         keyboardType: keyboardType,
         textCapitalization: textCapitalization == null

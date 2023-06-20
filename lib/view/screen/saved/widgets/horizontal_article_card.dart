@@ -2,7 +2,16 @@ import 'package:capstone_project/utils/my_color.dart';
 import 'package:flutter/material.dart';
 
 class HorizontalArticleCard extends StatelessWidget {
-  const HorizontalArticleCard({super.key});
+  final String urlGambarArtikel;
+  final String kategoriArtikel;
+  final String judulArtikel;
+
+  const HorizontalArticleCard({
+    super.key,
+    required this.urlGambarArtikel,
+    required this.kategoriArtikel,
+    required this.judulArtikel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +29,17 @@ class HorizontalArticleCard extends StatelessWidget {
               topLeft: Radius.circular(3),
               topRight: Radius.circular(3),
             ),
-            child: Image.network(
-              'https://images.unsplash.com/photo-1542435503-956c469947f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80',
-              fit: BoxFit.fill,
-              height: 114,
-            ),
+            child: !urlGambarArtikel.startsWith('https://')
+                ? const SizedBox(
+                    height: 114,
+                    width: double.infinity,
+                    child: Placeholder(),
+                  )
+                : Image.network(
+                    urlGambarArtikel,
+                    fit: BoxFit.fill,
+                    height: 114,
+                  ),
           ),
           SizedBox(
             height: 48,
@@ -36,7 +51,7 @@ class HorizontalArticleCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Self Development',
+                    kategoriArtikel,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 8,
@@ -45,7 +60,7 @@ class HorizontalArticleCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'How to improve your skill as a woman?',
+                    judulArtikel,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 12,

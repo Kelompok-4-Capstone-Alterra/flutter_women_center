@@ -7,7 +7,12 @@ import 'package:provider/provider.dart';
 import '../../../../utils/components/buttons/text_action_button.dart';
 
 class ReadingListSortByBottomSheetBuilder extends StatefulWidget {
-  const ReadingListSortByBottomSheetBuilder({super.key});
+  final void Function()? sortBySaveEvent;
+
+  const ReadingListSortByBottomSheetBuilder({
+    required this.sortBySaveEvent,
+    super.key,
+  });
 
   @override
   State<ReadingListSortByBottomSheetBuilder> createState() =>
@@ -19,7 +24,7 @@ class _ReadingListSortByBottomSheetBuilderState
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<SavedViewModel>(context, listen: false);
-    provider.oldestCheckStatus = provider.sortByOldest;
+    provider.oldestCheckStatus = provider.sortingByOldest;
     return Container(
       height: 680,
       decoration: BoxDecoration(
@@ -136,14 +141,7 @@ class _ReadingListSortByBottomSheetBuilderState
                     ),
                     PrimaryButton(
                       teks: 'Save',
-                      onPressed: () {
-                        Navigator.pop(context);
-                        if (savedProvider.oldestCheckStatus == true) {
-                          savedProvider.saveSortByOldest();
-                        } else {
-                          savedProvider.saveSortByNewest();
-                        }
-                      },
+                      onPressed: widget.sortBySaveEvent,
                     )
                   ],
                 );

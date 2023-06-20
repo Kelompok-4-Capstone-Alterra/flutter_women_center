@@ -32,12 +32,12 @@ import 'package:capstone_project/view/screen/profile/edit_profile/edit_profile_s
 import 'package:capstone_project/view/screen/profile/edit_profile/edit_profile_view_model.dart';
 import 'package:capstone_project/view/screen/profile/profile_screen.dart';
 import 'package:capstone_project/view/screen/profile/profilel_view_model.dart';
-import 'package:capstone_project/view/screen/saved/acticle/article_screen.dart';
-import 'package:capstone_project/view/screen/saved/acticle/article_view_model.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_screen.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_view_model.dart';
 import 'package:capstone_project/view/screen/saved/saved_screen.dart';
 import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
+import 'package:capstone_project/view/screen/saved/search/search_saved_screen.dart';
+import 'package:capstone_project/view/screen/saved/search/search_saved_view_model.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_view_model.dart';
 import 'package:capstone_project/view/screen/voucher/voucher_screen.dart';
@@ -85,9 +85,6 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => DetailReadingListViewmodel(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ArticleViewModel(),
         ),
         ChangeNotifierProvider(
           create: (context) => CounselingTopicViewModel(),
@@ -158,6 +155,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => CareerDetailViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => SearchSavedViewModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -174,7 +174,6 @@ class MyApp extends StatelessWidget {
           ArticleListScreen.routename: (context) => const ArticleListScreen(),
           DetailReadingListScreen.routeName: (context) =>
               const DetailReadingListScreen(),
-          ArticleScreen.routeName: (context) => const ArticleScreen(),
           CounselingTopicScreen.routeName: (context) =>
               const CounselingTopicScreen(),
           CounselorListScreen.routeName: (context) =>
@@ -209,6 +208,7 @@ class MyApp extends StatelessWidget {
           VoucherScreen.routeName: (context) => const VoucherScreen(),
           CareerListScreen.routeName: (context) => const CareerListScreen(),
           CareerDetailScreen.routeName: (context) => const CareerDetailScreen(),
+          SearchSavedScreen.routeName: (context) => const SearchSavedScreen(),
         },
       ),
     );
