@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../utils/state/finite_state.dart';
 
 class SavedViewModel with ChangeNotifier {
-  MyState myState = MyState.initial;
   bool oldestCheckStatus = true;
   bool sortingByOldest = true;
 
@@ -20,38 +19,38 @@ class SavedViewModel with ChangeNotifier {
   List<ReadingListModel> get allReadingListData => _allReadingListData;
 
   void checkNewest() {
-    myState = MyState.loading;
+    changeState(MyState.loading);
     notifyListeners();
     oldestCheckStatus = false;
-    myState = MyState.loaded;
+    changeState(MyState.loaded);
     notifyListeners();
   }
 
   void checkOldest() {
-    myState = MyState.loading;
+    changeState(MyState.loading);
     notifyListeners();
     oldestCheckStatus = true;
-    myState = MyState.loaded;
+    changeState(MyState.loaded);
     notifyListeners();
   }
 
   void saveSortByOldest() {
-    myState = MyState.loading;
+    changeState(MyState.loading);
     notifyListeners();
 
     sortingByOldest = true;
 
-    myState = MyState.loaded;
+    changeState(MyState.loaded);
     notifyListeners();
   }
 
   void saveSortByNewest() {
-    myState = MyState.loading;
+    changeState(MyState.loading);
     notifyListeners();
 
     sortingByOldest = false;
 
-    myState = MyState.loaded;
+    changeState(MyState.loaded);
     notifyListeners();
   }
 
