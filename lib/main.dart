@@ -1,16 +1,16 @@
 import 'dart:io';
 
 import 'package:capstone_project/utils/key/naviagtor_key.dart';
+import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
+import 'package:capstone_project/view/screen/article/article_detail/article_detail_view_model.dart';
+import 'package:capstone_project/view/screen/article/widget/save_content_view_model.dart';
 import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_screen.dart';
 import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_view_model.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
 import 'package:capstone_project/view/screen/counselor_detail/counselor_detail_view_model.dart';
 import 'package:capstone_project/view/screen/counselor_list/counselor_list_screen.dart';
 import 'package:capstone_project/view/screen/counselor_list/counselor_list_view_model.dart';
-
-import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar_view_model.dart';
-import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
 import 'package:capstone_project/view/screen/forum/join_forum_discussion_screen.dart';
@@ -102,6 +102,9 @@ class MyApp extends StatelessWidget {
           create: (context) => ArticleListProvider(),
         ),
         ChangeNotifierProvider(
+          create: (context) => ArticleDetailProvider(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => LoginViewModel(),
         ),
         ChangeNotifierProvider(
@@ -158,6 +161,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => CareerDetailViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => SaveContentProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -183,15 +189,8 @@ class MyApp extends StatelessWidget {
               const CounselorDetailScreen(
                 id: 0,
               ),
-          ArticleDetailsScreen.routename: (context) => ArticleDetailsScreen(
-                articles: Articles(
-                    title: '',
-                    author: '',
-                    date: '',
-                    desc: '',
-                    image: '',
-                    category: ''),
-              ),
+          ArticleDetailsScreen.routename: (context) =>
+              const ArticleDetailsScreen(),
           LoginScreen.routeName: (context) => const LoginScreen(),
           SignupScreen.routeName: (context) => const SignupScreen(),
           VerificationScreen.routeName: (context) => const VerificationScreen(),
