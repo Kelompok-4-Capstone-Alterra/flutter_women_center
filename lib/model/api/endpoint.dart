@@ -7,4 +7,5 @@ class Endpoint {
   static const String userProfile = '/users/profile';
   static const String userChangePassword = '/users/profile/password';
   static const String readingLists = '/users/reading-lists';
+  static const String transacton = '/users/transactions';
 }

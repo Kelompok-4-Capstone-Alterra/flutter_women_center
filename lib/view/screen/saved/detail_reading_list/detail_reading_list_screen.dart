@@ -317,7 +317,10 @@ class _DetailReadingListScreenState extends State<DetailReadingListScreen> {
                                 detailReadingListProvider
                                     .removeArticleFromReadingList(
                                         id: detailReadingListProvider
-                                            .readingListData.id!);
+                                            .readingListData
+                                            .readingListArticles![index]
+                                            .article!
+                                            .id!);
                                 detailReadingListProvider.showReadingList(
                                     id: detailReadingListProvider
                                         .readingListData.id!);
