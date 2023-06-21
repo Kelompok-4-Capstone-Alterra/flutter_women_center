@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../utils/state/finite_state.dart';
 
 class SavedViewModel with ChangeNotifier {
+  MyState myState = MyState.initial;
   bool oldestCheckStatus = true;
   bool sortingByOldest = true;
 
@@ -51,6 +52,11 @@ class SavedViewModel with ChangeNotifier {
     sortingByOldest = false;
 
     changeState(MyState.loaded);
+    notifyListeners();
+  }
+
+  void changeState(MyState state) {
+    _state = state;
     notifyListeners();
   }
 
