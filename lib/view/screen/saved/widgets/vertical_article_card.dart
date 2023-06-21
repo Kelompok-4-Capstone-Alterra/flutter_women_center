@@ -37,7 +37,8 @@ class VerticalArticleCard extends StatelessWidget {
               topRight: Radius.circular(3),
             ),
             child: !articleImageLink.startsWith('https://')
-                ? const Placeholder()
+                ? const SizedBox(
+                    width: 135, height: double.infinity, child: Placeholder())
                 : Image.network(
                     articleImageLink,
                     fit: BoxFit.fill,

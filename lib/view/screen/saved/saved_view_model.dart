@@ -20,38 +20,43 @@ class SavedViewModel with ChangeNotifier {
   List<ReadingListModel> get allReadingListData => _allReadingListData;
 
   void checkNewest() {
-    myState = MyState.loading;
+    changeState(MyState.loading);
     notifyListeners();
     oldestCheckStatus = false;
-    myState = MyState.loaded;
+    changeState(MyState.loaded);
     notifyListeners();
   }
 
   void checkOldest() {
-    myState = MyState.loading;
+    changeState(MyState.loading);
     notifyListeners();
     oldestCheckStatus = true;
-    myState = MyState.loaded;
+    changeState(MyState.loaded);
     notifyListeners();
   }
 
   void saveSortByOldest() {
-    myState = MyState.loading;
+    changeState(MyState.loading);
     notifyListeners();
 
     sortingByOldest = true;
 
-    myState = MyState.loaded;
+    changeState(MyState.loaded);
     notifyListeners();
   }
 
   void saveSortByNewest() {
-    myState = MyState.loading;
+    changeState(MyState.loading);
     notifyListeners();
 
     sortingByOldest = false;
 
-    myState = MyState.loaded;
+    changeState(MyState.loaded);
+    notifyListeners();
+  }
+
+  void changeState(MyState state) {
+    _state = state;
     notifyListeners();
   }
 
