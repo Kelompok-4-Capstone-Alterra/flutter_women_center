@@ -9,6 +9,7 @@ import 'package:capstone_project/utils/components/text_box/regular_text_box/text
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_search/search_transactions_screen.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_view_model.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
 import 'package:capstone_project/utils/my_color.dart';
@@ -47,6 +48,26 @@ class _TransactionScreenState extends State<TransactionScreen> {
       provider.showAllTransactions(statusOngoing: false);
     });
     super.initState();
+  }
+
+  final MoneyFormatter _moneyFormatter = MoneyFormatter();
+
+  late final TransactionViewModel provider;
+
+  @override
+  void initState() {
+    provider = Provider.of<TransactionViewModel>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      provider.showAllTransactionsOngoing();
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
+    _counselingCounselorController.dispose();
   }
 
   @override

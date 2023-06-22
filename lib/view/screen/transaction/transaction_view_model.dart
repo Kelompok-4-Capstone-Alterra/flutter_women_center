@@ -19,6 +19,24 @@ class TransactionViewModel with ChangeNotifier {
   String get message => _message;
   List<TransactionsModel> get allTransactionsData => _allTransactionsData;
 
+  late SharedPreferences _loginData;
+  MyState _state = MyState.initial;
+  String _message = '';
+  final TransactionsOngoingService _transactionsOngoingService =
+      TransactionsOngoingService();
+  List<TransactionsOngoingModel> _allTransactionsOngoingData =
+      <TransactionsOngoingModel>[];
+
+  MyState get state => _state;
+  String get message => _message;
+  List<TransactionsOngoingModel> get allTransactionsOngoingData =>
+      _allTransactionsOngoingData;
+
+  void changeState(MyState state) {
+    _state = state;
+    notifyListeners();
+  }
+
   void changeCounselorRate(int index) {
     if (counselorRate[index] == false) {
       for (int i = 0; i <= index; i++) {

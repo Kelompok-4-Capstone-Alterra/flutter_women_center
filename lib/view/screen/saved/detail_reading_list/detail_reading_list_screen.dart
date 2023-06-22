@@ -317,35 +317,58 @@ class _DetailReadingListScreenState extends State<DetailReadingListScreen> {
                                 detailReadingListProvider
                                     .removeArticleFromReadingList(
                                         id: detailReadingListProvider
-                                            .readingListData.id!);
+                                            .readingListData
+                                            .readingListArticles![index]
+                                            .article!
+                                            .id!);
                                 detailReadingListProvider.showReadingList(
                                     id: detailReadingListProvider
                                         .readingListData.id!);
                               },
                               articleImageLink: detailReadingListProvider
-                                      .readingListData
-                                      .readingListArticles![index]
-                                      .article!
-                                      .image ??
-                                  '-',
+                                          .readingListData
+                                          .readingListArticles ==
+                                      null
+                                  ? '-'
+                                  : detailReadingListProvider
+                                          .readingListData
+                                          .readingListArticles![index]
+                                          .article!
+                                          .image ??
+                                      '-',
                               articleTitle: detailReadingListProvider
-                                      .readingListData
-                                      .readingListArticles![index]
-                                      .article!
-                                      .title ??
-                                  '-',
+                                          .readingListData
+                                          .readingListArticles ==
+                                      null
+                                  ? '-'
+                                  : detailReadingListProvider
+                                          .readingListData
+                                          .readingListArticles![index]
+                                          .article!
+                                          .title ??
+                                      '-',
                               articleAuthor: detailReadingListProvider
-                                      .readingListData
-                                      .readingListArticles![index]
-                                      .article!
-                                      .author ??
-                                  '-',
+                                          .readingListData
+                                          .readingListArticles ==
+                                      null
+                                  ? '-'
+                                  : detailReadingListProvider
+                                          .readingListData
+                                          .readingListArticles![index]
+                                          .article!
+                                          .author ??
+                                      '-',
                               articleCategory: detailReadingListProvider
-                                      .readingListData
-                                      .readingListArticles![index]
-                                      .article!
-                                      .category ??
-                                  '-',
+                                          .readingListData
+                                          .readingListArticles ==
+                                      null
+                                  ? '-'
+                                  : detailReadingListProvider
+                                          .readingListData
+                                          .readingListArticles![index]
+                                          .article!
+                                          .category ??
+                                      '-',
                             ),
                           );
                         },
