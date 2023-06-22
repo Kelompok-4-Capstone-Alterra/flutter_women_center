@@ -45,181 +45,181 @@ class _SavedScreenState extends State<SavedScreen> {
     final provider = Provider.of<SavedViewModel>(context, listen: false);
 
     return Scaffold(
-      appBar: CustomAppBar(
-        preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
-        judul: 'Reading List',
-        home: false,
-        searchField: false,
-        tabBar: false,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: PrimaryButtonIcon(
-              widget: const Icon(Icons.add),
-              teks: 'New List',
-              onPressed: () {
-                showModalBottomSheet(
-                  isDismissible: false,
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (context) {
-                    provider.buttonIsActive == false;
-                    return CustomBottomSheetBuilder(
-                      tinggi: 680,
-                      header: true,
-                      judul: 'Create New List',
-                      isi: [
-                        Form(
-                          key: _formKey,
-                          child: SizedBox(
-                            height: 72,
-                            width: double.infinity,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'List Name',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: MyColor.neutralHigh,
-                                  ),
-                                ),
-                                TextBox(
-                                  textEditingController: _listNameController,
-                                  hintText:
-                                      'Ex : How to heal my traumatized inner child',
-                                  currentFocus: _listNameNode,
-                                  onChanged: (value) {
-                                    if (value.isEmpty) {
-                                      provider.deactivateButton();
-                                    } else {
-                                      provider.activateButton();
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        SizedBox(
-                          height: 72,
-                          width: double.infinity,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Description (optional)',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: MyColor.neutralHigh,
-                                ),
-                              ),
-                              TextBox(
-                                textEditingController: _descriptionController,
-                                last: true,
-                                hintText: 'Ex : This is an important list',
-                                currentFocus: _descriptionNode,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        Consumer<SavedViewModel>(
-                            builder: (context, savedProvider, _) {
-                          return PrimaryButton(
-                            teks: 'Add',
-                            onPressed: savedProvider.buttonIsActive == false
-                                ? null
-                                : () {
-                                    savedProvider
-                                        .newList(_listNameController.text);
-                                    _listNameController.clear();
-                                    _descriptionController.clear();
-                                    savedProvider.buttonIsActive = false;
+        // appBar: CustomAppBar(
+        //   preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
+        //   judul: 'Reading List',
+        //   home: false,
+        //   searchField: false,
+        //   tabBar: false,
+        //   actions: [
+        //     Padding(
+        //       padding: const EdgeInsets.only(right: 16),
+        //       child: PrimaryButtonIcon(
+        //         widget: const Icon(Icons.add),
+        //         teks: 'New List',
+        //         onPressed: () {
+        //           showModalBottomSheet(
+        //             isDismissible: false,
+        //             isScrollControlled: true,
+        //             context: context,
+        //             builder: (context) {
+        //               provider.buttonIsActive == false;
+        //               return CustomBottomSheetBuilder(
+        //                 tinggi: 680,
+        //                 header: true,
+        //                 judul: 'Create New List',
+        //                 isi: [
+        //                   Form(
+        //                     key: _formKey,
+        //                     child: SizedBox(
+        //                       height: 72,
+        //                       width: double.infinity,
+        //                       child: Column(
+        //                         crossAxisAlignment: CrossAxisAlignment.start,
+        //                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //                         children: [
+        //                           Text(
+        //                             'List Name',
+        //                             style: TextStyle(
+        //                               fontSize: 12,
+        //                               fontWeight: FontWeight.w400,
+        //                               color: MyColor.neutralHigh,
+        //                             ),
+        //                           ),
+        //                           TextBox(
+        //                             textEditingController: _listNameController,
+        //                             hintText:
+        //                                 'Ex : How to heal my traumatized inner child',
+        //                             currentFocus: _listNameNode,
+        //                             onChanged: (value) {
+        //                               if (value.isEmpty) {
+        //                                 provider.deactivateButton();
+        //                               } else {
+        //                                 provider.activateButton();
+        //                               }
+        //                             },
+        //                           ),
+        //                         ],
+        //                       ),
+        //                     ),
+        //                   ),
+        //                   const SizedBox(
+        //                     height: 16,
+        //                   ),
+        //                   SizedBox(
+        //                     height: 72,
+        //                     width: double.infinity,
+        //                     child: Column(
+        //                       crossAxisAlignment: CrossAxisAlignment.start,
+        //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //                       children: [
+        //                         Text(
+        //                           'Description (optional)',
+        //                           style: TextStyle(
+        //                             fontSize: 12,
+        //                             fontWeight: FontWeight.w400,
+        //                             color: MyColor.neutralHigh,
+        //                           ),
+        //                         ),
+        //                         TextBox(
+        //                           textEditingController: _descriptionController,
+        //                           last: true,
+        //                           hintText: 'Ex : This is an important list',
+        //                           currentFocus: _descriptionNode,
+        //                         ),
+        //                       ],
+        //                     ),
+        //                   ),
+        //                   const SizedBox(
+        //                     height: 16,
+        //                   ),
+        //                   Consumer<SavedViewModel>(
+        //                       builder: (context, savedProvider, _) {
+        //                     return PrimaryButton(
+        //                       teks: 'Add',
+        //                       onPressed: savedProvider.buttonIsActive == false
+        //                           ? null
+        //                           : () {
+        //                               savedProvider
+        //                                   .newList(_listNameController.text);
+        //                               _listNameController.clear();
+        //                               _descriptionController.clear();
+        //                               savedProvider.buttonIsActive = false;
 
-                                    Navigator.pop(context);
-                                  },
-                          );
-                        }),
-                      ],
-                    );
-                  },
-                );
-              },
-              customHeight: 36,
-              customWidth: 119,
-            ),
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Consumer<SavedViewModel>(
-          builder: (context, savedProvider, _) {
-            if (savedProvider.readingList.isEmpty) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/images/nothing_here.png'),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      'Woops! Sorry, no result found.',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: MyColor.neutralHigh,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            } else {
-              return ListView.separated(
-                itemCount: provider.readingList.length,
-                itemBuilder: (context, index) {
-                  return Consumer<SavedViewModel>(
-                      builder: (context, savedProvider, _) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, DetailReadingListScreen.routeName);
-                      },
-                      child: SavedCard(
-                        judulList: savedProvider.readingList[index],
-                        editListNameTextEditingController:
-                            _editListNameController,
-                        editDescriptionTextEditingController:
-                            _editDescriptionController,
-                        editListNameFocusNode: _editListNameNode,
-                        editDescriptionFocusNode: _editDescriptionNode,
-                      ),
-                    );
-                  });
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(
-                    height: 8,
-                  );
-                },
-              );
-            }
-          },
-        ),
-      ),
-      bottomNavigationBar: const BottomNavBar(currentIndex: 2),
-    );
+        //                               Navigator.pop(context);
+        //                             },
+        //                     );
+        //                   }),
+        //                 ],
+        //               );
+        //             },
+        //           );
+        //         },
+        //         customHeight: 36,
+        //         customWidth: 119,
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        // body: Padding(
+        //   padding: const EdgeInsets.all(16.0),
+        //   child: Consumer<SavedViewModel>(
+        //     builder: (context, savedProvider, _) {
+        //       if (savedProvider.readingList.isEmpty) {
+        //         return Center(
+        //           child: Column(
+        //             mainAxisAlignment: MainAxisAlignment.center,
+        //             crossAxisAlignment: CrossAxisAlignment.center,
+        //             children: [
+        //               Image.asset('assets/images/nothing_here.png'),
+        //               const SizedBox(
+        //                 height: 16,
+        //               ),
+        //               Text(
+        //                 'Woops! Sorry, no result found.',
+        //                 style: TextStyle(
+        //                   fontSize: 16,
+        //                   fontWeight: FontWeight.w500,
+        //                   color: MyColor.neutralHigh,
+        //                 ),
+        //               ),
+        //             ],
+        //           ),
+        //         );
+        //       } else {
+        //         return ListView.separated(
+        //           itemCount: provider.readingList.length,
+        //           itemBuilder: (context, index) {
+        //             return Consumer<SavedViewModel>(
+        //                 builder: (context, savedProvider, _) {
+        //               return GestureDetector(
+        //                 onTap: () {
+        //                   Navigator.pushNamed(
+        //                       context, DetailReadingListScreen.routeName);
+        //                 },
+        //                 child: SavedCard(
+        //                   judulList: savedProvider.readingList[index],
+        //                   editListNameTextEditingController:
+        //                       _editListNameController,
+        //                   editDescriptionTextEditingController:
+        //                       _editDescriptionController,
+        //                   editListNameFocusNode: _editListNameNode,
+        //                   editDescriptionFocusNode: _editDescriptionNode,
+        //                 ),
+        //               );
+        //             });
+        //           },
+        //           separatorBuilder: (context, index) {
+        //             return const SizedBox(
+        //               height: 8,
+        //             );
+        //           },
+        //         );
+        //       }
+        //     },
+        //   ),
+        // ),
+        // bottomNavigationBar: const BottomNavBar(currentIndex: 2),
+        );
   }
 }
