@@ -50,19 +50,6 @@ class _TransactionScreenState extends State<TransactionScreen> {
     super.initState();
   }
 
-  final MoneyFormatter _moneyFormatter = MoneyFormatter();
-
-  late final TransactionViewModel provider;
-
-  @override
-  void initState() {
-    provider = Provider.of<TransactionViewModel>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      provider.showAllTransactionsOngoing();
-    });
-    super.initState();
-  }
-
   @override
   void dispose() {
     super.dispose();
@@ -630,24 +617,24 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                         print(
                                                             _counselingCounselorController
                                                                 .text);
-                                                        transactionProvider
-                                                            .createRateAndReviewCounselor(
-                                                          transactionsId: transactionProvider
-                                                                      .allTransactionsData[
-                                                                          index]
-                                                                      .id ==
-                                                                  null
-                                                              ? ''
-                                                              : transactionProvider
-                                                                  .allTransactionsData[
-                                                                      index]
-                                                                  .id!,
-                                                          rating:
-                                                              totalRate.length,
-                                                          review:
-                                                              _counselingCounselorController
-                                                                  .text,
-                                                        );
+                                                        // transactionProvider
+                                                        //     .createRateAndReviewCounselor(
+                                                        //   transactionsId: transactionProvider
+                                                        //               .allTransactionsData[
+                                                        //                   index]
+                                                        //               .id ==
+                                                        //           null
+                                                        //       ? ''
+                                                        //       : transactionProvider
+                                                        //           .allTransactionsData[
+                                                        //               index]
+                                                        //           .id!,
+                                                        //   rating:
+                                                        //       totalRate.length,
+                                                        //   review:
+                                                        //       _counselingCounselorController
+                                                        //           .text,
+                                                        // );
                                                         _counselingCounselorController
                                                             .clear();
                                                         Navigator.pop(context);

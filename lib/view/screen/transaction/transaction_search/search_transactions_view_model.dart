@@ -79,7 +79,7 @@ class SearchTransactionsViewModel with ChangeNotifier {
       final token = _loginData.getString('token') ?? '';
       await _transactionsService.postReviewCounselor(
           token: token,
-          transactionsId: transactionsId,
+          transactionId: transactionsId,
           rating: rating,
           review: review);
       changeState(MyState.loaded);

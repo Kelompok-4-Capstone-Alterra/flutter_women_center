@@ -19,19 +19,6 @@ class TransactionViewModel with ChangeNotifier {
   String get message => _message;
   List<TransactionsModel> get allTransactionsData => _allTransactionsData;
 
-  late SharedPreferences _loginData;
-  MyState _state = MyState.initial;
-  String _message = '';
-  final TransactionsOngoingService _transactionsOngoingService =
-      TransactionsOngoingService();
-  List<TransactionsOngoingModel> _allTransactionsOngoingData =
-      <TransactionsOngoingModel>[];
-
-  MyState get state => _state;
-  String get message => _message;
-  List<TransactionsOngoingModel> get allTransactionsOngoingData =>
-      _allTransactionsOngoingData;
-
   void changeState(MyState state) {
     _state = state;
     notifyListeners();
@@ -56,18 +43,13 @@ class TransactionViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeState(MyState state) {
-    _state = state;
-    notifyListeners();
-  }
-
-  Future<void> showAllTransactions({required bool statusOngoing}) async {
+  Future<void> showAllTransactions({required bool? statusOngoing}) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       _allTransactionsData = await _transactionsService.getAllTransactions(
-          token: token, statusOngoing: statusOngoing);
+          token: token, statusOngoing: statusOngoing ?? true);
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
@@ -76,19 +58,20 @@ class TransactionViewModel with ChangeNotifier {
   }
 
   Future<void> createRateAndReviewCounselor({
-    required String transactionsId,
-    required int rating,
-    required String review,
+    required String? transactionId,
+    required int? rating,
+    required String? review,
   }) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       await _transactionsService.postReviewCounselor(
-          token: token,
-          transactionsId: transactionsId,
-          rating: rating,
-          review: review);
+        token: token,
+        transactionId: transactionId ?? '',
+        rating: rating ?? 3,
+        review: review ?? '',
+      );
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
