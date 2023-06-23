@@ -39,6 +39,8 @@ import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
 import 'package:capstone_project/view/screen/saved/search/search_saved_screen.dart';
 import 'package:capstone_project/view/screen/saved/search/search_saved_view_model.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
+import 'package:capstone_project/view/screen/transaction/transaction_search/search_transactions_screen.dart';
+import 'package:capstone_project/view/screen/transaction/transaction_search/search_transactions_view_model.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_view_model.dart';
 import 'package:capstone_project/view/screen/voucher/voucher_screen.dart';
 import 'package:capstone_project/view/screen/voucher/voucher_view_model.dart';
@@ -158,6 +160,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => SearchSavedViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => SearchTransactionsViewModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -209,6 +214,8 @@ class MyApp extends StatelessWidget {
           CareerListScreen.routeName: (context) => const CareerListScreen(),
           CareerDetailScreen.routeName: (context) => const CareerDetailScreen(),
           SearchSavedScreen.routeName: (context) => const SearchSavedScreen(),
+          SearchTransactionsScreen.routeName: (context) =>
+              const SearchTransactionsScreen(),
         },
       ),
     );

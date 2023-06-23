@@ -8,7 +8,7 @@ class SavedViewModel with ChangeNotifier {
   MyState myState = MyState.initial;
   bool oldestCheckStatus = true;
   bool sortingByOldest = true;
-
+  
   late SharedPreferences _loginData;
   MyState _state = MyState.initial;
   String _message = '';
@@ -50,7 +50,7 @@ class SavedViewModel with ChangeNotifier {
     notifyListeners();
 
     sortingByOldest = false;
-
+    
     changeState(MyState.loaded);
     notifyListeners();
   }

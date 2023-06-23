@@ -2,10 +2,9 @@ import 'package:capstone_project/model/service/transactions_service.dart';
 import 'package:capstone_project/model/transactions_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../utils/state/finite_state.dart';
 
-import '../../../utils/state/finite_state.dart';
-
-class TransactionViewModel with ChangeNotifier {
+class SearchTransactionsViewModel with ChangeNotifier {
   List<bool> counselorRate = [false, false, false, false, false];
   int counselorTotalRate = 0;
 
@@ -19,21 +18,11 @@ class TransactionViewModel with ChangeNotifier {
   String get message => _message;
   List<TransactionsModel> get allTransactionsData => _allTransactionsData;
 
-  late SharedPreferences _loginData;
-  MyState _state = MyState.initial;
-  String _message = '';
-  final TransactionsOngoingService _transactionsOngoingService =
-      TransactionsOngoingService();
-  List<TransactionsOngoingModel> _allTransactionsOngoingData =
-      <TransactionsOngoingModel>[];
+  List<String> chipLabel = ['Ongoing', 'History'];
+  int? value;
 
-  MyState get state => _state;
-  String get message => _message;
-  List<TransactionsOngoingModel> get allTransactionsOngoingData =>
-      _allTransactionsOngoingData;
-
-  void changeState(MyState state) {
-    _state = state;
+  changeChoiceChip(int index) {
+    value = index;
     notifyListeners();
   }
 
@@ -61,13 +50,17 @@ class TransactionViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> showAllTransactions({required bool statusOngoing}) async {
+  Future<void> showAllTransactionsBySearch({
+    required bool statusOngoing,
+    required String search,
+  }) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      _allTransactionsData = await _transactionsService.getAllTransactions(
-          token: token, statusOngoing: statusOngoing);
+      _allTransactionsData =
+          await _transactionsService.getAllTransactionsBySearch(
+              token: token, statusOngoing: statusOngoing, search: search);
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
