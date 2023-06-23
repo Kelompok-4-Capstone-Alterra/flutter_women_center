@@ -1,5 +1,4 @@
 import 'package:capstone_project/model/reading_list_model.dart';
-import 'package:capstone_project/model/service/article_service.dart';
 import 'package:capstone_project/model/service/reading_list_service.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,7 @@ class ArticleListPostProvider extends ChangeNotifier {
   MyState myState = MyState.initial;
 
   ReadingListModel dataReadingList = ReadingListModel();
-  final ArticleService _articleService = ArticleService();
+  List<ReadingListModel> readingList = [];
   ValueNotifier<bool> isButtonPressed = ValueNotifier<bool>(false);
   String selectedReadingListId = '';
   final ReadingListService _readingListService = ReadingListService();
@@ -53,8 +52,7 @@ class ArticleListPostProvider extends ChangeNotifier {
       notifyListeners();
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      dataReadingList = (await _readingListService.getAllReadingList(
-          token: token)) as ReadingListModel;
+      readingList = (await _readingListService.getAllReadingList(token: token));
       myState = MyState.loaded;
       notifyListeners();
     } catch (e) {
@@ -70,8 +68,6 @@ class ArticleListPostProvider extends ChangeNotifier {
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       await _readingListService.deleteReadingList(token: token, id: articleId);
-      savedArticleIds.remove(articleId);
-      saveArticleStatus(articleId, false);
       myState = MyState.loaded;
       notifyListeners();
     } catch (e) {

@@ -111,9 +111,8 @@ class ArticleListPostWidget extends StatelessWidget {
                     if (provider.isLoggedIn() == true) {
                       if (provider.isArticleSaved(article.id ?? '')) {
                         provider.toggleArticleSaved(article.id ?? '');
-                        await provider.removeArticleFromReadingList(
-                            dataReadingList
-                                .readingListArticles![index].article!.id!);
+                        await provider.removeArticleFromReadingList(provider
+                            .readingList[index].readingListArticles![0].id!);
                       } else {
                         showModalBottomSheet(
                           useRootNavigator: true,

@@ -80,7 +80,7 @@ class ArticleDetailsScreen extends StatelessWidget {
                     if (provider.isLoggedIn() == true) {
                       if (provider.isArticleSaved(articleId)) {
                         provider.toggleArticleSaved(articleId);
-                        await provider.removeArticleFromReadingList(articleId);
+                        // await provider.removeArticleFromReadingList(articleId);
                       } else {
                         provider.toggleArticleSaved(articleId);
                         showModalBottomSheet(

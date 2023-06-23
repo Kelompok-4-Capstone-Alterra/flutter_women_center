@@ -152,7 +152,7 @@ class ReadingListService extends InterceptorApi {
     try {
       String url = Endpoint.baseUrl + Endpoint.readingLists;
       final Response response = await dio.delete(
-        '$url/save/$id',
+        '$url/$id',
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
