@@ -1,9 +1,10 @@
 import 'package:capstone_project/model/article_model.dart';
+import 'package:capstone_project/model/reading_list_model.dart';
 import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
-import 'package:capstone_project/view/screen/article/widget/save_content.dart';
-import 'package:capstone_project/view/screen/article/widget/save_content_view_model.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_post/article_list_post_view_model.dart';
+import 'package:capstone_project/view/screen/article/save_content/save_content.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +16,10 @@ class ArticleListPostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SaveContentProvider>(context, listen: false);
+    final provider =
+        Provider.of<ArticleListPostProvider>(context, listen: false);
+
+    ReadingListModel dataReadingList = ReadingListModel();
 
     return ListView.builder(
       itemCount: articles.length,
@@ -86,42 +90,43 @@ class ArticleListPostWidget extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {
-                    if (provider.isArticleSaved(article.id ?? '')) {
-                      provider.toggleArticleSaved(article.id ?? '');
-                      provider.removeArticleFromReadingList(article.id ?? '');
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Removed from reading list'),
-                        ),
-                      );
+                  onPressed: () async {
+                    if (provider.isLoggedIn() == true) {
+                      if (provider.isArticleSaved(article.id ?? '')) {
+                        provider.toggleArticleSaved(article.id ?? '');
+                        await provider.removeArticleFromReadingList(
+                            dataReadingList
+                                .readingListArticles![index].article!.id!);
+                      } else {
+                        provider.toggleArticleSaved(article.id ?? '');
+                        showModalBottomSheet(
+                          useRootNavigator: true,
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Wrap(
+                              children: [
+                                CustomBottomSheetBuilder(
+                                  tinggi:
+                                      MediaQuery.of(context).size.height * 0.8,
+                                  isi: [
+                                    SaveContent(
+                                      articleId: articles[index].id ?? '',
+                                    ),
+                                  ],
+                                  header: true,
+                                  judul: 'Save to...',
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     } else {
-                      provider.toggleArticleSaved(article.id ?? '');
-                      showModalBottomSheet(
-                        useRootNavigator: true,
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Wrap(
-                            children: [
-                              CustomBottomSheetBuilder(
-                                tinggi:
-                                    MediaQuery.of(context).size.height * 0.8,
-                                isi: [
-                                  SaveContent(
-                                    articleId: articles[index].id ?? '',
-                                  ),
-                                ],
-                                header: true,
-                                judul: 'Save to...',
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      Navigator.pushNamed(context, '/login_screen');
                     }
                   },
-                  icon: Consumer<SaveContentProvider>(
+                  icon: Consumer<ArticleListPostProvider>(
                     builder: (context, provider, _) {
                       final isArticleSaved =
                           provider.isArticleSaved(article.id ?? '');

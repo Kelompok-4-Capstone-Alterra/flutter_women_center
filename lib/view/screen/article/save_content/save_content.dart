@@ -1,11 +1,11 @@
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
-import 'package:capstone_project/utils/components/buttons/text_action_button.dart';
+
 import 'package:capstone_project/utils/components/loading/loading.dart';
 import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/components/text_box/text_box.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
-import 'package:capstone_project/view/screen/article/widget/save_content_view_model.dart';
+import 'package:capstone_project/view/screen/article/save_content/save_content_view_model.dart';
 import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
 
 import 'package:flutter/material.dart';
@@ -128,7 +128,7 @@ class _SaveContentState extends State<SaveContent> {
                                   const SizedBox(
                                     height: 16,
                                   ),
-                                  Consumer<SavedViewModel>(
+                                  Consumer<SaveContentProvider>(
                                       builder: (context, savedProvider, _) {
                                     return PrimaryButton(
                                       teks: 'Add',
@@ -181,8 +181,14 @@ class _SaveContentState extends State<SaveContent> {
             child: Consumer<SaveContentProvider>(
               builder: (context, provider, _) {
                 if (provider.myState == MyState.loading) {
-                  return const Loading(); // Tampilkan loading widget jika masih dalam proses loading
-                } else if (provider.myState == MyState.loaded) {
+                  return const Loading();
+                } else if (provider.myState == MyState.loaded &&
+                    provider.readingList.isEmpty) {
+                  return const Center(
+                    child: Text('No Reading List Yet'),
+                  ); // Tampilkan loading widget jika masih dalam proses loading
+                } else if (provider.myState == MyState.loaded &&
+                    provider.readingList.isNotEmpty) {
                   return ListView.builder(
                     itemCount: provider.readingList.length,
                     itemBuilder: (context, index) {

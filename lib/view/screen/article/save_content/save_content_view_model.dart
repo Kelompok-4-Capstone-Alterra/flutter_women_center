@@ -77,22 +77,6 @@ class SaveContentProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> removeArticleFromReadingList(String articleId) async {
-    try {
-      myState = MyState.loading;
-      _loginData = await SharedPreferences.getInstance();
-      final token = _loginData.getString('token') ?? '';
-      await _readingListService.deleteArticleFromReadingList(
-          token: token, id: articleId);
-      savedArticleIds.remove(articleId);
-      saveArticleStatus(articleId, false);
-      myState = MyState.loaded;
-    } catch (e) {
-      _message = e.toString();
-      myState = MyState.failed;
-    }
-  }
-
   Future<void> toggleCheck(int index) async {
     if (checkedIndex == index) {
       checkedIndex =
@@ -142,5 +126,17 @@ class SaveContentProvider extends ChangeNotifier {
 
   bool isArticleSaved(String articleId) {
     return savedArticleIds.contains(articleId);
+  }
+
+  Future<void> refreshReadingList() async {
+    try {
+      myState = MyState.loading;
+      final token = _loginData.getString('token') ?? '';
+      await _readingListService.getAllReadingList(token: token);
+      myState = MyState.loaded;
+    } catch (e) {
+      _message = e.toString();
+      myState = MyState.failed;
+    }
   }
 }

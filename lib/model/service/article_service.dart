@@ -190,6 +190,7 @@ class ArticleService extends InterceptorApi {
       comments = (response.data['data']['comments'] as List)
           .map((e) => Comment.fromJson(e))
           .toList();
+
       return comments;
     } catch (e) {
       rethrow;

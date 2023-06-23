@@ -26,6 +26,16 @@ class ArticleListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  ArticleListProvider() {
+    initializeSharedPreferences(); // Pindahkan pemanggilan ke dalam konstruktor
+  }
+
+  void initializeSharedPreferences() async {
+    changeState(MyState.loading);
+    _loginData = await SharedPreferences.getInstance();
+    changeState(MyState.loaded);
+  }
+
   Future<void> fetchTopicsAndArticles() async {
     try {
       changeState(MyState.loading);
@@ -86,6 +96,7 @@ class ArticleListProvider extends ChangeNotifier {
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       if (token.isEmpty) {
+        changeState(MyState.loading);
         listArticles = await _articleService.searchArticlesNonLogin(searchText);
         changeState(MyState.loaded);
       }
@@ -105,6 +116,7 @@ class ArticleListProvider extends ChangeNotifier {
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       if (token.isEmpty) {
+        changeState(MyState.loading);
         listArticles = await _articleService.sortArticlesNoLogin(sortValue);
         changeState(MyState.loaded);
       }
@@ -114,5 +126,41 @@ class ArticleListProvider extends ChangeNotifier {
       _message = e.toString();
       changeState(MyState.failed);
     }
+  }
+
+  void filterMostViewed() {
+    myState = MyState.loading;
+    notifyListeners();
+
+    sortValues = 'Most Viewed';
+
+    myState = MyState.loaded;
+    notifyListeners();
+  }
+
+  void filterNewest() {
+    myState = MyState.loading;
+    notifyListeners();
+
+    listArticles.sort((a, b) =>
+        DateTime.parse(b.date ?? '').compareTo(DateTime.parse(a.date ?? '')));
+
+    sortValues = 'Newest';
+
+    myState = MyState.loaded;
+    notifyListeners();
+  }
+
+  void filterOldest() {
+    myState = MyState.loading;
+    notifyListeners();
+
+    listArticles.sort((a, b) =>
+        DateTime.parse(a.date ?? '').compareTo(DateTime.parse(b.date ?? '')));
+
+    sortValues = 'Oldest';
+
+    myState = MyState.loaded;
+    notifyListeners();
   }
 }

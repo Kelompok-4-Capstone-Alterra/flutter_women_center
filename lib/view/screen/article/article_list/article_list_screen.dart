@@ -1,5 +1,6 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
 import 'package:capstone_project/utils/components/buttons/floating_button.dart';
+import 'package:capstone_project/utils/components/loading/loading.dart';
 import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 
 import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
@@ -7,8 +8,8 @@ import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
-import 'package:capstone_project/view/screen/article/article_list/widgets/article_list_post_widget.dart';
-import 'package:capstone_project/view/screen/article/article_list/widgets/bottomsheet_content.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_post/article_list_post.dart';
+import 'package:capstone_project/view/screen/article/article_list/bottomsheet/bottomsheet_content.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:core';
@@ -48,11 +49,7 @@ class _ArticleListScreenState extends State<ArticleListScreen>
   Widget build(BuildContext context) {
     return Consumer<ArticleListProvider>(builder: (context, provider, _) {
       if (provider.myState == MyState.loading) {
-        return const Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
+        return const Scaffold(body: Loading());
       } else if (provider.myState == MyState.failed) {
         return const Center(
           child: Text('Failed to load data'),

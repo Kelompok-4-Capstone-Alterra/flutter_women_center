@@ -4,10 +4,11 @@ import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bott
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_view_model.dart';
-import 'package:capstone_project/view/screen/article/article_detail/widget/comment_content.dart';
+import 'package:capstone_project/view/screen/article/article_detail/comment/comment_content.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_post/article_list_post_view_model.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
-import 'package:capstone_project/view/screen/article/widget/save_content.dart';
-import 'package:capstone_project/view/screen/article/widget/save_content_view_model.dart';
+import 'package:capstone_project/view/screen/article/save_content/save_content.dart';
+import 'package:capstone_project/view/screen/article/save_content/save_content_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -21,10 +22,8 @@ class ArticleDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final articleId = ModalRoute.of(context)!.settings.arguments as String;
-    final saveProvider =
-        Provider.of<SaveContentProvider>(context, listen: false);
-    final detailProvider =
-        Provider.of<ArticleDetailProvider>(context, listen: false);
+    final provider =
+        Provider.of<ArticleListPostProvider>(context, listen: false);
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -40,7 +39,7 @@ class ArticleDetailsScreen extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    if (detailProvider.isLoggedIn() == true) {
+                    if (provider.isLoggedIn() == true) {
                       showModalBottomSheet(
                           useRootNavigator: true,
                           isScrollControlled: true,
@@ -77,18 +76,13 @@ class ArticleDetailsScreen extends StatelessWidget {
                   width: 20,
                 ),
                 IconButton(
-                  onPressed: () {
-                    if (detailProvider.isLoggedIn() == true) {
-                      if (saveProvider.isArticleSaved(articleId)) {
-                        saveProvider.toggleArticleSaved(articleId);
-                        saveProvider.removeArticleFromReadingList(articleId);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Removed from reading list'),
-                          ),
-                        );
+                  onPressed: () async {
+                    if (provider.isLoggedIn() == true) {
+                      if (provider.isArticleSaved(articleId)) {
+                        provider.toggleArticleSaved(articleId);
+                        await provider.removeArticleFromReadingList(articleId);
                       } else {
-                        saveProvider.toggleArticleSaved(articleId);
+                        provider.toggleArticleSaved(articleId);
                         showModalBottomSheet(
                           useRootNavigator: true,
                           isScrollControlled: true,
@@ -116,7 +110,7 @@ class ArticleDetailsScreen extends StatelessWidget {
                       Navigator.pushNamed(context, '/login_screen');
                     }
                   },
-                  icon: Consumer<SaveContentProvider>(
+                  icon: Consumer<ArticleListPostProvider>(
                     builder: (context, provider, _) {
                       final isArticleSaved = provider.isArticleSaved(articleId);
                       return isArticleSaved

@@ -136,16 +136,4 @@ class SavedViewModel with ChangeNotifier {
       changeState(MyState.failed);
     }
   }
-
-  Future<void> refreshReadingList() async {
-    try {
-      myState = MyState.loading;
-      final token = _loginData.getString('token') ?? '';
-      await _readingListService.getAllReadingList(token: token);
-      myState = MyState.loaded;
-    } catch (e) {
-      _message = e.toString();
-      myState = MyState.failed;
-    }
-  }
 }
