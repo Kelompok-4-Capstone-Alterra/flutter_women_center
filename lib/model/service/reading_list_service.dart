@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import '../api/endpoint.dart';
 
 class ReadingListService extends InterceptorApi {
+  ///mengembalikan List<ReadingListModel> dari API reading list
   Future<List<ReadingListModel>> getAllReadingList(
       {required String token}) async {
     try {
@@ -26,6 +27,7 @@ class ReadingListService extends InterceptorApi {
     }
   }
 
+  ///mengembalikan List<ReadingListModel> berdasarkan "name" dari API reading list
   Future<List<ReadingListModel>> getReadingListByName(
       {required String token, required String name}) async {
     try {
@@ -49,6 +51,7 @@ class ReadingListService extends InterceptorApi {
     }
   }
 
+  ///mengembalikan ReadingListModel dari API reading list
   Future<ReadingListModel> getReadingList(
       {required String token, required String id}) async {
     try {
@@ -69,6 +72,7 @@ class ReadingListService extends InterceptorApi {
     }
   }
 
+  ///mengembalikan List<ReadingListModel> berdasarkan sort by "oldest" atau "newest" dari API reading list
   Future<List<ReadingListModel>> getReadingListSortByOldestOrNewest(
       {required String token, required bool sortByOldest}) async {
     try {
@@ -94,6 +98,7 @@ class ReadingListService extends InterceptorApi {
     }
   }
 
+  ///membuat reading list baru ke API reading list
   Future<String> postReadingList(
       {required String token,
       required String name,
@@ -120,6 +125,34 @@ class ReadingListService extends InterceptorApi {
     }
   }
 
+  ///menambahkan article ke dalam reading list melalui API reading list
+  Future<String> postArticleToReadingList(
+      {required String token,
+      required String readingListId,
+      required String articleId}) async {
+    try {
+      const String url = Endpoint.baseUrl + Endpoint.readingLists;
+      late Response response;
+      response = await dio.post(
+        '$url/save',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+        data: {
+          'reading_list_id': readingListId,
+          'article_id': articleId,
+        },
+      );
+      final String message = response.data['meta']['message'].toString();
+      return message;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  ///mengubah informasi reading list ke API reading list
   Future<String> putReadingList(
       {required String token,
       required String id,
@@ -147,6 +180,7 @@ class ReadingListService extends InterceptorApi {
     }
   }
 
+  ///menghapus reading list dari API reading list
   Future<String> deleteReadingList(
       {required String token, required String id}) async {
     try {
@@ -166,6 +200,7 @@ class ReadingListService extends InterceptorApi {
     }
   }
 
+  ///menghapus article dari reading list melalui API reading list
   Future<String> deleteArticleFromReadingList(
       {required String token, required String id}) async {
     try {

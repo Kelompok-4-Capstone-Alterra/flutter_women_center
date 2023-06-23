@@ -12,11 +12,15 @@ class SearchTransactionsViewModel with ChangeNotifier {
   MyState _state = MyState.initial;
   String _message = '';
   final TransactionsService _transactionsService = TransactionsService();
-  List<TransactionsModel> _allTransactionsData = <TransactionsModel>[];
+  List<TransactionsModel> _allTransactionsDataOngoing = <TransactionsModel>[];
+  List<TransactionsModel> _allTransactionsDataHistory = <TransactionsModel>[];
 
   MyState get state => _state;
   String get message => _message;
-  List<TransactionsModel> get allTransactionsData => _allTransactionsData;
+  List<TransactionsModel> get allTransactionsDataOngoing =>
+      _allTransactionsDataOngoing;
+  List<TransactionsModel> get allTransactionsDataHistory =>
+      _allTransactionsDataHistory;
 
   List<String> chipLabel = ['Ongoing', 'History'];
   int? value;
@@ -50,6 +54,7 @@ class SearchTransactionsViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  ///menampilkan semua transaksi berdasarkan "search" dan status "waiting" serta "completed" dari service transactions
   Future<void> showAllTransactionsBySearch({
     required bool statusOngoing,
     required String search,
@@ -58,9 +63,23 @@ class SearchTransactionsViewModel with ChangeNotifier {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      _allTransactionsData =
-          await _transactionsService.getAllTransactionsBySearch(
-              token: token, statusOngoing: statusOngoing, search: search);
+
+      if (statusOngoing == true) {
+        _allTransactionsDataOngoing =
+            await _transactionsService.getAllTransactionsBySearch(
+          token: token,
+          statusOngoing: true,
+          search: search,
+        );
+      }
+      if (statusOngoing == false) {
+        _allTransactionsDataHistory =
+            await _transactionsService.getAllTransactionsBySearch(
+          token: token,
+          statusOngoing: false,
+          search: search,
+        );
+      }
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
@@ -68,7 +87,9 @@ class SearchTransactionsViewModel with ChangeNotifier {
     }
   }
 
+  ///melakukan rating dan review counseling ke service transactions
   Future<void> createRateAndReviewCounselor({
+    required String counselorId,
     required String transactionsId,
     required int rating,
     required String review,
@@ -79,9 +100,31 @@ class SearchTransactionsViewModel with ChangeNotifier {
       final token = _loginData.getString('token') ?? '';
       await _transactionsService.postReviewCounselor(
           token: token,
-          transactionsId: transactionsId,
+          counselorId: counselorId,
+          transactionId: transactionsId,
           rating: rating,
           review: review);
+      changeState(MyState.loaded);
+    } catch (e) {
+      _message = e.toString();
+      changeState(MyState.failed);
+    }
+  }
+
+  ///mengarahkan user berdasarkan tombol link dari service transactions
+  Future<void> linkToCounseling({
+    required String? userId,
+    required String? transactionId,
+  }) async {
+    try {
+      changeState(MyState.loading);
+      _loginData = await SharedPreferences.getInstance();
+      final token = _loginData.getString('token') ?? '';
+      await _transactionsService.postUserJoinTransaction(
+        token: token,
+        userId: userId ?? '',
+        transactionId: transactionId ?? '',
+      );
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
