@@ -104,7 +104,7 @@ class _DetailReadingListScreenState extends State<DetailReadingListScreen> {
                             height: 16,
                           ),
                           Text(
-                            'Description (optional)',
+                            'Description',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,

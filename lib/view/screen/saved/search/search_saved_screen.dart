@@ -183,7 +183,7 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
                                           height: 16,
                                         ),
                                         Text(
-                                          'Description (optional)',
+                                          'Description',
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w400,
