@@ -60,11 +60,6 @@ class SavedViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeState(MyState state) {
-    _state = state;
-    notifyListeners();
-  }
-
   Future<void> showAllReadingList() async {
     try {
       changeState(MyState.loading);

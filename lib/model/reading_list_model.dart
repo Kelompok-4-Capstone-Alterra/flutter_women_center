@@ -60,7 +60,7 @@ class ReadingListArticlesModel {
 
   ReadingListArticlesModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    article = json['article'];
+    article = ArticleModel.fromJson(json['article']);
   }
 
   Map<String, dynamic> toMap() {
