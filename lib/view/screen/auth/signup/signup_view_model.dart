@@ -37,8 +37,12 @@ class SignupViewModel with ChangeNotifier {
     notifyListeners();
     try {
       changeState(MyState.loading);
+      await _authService.checkUsernameEmail(
+        email: data.email!,
+        username: data.username!,
+      );
       _signupData = data;
-      await _authService.verify(data.email!);
+      await _authService.verify(email: data.email!);
       changeState(MyState.loaded);
     } catch (e) {
       changeState(MyState.failed);
@@ -48,9 +52,8 @@ class SignupViewModel with ChangeNotifier {
   void signup(String otp) async {
     try {
       changeState(MyState.loading);
-
       _signupData.otp = otp;
-      _signupMessage = await _authService.register(_signupData);
+      _signupMessage = await _authService.register(registerData: _signupData);
       changeState(MyState.loaded);
     } catch (e) {
       changeState(MyState.failed);

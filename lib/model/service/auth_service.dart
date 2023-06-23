@@ -4,7 +4,26 @@ import 'package:capstone_project/model/login_model.dart';
 import 'package:capstone_project/model/signup_model.dart';
 
 class AuthService extends InterceptorApi {
-  Future<String> verify(String email) async {
+  Future<String> checkUsernameEmail({
+    required String email,
+    required String username,
+  }) async {
+    try {
+      const String url = Endpoint.baseUrl + Endpoint.checkUsernameEmail;
+      final response = await dio.post(
+        url,
+        data: {
+          'email': email,
+          'username': username,
+        },
+      );
+      return response.data["meta"]["message"].toString();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<String> verify({required String email}) async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.verify;
       final response = await dio.post(
@@ -19,7 +38,7 @@ class AuthService extends InterceptorApi {
     }
   }
 
-  Future<String> login(LoginModel loginData) async {
+  Future<String> login({required LoginModel loginData}) async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.login;
       final response = await dio.post(
@@ -36,7 +55,7 @@ class AuthService extends InterceptorApi {
     }
   }
 
-  Future<String> register(SignupModel registerData) async {
+  Future<String> register({required SignupModel registerData}) async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.register;
       final response = await dio.post(

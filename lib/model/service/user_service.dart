@@ -5,7 +5,7 @@ import '../api/endpoint.dart';
 import '../api/interceptor_api.dart';
 
 class UserService extends InterceptorApi {
-  Future<UserModel> getProfile(String token) async {
+  Future<UserModel> getProfile({required String token}) async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.userProfile;
       final response = await dio.get(
@@ -23,7 +23,10 @@ class UserService extends InterceptorApi {
     }
   }
 
-  Future<String> updateProfile(String token, UserModel userData) async {
+  Future<String> updateProfile({
+    required String token,
+    required UserModel userData,
+  }) async {
     const String url = Endpoint.baseUrl + Endpoint.userProfile;
     final FormData putData = await userData.toFormData();
     try {
@@ -44,8 +47,11 @@ class UserService extends InterceptorApi {
     }
   }
 
-  Future<String> changePassword(
-      String token, String currentPassword, String newPassword) async {
+  Future<String> changePassword({
+    required String token,
+    required String currentPassword,
+    required String newPassword,
+  }) async {
     const String url = Endpoint.baseUrl + Endpoint.userChangePassword;
     try {
       final response = await dio.put(

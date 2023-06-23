@@ -34,7 +34,11 @@ class ChangePasswordViewModel with ChangeNotifier {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      await _userService.changePassword(token, currentPassword, newPassword);
+      await _userService.changePassword(
+        token: token,
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+      );
       changeState(MyState.loaded);
     } catch (e) {
       changeState(MyState.failed);

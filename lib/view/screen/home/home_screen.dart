@@ -39,6 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
     homeProvider = Provider.of<HomeViewModel>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       homeProvider.initUser();
+      homeProvider.initArticleaData();
+      homeProvider.initCounselorData();
+      homeProvider.initCareerData();
     });
   }
 
@@ -197,23 +200,50 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-          // article
           HomeList(
             title: 'Newest Articles',
             subtitle: 'These are our best new articles of the week!',
             direction: ArticleListScreen.routename,
-            listItem: ListView.builder(
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return const HomeListItem(
-                  title:
-                      'How art can improve your mental health wajdawjndjansjdbwhbahs dhw ah dhabwhd ',
-                  subtitle: 'Mental Health',
-                  imageUrl:
-                      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Example_image.svg/600px-Example_image.svg.png',
-                  direction: '',
-                );
+            listItem: Consumer<HomeViewModel>(
+              builder: (context, value, _) {
+                if (value.articlesState == MyState.loading) {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: MyColor.primaryMain,
+                      ),
+                    ),
+                  );
+                } else if (value.articlesState == MyState.loaded) {
+                  final dataArticle = value.articlesMock;
+                  return ListView.builder(
+                    itemCount: dataArticle.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return HomeListItem(
+                        title: dataArticle[index].title ?? '',
+                        subtitle: dataArticle[index].topic ?? '',
+                        imageUrl: dataArticle[index].image ?? '',
+                        direction: '',
+                      );
+                    },
+                  );
+                } else {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: Text(
+                        'Error',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: MyColor.secondaryMain,
+                        ),
+                      ),
+                    ),
+                  );
+                }
               },
             ),
           ),
@@ -222,39 +252,68 @@ class _HomeScreenState extends State<HomeScreen> {
             title: 'Our Best Counselors',
             subtitle: "The best counselors based on user's rate and review",
             direction: CounselingTopicScreen.routeName,
-            listItem: ListView.builder(
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return HomeListItem(
-                  title: 'John Doe',
-                  subtitle: 'Self Development',
-                  imageUrl:
-                      'https://img.freepik.com/free-photo/man-wearing-t-shirt-gesturing_23-2149393645.jpg',
-                  direction: '',
-                  extraWidget: RatingBar(
-                    itemSize: 20,
-                    initialRating: 2.5,
-                    direction: Axis.horizontal,
-                    itemCount: 5,
-                    allowHalfRating: true,
-                    ratingWidget: RatingWidget(
-                      full: Icon(
-                        Icons.star,
-                        color: MyColor.warning,
-                      ),
-                      empty: Icon(
-                        Icons.star_border,
-                        color: MyColor.neutralLow,
-                      ),
-                      half: Icon(
-                        Icons.star_half,
-                        color: MyColor.warning,
+            listItem: Consumer<HomeViewModel>(
+              builder: (context, value, _) {
+                if (value.counselorState == MyState.loading) {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: MyColor.primaryMain,
                       ),
                     ),
-                    onRatingUpdate: (value) {},
-                  ),
-                );
+                  );
+                } else if (value.counselorState == MyState.loaded) {
+                  final dataCounnselor = value.counselorMock;
+                  return ListView.builder(
+                    itemCount: dataCounnselor.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return HomeListItem(
+                        title: dataCounnselor[index].name ?? '',
+                        subtitle: dataCounnselor[index].topic ?? '',
+                        imageUrl: dataCounnselor[index].profilePicture ?? '',
+                        direction: '',
+                        extraWidget: RatingBar(
+                          itemSize: 20,
+                          initialRating: dataCounnselor[index].rating ?? 0,
+                          direction: Axis.horizontal,
+                          itemCount: 5,
+                          allowHalfRating: true,
+                          ratingWidget: RatingWidget(
+                            full: Icon(
+                              Icons.star,
+                              color: MyColor.warning,
+                            ),
+                            empty: Icon(
+                              Icons.star_border,
+                              color: MyColor.neutralLow,
+                            ),
+                            half: Icon(
+                              Icons.star_half,
+                              color: MyColor.warning,
+                            ),
+                          ),
+                          onRatingUpdate: (value) {},
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: Text(
+                        'Error',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: MyColor.secondaryMain,
+                        ),
+                      ),
+                    ),
+                  );
+                }
               },
             ),
           ),
@@ -263,29 +322,60 @@ class _HomeScreenState extends State<HomeScreen> {
             title: 'Newest Career Information',
             subtitle: 'We have the newest career information for you!',
             direction: '',
-            listItem: ListView.builder(
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return HomeListItem(
-                  title: 'Human Resource',
-                  subtitle: 'PT Melodi Karya',
-                  imageUrl:
-                      'https://assets.kpmg.com/content/dam/kpmg/xx/images/2020/10/illustration-standing-man-touching-computer-screen.jpg/jcr:content/renditions/original',
-                  direction: '',
-                  extraWidget: Text(
-                    '${NumberFormat.currency(
-                      locale: 'id',
-                      symbol: 'Rp ',
-                      decimalDigits: 0,
-                    ).format(10000000)} ++',
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w500,
-                      color: MyColor.primaryMain,
+            listItem: Consumer<HomeViewModel>(
+              builder: (context, value, _) {
+                if (value.careerState == MyState.loading) {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: MyColor.primaryMain,
+                      ),
                     ),
-                  ),
-                );
+                  );
+                } else if (value.careerState == MyState.loaded) {
+                  final dataCareer = value.careerMock;
+                  return ListView.builder(
+                    itemCount: dataCareer.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return HomeListItem(
+                        title: dataCareer[index].jobPosition ?? '',
+                        subtitle: dataCareer[index].companyName ?? '',
+                        imageUrl: dataCareer[index].image ?? '',
+                        direction: '',
+                        extraWidget: Text(
+                          dataCareer[index].salary == 0
+                              ? 'Rp 0'
+                              : '${NumberFormat.currency(
+                                  locale: 'id',
+                                  symbol: 'Rp ',
+                                  decimalDigits: 0,
+                                ).format(dataCareer[index].salary)} ++',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                            color: MyColor.primaryMain,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: Text(
+                        'Error',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: MyColor.secondaryMain,
+                        ),
+                      ),
+                    ),
+                  );
+                }
               },
             ),
           ),

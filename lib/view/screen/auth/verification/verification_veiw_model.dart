@@ -59,7 +59,7 @@ class VerificationViewModel with ChangeNotifier {
   Future requestOtp() async {
     try {
       changeState(MyState.loading);
-      await _authService.verify(_email);
+      await _authService.verify(email: _email);
       changeState(MyState.loaded);
     } catch (e) {
       changeState(MyState.failed);
