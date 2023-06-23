@@ -137,7 +137,7 @@ class _SavedScreenState extends State<SavedScreen> {
                                   height: 16,
                                 ),
                                 Text(
-                                  'Description (optional)',
+                                  'Description',
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
@@ -320,7 +320,7 @@ class _SavedScreenState extends State<SavedScreen> {
                                             height: 16,
                                           ),
                                           Text(
-                                            'Description (optional)',
+                                            'Description',
                                             style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w400,
