@@ -1,6 +1,7 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
 import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
+import 'package:capstone_project/utils/components/empty/empty.dart';
 import 'package:capstone_project/utils/components/formarter/date_formater.dart';
 import 'package:capstone_project/utils/components/formarter/money_formater.dart';
 import 'package:capstone_project/utils/components/loading/loading.dart';
@@ -9,7 +10,6 @@ import 'package:capstone_project/utils/components/text_box/regular_text_box/text
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_search/search_transactions_screen.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_view_model.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
 import 'package:capstone_project/utils/my_color.dart';
@@ -27,17 +27,26 @@ class TransactionScreen extends StatefulWidget {
   State<TransactionScreen> createState() => _TransactionScreenState();
 }
 
-class _TransactionScreenState extends State<TransactionScreen> {
+class _TransactionScreenState extends State<TransactionScreen>
+    with SingleTickerProviderStateMixin {
+  //text editing controller
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _counselingCounselorController =
       TextEditingController();
+
+  //focus node
   final FocusNode _counselingCounselorNode = FocusNode();
+
+  //formatter
   final MoneyFormatter _moneyFormatter = MoneyFormatter();
+
+  //form key
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late String tanggal;
   late String harga;
 
+  //provider
   late final TransactionViewModel provider;
 
   @override
@@ -106,81 +115,69 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   if (transactionsProvider.state == MyState.loading) {
                     return const Loading();
                   } else {
-                    if (transactionsProvider.allTransactionsData.isEmpty) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset('assets/images/nothing_here.png'),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            Text(
-                              'Woops! Sorry, no result found.',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: MyColor.neutralHigh,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
+                    if (transactionsProvider
+                        .allTransactionsDataOngoing.isEmpty) {
+                      return const Empty();
                     } else {
                       return ListView.separated(
                         itemBuilder: (context, index) {
                           //tanggal
                           if (transactionsProvider
-                                  .allTransactionsData[index].createdAt ==
+                                  .allTransactionsDataOngoing[index]
+                                  .createdAt ==
                               null) {
                             tanggal = '-';
                           } else {
                             tanggal = DateFormatter.format(transactionsProvider
-                                .allTransactionsData[index].createdAt!);
+                                .allTransactionsDataOngoing[index].createdAt!);
                           }
                           //mata uang
                           if (transactionsProvider
-                                  .allTransactionsData[index].totalPrice ==
+                                  .allTransactionsDataOngoing[index]
+                                  .totalPrice ==
                               null) {
                             harga = '-';
                           } else {
                             harga = _moneyFormatter.formatRupiah(
                                 transactionsProvider
-                                    .allTransactionsData[index].totalPrice!);
+                                    .allTransactionsDataOngoing[index]
+                                    .totalPrice!);
                           }
                           //show transaction card
                           if (transactionsProvider
-                                  .allTransactionsData[index].counselorData ==
+                                  .allTransactionsDataOngoing[index]
+                                  .counselorData ==
                               null) {
                             return TransactionCard(
                               showButton: true,
                               labelButton: 'Link',
                               profilePicture: '-',
                               id: transactionsProvider
-                                          .allTransactionsData[index].id ==
+                                          .allTransactionsDataOngoing[index]
+                                          .id ==
                                       null
                                   ? '-'
                                   : transactionsProvider
-                                      .allTransactionsData[index].id!,
+                                      .allTransactionsDataOngoing[index].id!,
                               name: '-',
                               topic: '-',
                               consultationMethod: transactionsProvider
-                                          .allTransactionsData[index]
+                                          .allTransactionsDataOngoing[index]
                                           .consultationMethod ==
                                       null
                                   ? '-'
                                   : transactionsProvider
-                                      .allTransactionsData[index]
+                                      .allTransactionsDataOngoing[index]
                                       .consultationMethod!,
                               date: tanggal,
                               time: transactionsProvider
-                                          .allTransactionsData[index]
+                                          .allTransactionsDataOngoing[index]
                                           .timeStart ==
                                       null
                                   ? '-'
                                   : transactionsProvider
-                                      .allTransactionsData[index].timeStart!,
+                                      .allTransactionsDataOngoing[index]
+                                      .timeStart!,
                               price: harga,
                               onPressed: null,
                             );
@@ -189,68 +186,76 @@ class _TransactionScreenState extends State<TransactionScreen> {
                               showButton: true,
                               labelButton: 'Link',
                               profilePicture: transactionsProvider
-                                          .allTransactionsData[index]
+                                          .allTransactionsDataOngoing[index]
                                           .counselorData!
                                           .profilePicture ==
                                       null
                                   ? '-'
                                   : transactionsProvider
-                                      .allTransactionsData[index]
+                                      .allTransactionsDataOngoing[index]
                                       .counselorData!
                                       .profilePicture!,
                               id: transactionsProvider
-                                          .allTransactionsData[index].id ==
+                                          .allTransactionsDataOngoing[index]
+                                          .id ==
                                       null
                                   ? '-'
                                   : transactionsProvider
-                                      .allTransactionsData[index].id!,
+                                      .allTransactionsDataOngoing[index].id!,
                               name: transactionsProvider
-                                          .allTransactionsData[index]
+                                          .allTransactionsDataOngoing[index]
                                           .counselorData!
                                           .name ==
                                       null
                                   ? '-'
                                   : transactionsProvider
-                                      .allTransactionsData[index]
+                                      .allTransactionsDataOngoing[index]
                                       .counselorData!
                                       .name!,
                               topic: transactionsProvider
-                                          .allTransactionsData[index]
+                                          .allTransactionsDataOngoing[index]
                                           .counselorData!
                                           .topic ==
                                       null
                                   ? '-'
                                   : transactionsProvider
-                                      .allTransactionsData[index]
+                                      .allTransactionsDataOngoing[index]
                                       .counselorData!
                                       .topic!,
                               consultationMethod: transactionsProvider
-                                          .allTransactionsData[index]
+                                          .allTransactionsDataOngoing[index]
                                           .consultationMethod ==
                                       null
                                   ? '-'
                                   : transactionsProvider
-                                      .allTransactionsData[index]
+                                      .allTransactionsDataOngoing[index]
                                       .consultationMethod!,
                               date: tanggal,
                               time: transactionsProvider
-                                          .allTransactionsData[index]
+                                          .allTransactionsDataOngoing[index]
                                           .timeStart ==
                                       null
                                   ? '-'
                                   : transactionsProvider
-                                      .allTransactionsData[index].timeStart!,
+                                      .allTransactionsDataOngoing[index]
+                                      .timeStart!,
                               price: harga,
-                              onPressed: () async {
-                                final Uri _url = Uri.parse(transactionsProvider
-                                            .allTransactionsData[index].link ==
-                                        null
-                                    ? '-'
-                                    : transactionsProvider
-                                        .allTransactionsData[index].link!);
-                                if (!await launchUrl(_url)) {
-                                  throw Exception('Could not launch $_url');
-                                }
+                              onPressed: () {
+                                transactionsProvider.linkToCounseling(
+                                  userId: transactionsProvider
+                                      .allTransactionsDataOngoing[index].userId,
+                                  transactionId: transactionsProvider
+                                      .allTransactionsDataOngoing[index].id,
+                                );
+                                // final Uri _url = Uri.parse(transactionsProvider
+                                //             .allTransactionsDataOngoing[index].link ==
+                                //         null
+                                //     ? '-'
+                                //     : transactionsProvider
+                                //         .allTransactionsDataOngoing[index].link!);
+                                // if (!await launchUrl(_url)) {
+                                //   throw Exception('Could not launch $_url');
+                                // }
                               },
                             );
                           }
@@ -260,12 +265,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
                             height: 8,
                           );
                         },
-                        itemCount:
-                            transactionsProvider.allTransactionsData.length,
+                        itemCount: transactionsProvider
+                            .allTransactionsDataOngoing.length,
                       );
                     }
                   }
-                  ;
                 }),
               ),
               //history
@@ -280,168 +284,255 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   if (transactionsProvider.state == MyState.loading) {
                     return const Loading();
                   } else {
-                    if (transactionsProvider.allTransactionsData.isEmpty) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset('assets/images/nothing_here.png'),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            Text(
-                              'Woops! Sorry, no result found.',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: MyColor.neutralHigh,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
+                    if (transactionsProvider
+                        .allTransactionsDataHistory.isEmpty) {
+                      return const Empty();
                     } else {
                       return ListView.separated(
                         itemBuilder: (context, index) {
-                          return Consumer<TransactionViewModel>(
-                              builder: (context, transactionProvider, _) {
-                            //tanggal
-                            if (transactionsProvider
-                                    .allTransactionsData[index].createdAt ==
-                                null) {
-                              tanggal = '-';
-                            } else {
-                              tanggal = DateFormatter.format(
-                                  transactionsProvider
-                                      .allTransactionsData[index].createdAt!);
-                            }
-                            //mata uang
-                            if (transactionsProvider
-                                    .allTransactionsData[index].totalPrice ==
-                                null) {
-                              harga = '-';
-                            } else {
-                              harga = _moneyFormatter.formatRupiah(
-                                  transactionsProvider
-                                      .allTransactionsData[index].totalPrice!);
-                            }
-                            //show transaction card
-                            if (transactionsProvider
-                                    .allTransactionsData[index].counselorData ==
-                                null) {
-                              return TransactionCard(
-                                showButton: true,
-                                labelButton: 'Rate & Review',
-                                profilePicture: '-',
-                                id: transactionsProvider
-                                            .allTransactionsData[index].id ==
-                                        null
-                                    ? '-'
-                                    : transactionsProvider
-                                        .allTransactionsData[index].id!,
-                                name: '-',
-                                topic: '-',
-                                consultationMethod: transactionsProvider
-                                            .allTransactionsData[index]
-                                            .consultationMethod ==
-                                        null
-                                    ? '-'
-                                    : transactionsProvider
-                                        .allTransactionsData[index]
-                                        .consultationMethod!,
-                                date: tanggal,
-                                time: transactionsProvider
-                                            .allTransactionsData[index]
-                                            .timeStart ==
-                                        null
-                                    ? '-'
-                                    : transactionsProvider
-                                        .allTransactionsData[index].timeStart!,
-                                price: harga,
-                                onPressed: null,
-                              );
-                            } else {
-                              return TransactionCard(
-                                showButton: transactionProvider
-                                            .allTransactionsData[index]
-                                            .isReviewed ==
-                                        false
-                                    ? true
-                                    : false,
-                                labelButton: 'Rate & Review',
-                                profilePicture: transactionsProvider
-                                            .allTransactionsData[index]
-                                            .counselorData!
-                                            .profilePicture ==
-                                        null
-                                    ? '-'
-                                    : transactionsProvider
-                                        .allTransactionsData[index]
-                                        .counselorData!
-                                        .profilePicture!,
-                                id: transactionsProvider
-                                            .allTransactionsData[index].id ==
-                                        null
-                                    ? '-'
-                                    : transactionsProvider
-                                        .allTransactionsData[index].id!,
-                                name: transactionsProvider
-                                            .allTransactionsData[index]
-                                            .counselorData!
-                                            .name ==
-                                        null
-                                    ? '-'
-                                    : transactionsProvider
-                                        .allTransactionsData[index]
-                                        .counselorData!
-                                        .name!,
-                                topic: transactionsProvider
-                                            .allTransactionsData[index]
-                                            .counselorData!
-                                            .topic ==
-                                        null
-                                    ? '-'
-                                    : transactionsProvider
-                                        .allTransactionsData[index]
-                                        .counselorData!
-                                        .topic!,
-                                consultationMethod: transactionsProvider
-                                            .allTransactionsData[index]
-                                            .consultationMethod ==
-                                        null
-                                    ? '-'
-                                    : transactionsProvider
-                                        .allTransactionsData[index]
-                                        .consultationMethod!,
-                                date: tanggal,
-                                time: transactionsProvider
-                                            .allTransactionsData[index]
-                                            .timeStart ==
-                                        null
-                                    ? '-'
-                                    : transactionsProvider
-                                        .allTransactionsData[index].timeStart!,
-                                price: harga,
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                    isDismissible: false,
-                                    isScrollControlled: true,
-                                    context: context,
-                                    builder: (context) {
-                                      for (int i = 0;
-                                          i < provider.counselorRate.length;
-                                          i++) {
-                                        provider.counselorRate[i] = false;
-                                      }
-                                      provider.counselorTotalRate = 0;
-                                      return CustomBottomSheetBuilder(
-                                        tinggi: 680,
-                                        header: true,
-                                        judul: 'Give Rate & Review',
-                                        isi: [
-                                          SizedBox(
-                                            height: 123,
+                          //tanggal
+                          if (transactionsProvider
+                                  .allTransactionsDataHistory[index]
+                                  .createdAt ==
+                              null) {
+                            tanggal = '-';
+                          } else {
+                            tanggal = DateFormatter.format(transactionsProvider
+                                .allTransactionsDataHistory[index].createdAt!);
+                          }
+                          //mata uang
+                          if (transactionsProvider
+                                  .allTransactionsDataHistory[index]
+                                  .totalPrice ==
+                              null) {
+                            harga = '-';
+                          } else {
+                            harga = _moneyFormatter.formatRupiah(
+                                transactionsProvider
+                                    .allTransactionsDataHistory[index]
+                                    .totalPrice!);
+                          }
+                          //show transaction card
+                          if (transactionsProvider
+                                  .allTransactionsDataHistory[index]
+                                  .counselorData ==
+                              null) {
+                            return TransactionCard(
+                              showButton: true,
+                              labelButton: 'Rate & Review',
+                              profilePicture: '-',
+                              id: transactionsProvider
+                                          .allTransactionsDataHistory[index]
+                                          .id ==
+                                      null
+                                  ? '-'
+                                  : transactionsProvider
+                                      .allTransactionsDataHistory[index].id!,
+                              name: '-',
+                              topic: '-',
+                              consultationMethod: transactionsProvider
+                                          .allTransactionsDataHistory[index]
+                                          .consultationMethod ==
+                                      null
+                                  ? '-'
+                                  : transactionsProvider
+                                      .allTransactionsDataHistory[index]
+                                      .consultationMethod!,
+                              date: tanggal,
+                              time: transactionsProvider
+                                          .allTransactionsDataHistory[index]
+                                          .timeStart ==
+                                      null
+                                  ? '-'
+                                  : transactionsProvider
+                                      .allTransactionsDataHistory[index]
+                                      .timeStart!,
+                              price: harga,
+                              onPressed: null,
+                            );
+                          } else {
+                            return TransactionCard(
+                              showButton: transactionsProvider
+                                          .allTransactionsDataHistory[index]
+                                          .isReviewed ==
+                                      false
+                                  ? true
+                                  : false,
+                              labelButton: 'Rate & Review',
+                              profilePicture: transactionsProvider
+                                          .allTransactionsDataHistory[index]
+                                          .counselorData!
+                                          .profilePicture ==
+                                      null
+                                  ? '-'
+                                  : transactionsProvider
+                                      .allTransactionsDataHistory[index]
+                                      .counselorData!
+                                      .profilePicture!,
+                              id: transactionsProvider
+                                          .allTransactionsDataHistory[index]
+                                          .id ==
+                                      null
+                                  ? '-'
+                                  : transactionsProvider
+                                      .allTransactionsDataHistory[index].id!,
+                              name: transactionsProvider
+                                          .allTransactionsDataHistory[index]
+                                          .counselorData!
+                                          .name ==
+                                      null
+                                  ? '-'
+                                  : transactionsProvider
+                                      .allTransactionsDataHistory[index]
+                                      .counselorData!
+                                      .name!,
+                              topic: transactionsProvider
+                                          .allTransactionsDataHistory[index]
+                                          .counselorData!
+                                          .topic ==
+                                      null
+                                  ? '-'
+                                  : transactionsProvider
+                                      .allTransactionsDataHistory[index]
+                                      .counselorData!
+                                      .topic!,
+                              consultationMethod: transactionsProvider
+                                          .allTransactionsDataHistory[index]
+                                          .consultationMethod ==
+                                      null
+                                  ? '-'
+                                  : transactionsProvider
+                                      .allTransactionsDataHistory[index]
+                                      .consultationMethod!,
+                              date: tanggal,
+                              time: transactionsProvider
+                                          .allTransactionsDataHistory[index]
+                                          .timeStart ==
+                                      null
+                                  ? '-'
+                                  : transactionsProvider
+                                      .allTransactionsDataHistory[index]
+                                      .timeStart!,
+                              price: harga,
+                              onPressed: () {
+                                showModalBottomSheet(
+                                  isDismissible: false,
+                                  isScrollControlled: true,
+                                  context: context,
+                                  builder: (context) {
+                                    for (int i = 0;
+                                        i < provider.counselorRate.length;
+                                        i++) {
+                                      provider.counselorRate[i] = false;
+                                    }
+                                    provider.counselorTotalRate = 0;
+                                    return CustomBottomSheetBuilder(
+                                      tinggi: 680,
+                                      header: true,
+                                      judul: 'Give Rate & Review',
+                                      isi: [
+                                        SizedBox(
+                                          height: 123,
+                                          width: double.infinity,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'How was your counselor?',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: MyColor.neutralHigh,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 250,
+                                                  height: 50,
+                                                  child: ListView.builder(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    shrinkWrap: true,
+                                                    itemCount: provider
+                                                        .counselorRate.length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return Consumer<
+                                                          TransactionViewModel>(
+                                                        builder: (context,
+                                                            transactionProvider,
+                                                            _) {
+                                                          if (transactionProvider
+                                                                      .counselorRate[
+                                                                  index] ==
+                                                              true) {
+                                                            return IconButton(
+                                                              onPressed: () {
+                                                                transactionProvider
+                                                                    .changeCounselorRate(
+                                                                        index);
+                                                              },
+                                                              icon: Icon(
+                                                                Icons.star,
+                                                                size: 32,
+                                                                color: MyColor
+                                                                    .warning,
+                                                              ),
+                                                            );
+                                                          } else {
+                                                            return IconButton(
+                                                              onPressed: () {
+                                                                transactionProvider
+                                                                    .changeCounselorRate(
+                                                                        index);
+                                                              },
+                                                              icon: Icon(
+                                                                Icons.star,
+                                                                size: 32,
+                                                                color: MyColor
+                                                                    .neutralLow,
+                                                              ),
+                                                            );
+                                                          }
+                                                        },
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                                Consumer<TransactionViewModel>(
+                                                    builder: (context,
+                                                        transactionProvider2,
+                                                        _) {
+                                                  if (transactionProvider2
+                                                          .counselorRate[0] ==
+                                                      true) {
+                                                    return const SizedBox();
+                                                  }
+                                                  return Text(
+                                                    'Please give us the rating',
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: MyColor.danger,
+                                                    ),
+                                                  );
+                                                }),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 16,
+                                        ),
+                                        Form(
+                                          key: _formKey,
+                                          child: SizedBox(
+                                            height: 106,
                                             width: double.infinity,
                                             child: Padding(
                                               padding:
@@ -450,10 +541,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.start,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    'How was your counselor?',
+                                                    'Any words about your counseling or counselor?',
                                                     style: TextStyle(
                                                       fontSize: 14,
                                                       fontWeight:
@@ -462,206 +554,97 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                           MyColor.neutralHigh,
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                    width: 250,
-                                                    height: 50,
-                                                    child: ListView.builder(
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      shrinkWrap: true,
-                                                      itemCount: provider
-                                                          .counselorRate.length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        return Consumer<
-                                                            TransactionViewModel>(
-                                                          builder: (context,
-                                                              transactionProvider,
-                                                              _) {
-                                                            if (transactionProvider
-                                                                        .counselorRate[
-                                                                    index] ==
-                                                                true) {
-                                                              return IconButton(
-                                                                onPressed: () {
-                                                                  transactionProvider
-                                                                      .changeCounselorRate(
-                                                                          index);
-                                                                },
-                                                                icon: Icon(
-                                                                  Icons.star,
-                                                                  size: 32,
-                                                                  color: MyColor
-                                                                      .warning,
-                                                                ),
-                                                              );
-                                                            } else {
-                                                              return IconButton(
-                                                                onPressed: () {
-                                                                  transactionProvider
-                                                                      .changeCounselorRate(
-                                                                          index);
-                                                                },
-                                                                icon: Icon(
-                                                                  Icons.star,
-                                                                  size: 32,
-                                                                  color: MyColor
-                                                                      .neutralLow,
-                                                                ),
-                                                              );
-                                                            }
-                                                          },
-                                                        );
-                                                      },
-                                                    ),
+                                                  TextBox(
+                                                    textEditingController:
+                                                        _counselingCounselorController,
+                                                    hintText:
+                                                        'Type what you are thinking here ...',
+                                                    last: true,
+                                                    autoFocus: true,
+                                                    currentFocus:
+                                                        _counselingCounselorNode,
+                                                    validator: (value) {
+                                                      if (value == null ||
+                                                          value.isEmpty) {
+                                                        return "review is required";
+                                                      }
+                                                      return null;
+                                                    },
                                                   ),
-                                                  Consumer<
-                                                          TransactionViewModel>(
-                                                      builder: (context,
-                                                          transactionProvider2,
-                                                          _) {
-                                                    if (transactionProvider2
-                                                            .counselorRate[0] ==
-                                                        true) {
-                                                      return const SizedBox();
-                                                    }
-                                                    return Text(
-                                                      'Please give us the rating',
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: MyColor.danger,
-                                                      ),
-                                                    );
-                                                  }),
                                                 ],
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(
-                                            height: 16,
-                                          ),
-                                          Form(
-                                            key: _formKey,
-                                            child: SizedBox(
-                                              height: 106,
-                                              width: double.infinity,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      'Any words about your counseling or counselor?',
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            MyColor.neutralHigh,
-                                                      ),
-                                                    ),
-                                                    TextBox(
-                                                      textEditingController:
-                                                          _counselingCounselorController,
-                                                      hintText:
-                                                          'Type what you are thinking here ...',
-                                                      last: true,
-                                                      autoFocus: true,
-                                                      currentFocus:
-                                                          _counselingCounselorNode,
-                                                      validator: (value) {
-                                                        if (value == null ||
-                                                            value.isEmpty) {
-                                                          return "Wajib diisi";
-                                                        }
-                                                        return null;
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 16,
-                                          ),
-                                          Consumer<TransactionViewModel>(
-                                              builder: (context,
-                                                  transactionProvider, _) {
-                                            var totalRate = transactionProvider
-                                                .counselorRate
-                                                .where(
-                                              (element) => element == true,
-                                            );
-                                            return PrimaryButton(
-                                              teks: 'Done',
-                                              onPressed: transactionProvider
-                                                          .counselorRate[0] ==
-                                                      false
-                                                  ? null
-                                                  : () {
-                                                      if (_formKey.currentState!
-                                                          .validate()) {
-                                                        print(transactionProvider
-                                                            .allTransactionsData[
-                                                                index]
-                                                            .id!);
-                                                        print(totalRate.length);
-                                                        print(
+                                        ),
+                                        const SizedBox(
+                                          height: 16,
+                                        ),
+                                        Consumer<TransactionViewModel>(builder:
+                                            (context, transactionProvider, _) {
+                                          var totalRate = transactionProvider
+                                              .counselorRate
+                                              .where(
+                                            (element) => element == true,
+                                          );
+                                          return PrimaryButton(
+                                            teks: 'Done',
+                                            onPressed: transactionProvider
+                                                        .counselorRate[0] ==
+                                                    false
+                                                ? null
+                                                : () {
+                                                    if (_formKey.currentState!
+                                                        .validate()) {
+                                                      print(transactionProvider
+                                                          .allTransactionsDataHistory[
+                                                              index]
+                                                          .id);
+                                                      transactionProvider
+                                                          .createRateAndReviewCounselor(
+                                                        counselorId:
+                                                            transactionProvider
+                                                                .allTransactionsDataHistory[
+                                                                    index]
+                                                                .counselorId,
+                                                        transactionId:
+                                                            transactionProvider
+                                                                .allTransactionsDataHistory[
+                                                                    index]
+                                                                .id,
+                                                        rating:
+                                                            totalRate.length,
+                                                        review:
                                                             _counselingCounselorController
-                                                                .text);
-                                                        // transactionProvider
-                                                        //     .createRateAndReviewCounselor(
-                                                        //   transactionsId: transactionProvider
-                                                        //               .allTransactionsData[
-                                                        //                   index]
-                                                        //               .id ==
-                                                        //           null
-                                                        //       ? ''
-                                                        //       : transactionProvider
-                                                        //           .allTransactionsData[
-                                                        //               index]
-                                                        //           .id!,
-                                                        //   rating:
-                                                        //       totalRate.length,
-                                                        //   review:
-                                                        //       _counselingCounselorController
-                                                        //           .text,
-                                                        // );
-                                                        _counselingCounselorController
-                                                            .clear();
-                                                        Navigator.pop(context);
+                                                                .text,
+                                                      );
+                                                      _counselingCounselorController
+                                                          .clear();
+                                                      if (context.mounted) {
                                                         transactionProvider
                                                             .showAllTransactions(
                                                                 statusOngoing:
                                                                     false);
+                                                        Navigator.pop(context);
                                                       }
-                                                    },
-                                            );
-                                          }),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                              );
-                            }
-                          });
+                                                    }
+                                                  },
+                                          );
+                                        }),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          }
                         },
                         separatorBuilder: (context, index) {
                           return const SizedBox(
                             height: 8,
                           );
                         },
-                        itemCount:
-                            transactionsProvider.allTransactionsData.length,
+                        itemCount: transactionsProvider
+                            .allTransactionsDataHistory.length,
                       );
                     }
                   }

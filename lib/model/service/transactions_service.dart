@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import '../api/endpoint.dart';
 
 class TransactionsService extends InterceptorApi {
+  ///mengembalikan List<TransactionsModel> berdasarkan status "waiting" atau "completed" dari API transactions
   Future<List<TransactionsModel>> getAllTransactions(
       {required String token, required bool statusOngoing}) async {
     try {
@@ -29,6 +30,7 @@ class TransactionsService extends InterceptorApi {
     }
   }
 
+  ///mengembalikan List<TransactionsModel> berdasarkan status "waiting" atau "completed" serta berdasarkan "search" dari API transactions
   Future<List<TransactionsModel>> getAllTransactionsBySearch(
       {required String token,
       required bool statusOngoing,
@@ -57,25 +59,54 @@ class TransactionsService extends InterceptorApi {
     }
   }
 
+  ///mengunggah rating dan review untuk counseling ke API counselors
   Future<String> postReviewCounselor(
       {required String token,
-      required String transactionsId,
+      required String counselorId,
+      required String transactionId,
       required int rating,
       required String review}) async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.counselors;
       late Response response;
       response = await dio.post(
-        '$url/$transactionsId/reviews',
+        '$url/$counselorId/reviews',
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
           },
         ),
         data: {
-          'transaction_id': transactionsId,
+          'transaction_id': transactionId,
           'rating': rating,
           'review': review,
+        },
+      );
+      final String message = response.data['meta']['message'].toString();
+      return message;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  ///mengarahkan user ke link counseling melalui API transactions
+  Future<String> postUserJoinTransaction(
+      {required String token,
+      required String userId,
+      required String transactionId}) async {
+    try {
+      const String url = Endpoint.baseUrl + Endpoint.transactions;
+      late Response response;
+      response = await dio.post(
+        '$url/join',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+        data: {
+          'user_id': userId,
+          'transaction_id': transactionId,
         },
       );
       final String message = response.data['meta']['message'].toString();

@@ -1,4 +1,6 @@
+import 'package:capstone_project/model/reading_list_model.dart';
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
+import 'package:capstone_project/utils/components/loading/loading.dart';
 import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
@@ -13,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:capstone_project/utils/components/text_box/regular_text_box/text_box.dart';
 import '../../../../utils/components/buttons/primary_button.dart';
+import '../../../../utils/components/empty/empty.dart';
 import '../../../../utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 
 class DetailReadingListScreen extends StatefulWidget {
@@ -26,25 +29,41 @@ class DetailReadingListScreen extends StatefulWidget {
 }
 
 class _DetailReadingListScreenState extends State<DetailReadingListScreen> {
+  //text editing controller
   final TextEditingController _editListNameController = TextEditingController();
   final TextEditingController _editDescriptionController =
       TextEditingController();
   final TextEditingController _searchController = TextEditingController();
+
+  //focus node
   final FocusNode _editListNameNode = FocusNode();
   final FocusNode _editDescriptionNode = FocusNode();
+
+  //form key
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  //provider
+  late final DetailReadingListViewmodel provider;
+
+  @override
+  void initState() {
+    super.initState();
+    provider = Provider.of<DetailReadingListViewmodel>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      provider.showReadingList(id: provider.id);
+    });
+  }
 
   @override
   void dispose() {
     super.dispose();
     _editListNameController.dispose();
     _editDescriptionController.dispose();
+    _searchController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final DetailReadingListViewmodel provider =
-        Provider.of<DetailReadingListViewmodel>(context, listen: false);
     return Scaffold(
       appBar: CustomAppBar(
         preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
@@ -134,13 +153,17 @@ class _DetailReadingListScreenState extends State<DetailReadingListScreen> {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 provider.updateReadingList(
-                                  id: provider.readingListData.id!,
+                                  id: provider.readingListData.id,
                                   name: _editListNameController.text,
                                   description: _editDescriptionController.text,
                                 );
-                                provider.showReadingList(
-                                    id: provider.readingListData.id!);
-                                Navigator.pop(context);
+                                _editListNameController.clear();
+                                _editDescriptionController.clear();
+                                if (context.mounted) {
+                                  Navigator.pop(context);
+                                  provider.showReadingList(
+                                      id: provider.readingListData.id);
+                                }
                               }
                             },
                           ),
@@ -152,7 +175,9 @@ class _DetailReadingListScreenState extends State<DetailReadingListScreen> {
                 cancelEvent: () {
                   _editListNameController.clear();
                   _editDescriptionController.clear();
-                  Navigator.pop(context);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
                 },
               );
             },
@@ -161,11 +186,15 @@ class _DetailReadingListScreenState extends State<DetailReadingListScreen> {
             editListNameFocusNode: _editListNameNode,
             editDescriptionFocusNode: _editDescriptionNode,
             deleteEvent: () {
-              provider.removeReadingList(id: provider.readingListData.id!);
-              Navigator.popUntil(
-                context,
-                ModalRoute.withName(SavedScreen.routeName),
-              );
+              _editDescriptionController.clear();
+              _editListNameController.clear();
+              provider.removeReadingList(id: provider.readingListData.id);
+              if (context.mounted) {
+                Navigator.popUntil(
+                  context,
+                  ModalRoute.withName(SavedScreen.routeName),
+                );
+              }
             },
           )
         ],
@@ -174,215 +203,157 @@ class _DetailReadingListScreenState extends State<DetailReadingListScreen> {
         strokeWidth: 2,
         color: MyColor.primaryMain,
         onRefresh: () {
-          return provider.showReadingList(id: provider.readingListData.id!);
+          return provider.showReadingList(id: provider.readingListData.id);
         },
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 16,
-            ),
-            Container(
-              height: 114,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 16,
-              ),
-              width: double.infinity,
-              child: Consumer<DetailReadingListViewmodel>(
-                  builder: (context, detailReadingListProvider, _) {
-                if (detailReadingListProvider.state == MyState.loading) {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: MyColor.primaryMain,
+        child: Consumer<DetailReadingListViewmodel>(
+            builder: (context, detailReadingListProvider, _) {
+          if (detailReadingListProvider.state == MyState.loading) {
+            return const Loading();
+          } else {
+            if (detailReadingListProvider.readingListData ==
+                ReadingListModel()) {
+              return const Empty();
+            } else {
+              final DateTime today = DateTime.now();
+              final DateTime daysCreated = DateTime.parse(
+                  detailReadingListProvider.readingListData.createdAt!);
+              final Duration days = today.difference(daysCreated);
+              return Column(
+                children: [
+                  Container(
+                    height: 114,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
                     ),
-                  );
-                } else {
-                  final DateTime today = DateTime.now();
-                  final DateTime daysCreated = DateTime.parse(
-                      detailReadingListProvider.readingListData.createdAt!);
-                  final Duration days = today.difference(daysCreated);
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        detailReadingListProvider.readingListData.name ?? '-',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: MyColor.primaryMain,
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          detailReadingListProvider.readingListData.name ?? '-',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: MyColor.primaryMain,
+                          ),
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            detailReadingListProvider
-                                        .readingListData.articleTotal ==
-                                    0
-                                ? 'No Article Yet'
-                                : detailReadingListProvider
-                                            .readingListData.articleTotal ==
-                                        1
-                                    ? '1 Article'
-                                    : '${detailReadingListProvider.readingListData.articleTotal} Articles',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w500,
-                              color: MyColor.neutralHigh,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              detailReadingListProvider
+                                          .readingListData.articleTotal ==
+                                      0
+                                  ? 'No Article Yet'
+                                  : detailReadingListProvider
+                                              .readingListData.articleTotal ==
+                                          1
+                                      ? '1 Article'
+                                      : '${detailReadingListProvider.readingListData.articleTotal} Articles',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w500,
+                                color: MyColor.neutralHigh,
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            '${days.inDays} days ago',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w500,
-                              color: MyColor.neutralMediumLow,
+                            const SizedBox(
+                              width: 8,
                             ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        detailReadingListProvider.readingListData.description ??
-                            '-',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
-                          color: MyColor.neutralHigh,
+                            Text(
+                              '${days.inDays} days ago',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w500,
+                                color: MyColor.neutralMediumLow,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  );
-                }
-              }),
-            ),
-            Consumer<DetailReadingListViewmodel>(
-                builder: (context, detailReadingListProvider, _) {
-              if (detailReadingListProvider.state == MyState.loading) {
-                return Flexible(
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: MyColor.primaryMain,
+                        Text(
+                          detailReadingListProvider
+                              .readingListData.description!,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                            color: MyColor.neutralHigh,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                );
-              } else {
-                if (detailReadingListProvider.readingListData.articleTotal ==
-                    0) {
-                  return Flexible(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset('assets/images/nothing_here.png'),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          Text(
-                            'Woops! Sorry, no result found.',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: MyColor.neutralHigh,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                } else {
-                  return Flexible(
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Flexible(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                      child: ListView.separated(
-                        itemCount: detailReadingListProvider
-                            .readingListData.articleTotal!,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              //ke halaman view article
-                              Navigator.pushNamed(
-                                  context, ArticleDetailsScreen.routename);
-                            },
-                            child: VerticalArticleCard(
-                              deleteEvent: () {
-                                detailReadingListProvider
-                                    .removeArticleFromReadingList(
-                                        id: detailReadingListProvider
-                                            .readingListData
-                                            .readingListArticles![index]
-                                            .article!
-                                            .id!);
-                                detailReadingListProvider.showReadingList(
-                                    id: detailReadingListProvider
-                                        .readingListData.id!);
+                      child: detailReadingListProvider
+                              .readingListData.readingListArticles!.isEmpty
+                          ? const Empty()
+                          : ListView.separated(
+                              itemCount: detailReadingListProvider
+                                  .readingListData.articleTotal!,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    //ke halaman view article
+                                    Navigator.pushNamed(context,
+                                        ArticleDetailsScreen.routename);
+                                  },
+                                  child: VerticalArticleCard(
+                                    deleteEvent: () {
+                                      detailReadingListProvider
+                                          .removeArticleFromReadingList(
+                                              id: detailReadingListProvider
+                                                  .readingListData
+                                                  .readingListArticles![index]
+                                                  .id);
+                                      if (context.mounted) {
+                                        Navigator.pop(context);
+                                        detailReadingListProvider
+                                            .showReadingList(
+                                                id: detailReadingListProvider
+                                                    .readingListData.id);
+                                      }
+                                    },
+                                    articleImageLink: detailReadingListProvider
+                                        .readingListData
+                                        .readingListArticles![index]
+                                        .article!
+                                        .image!,
+                                    articleTitle: detailReadingListProvider
+                                        .readingListData
+                                        .readingListArticles![index]
+                                        .article!
+                                        .title!,
+                                    articleAuthor: detailReadingListProvider
+                                        .readingListData
+                                        .readingListArticles![index]
+                                        .article!
+                                        .author!,
+                                    articleCategory: detailReadingListProvider
+                                        .readingListData
+                                        .readingListArticles![index]
+                                        .article!
+                                        .category!,
+                                  ),
+                                );
                               },
-                              articleImageLink: detailReadingListProvider
-                                          .readingListData
-                                          .readingListArticles ==
-                                      null
-                                  ? '-'
-                                  : detailReadingListProvider
-                                          .readingListData
-                                          .readingListArticles![index]
-                                          .article!
-                                          .image ??
-                                      '-',
-                              articleTitle: detailReadingListProvider
-                                          .readingListData
-                                          .readingListArticles ==
-                                      null
-                                  ? '-'
-                                  : detailReadingListProvider
-                                          .readingListData
-                                          .readingListArticles![index]
-                                          .article!
-                                          .title ??
-                                      '-',
-                              articleAuthor: detailReadingListProvider
-                                          .readingListData
-                                          .readingListArticles ==
-                                      null
-                                  ? '-'
-                                  : detailReadingListProvider
-                                          .readingListData
-                                          .readingListArticles![index]
-                                          .article!
-                                          .author ??
-                                      '-',
-                              articleCategory: detailReadingListProvider
-                                          .readingListData
-                                          .readingListArticles ==
-                                      null
-                                  ? '-'
-                                  : detailReadingListProvider
-                                          .readingListData
-                                          .readingListArticles![index]
-                                          .article!
-                                          .category ??
-                                      '-',
+                              separatorBuilder: (context, index) {
+                                return const SizedBox(height: 16);
+                              },
                             ),
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(height: 16);
-                        },
-                      ),
                     ),
-                  );
-                }
-              }
-            }),
-          ],
-        ),
+                  ),
+                ],
+              );
+            }
+          }
+        }),
       ),
     );
   }

@@ -8,7 +8,7 @@ class SavedViewModel with ChangeNotifier {
   MyState myState = MyState.initial;
   bool oldestCheckStatus = true;
   bool sortingByOldest = true;
-  
+
   late SharedPreferences _loginData;
   MyState _state = MyState.initial;
   String _message = '';
@@ -50,7 +50,7 @@ class SavedViewModel with ChangeNotifier {
     notifyListeners();
 
     sortingByOldest = false;
-    
+
     changeState(MyState.loaded);
     notifyListeners();
   }
@@ -60,11 +60,13 @@ class SavedViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  ///menampilkan semua data reading list dari service reading list
   Future<void> showAllReadingList() async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
+      print(token);
       _allReadingListData =
           await _readingListService.getAllReadingList(token: token);
       changeState(MyState.loaded);
@@ -74,15 +76,18 @@ class SavedViewModel with ChangeNotifier {
     }
   }
 
+  ///menampilkan semua data reading list berdasarkan sort by "oldest" atau "newest" dari servce reading list
   Future<void> showReadingListSortByOldestOrNewest(
-      {required bool sortByOldest}) async {
+      {required bool? sortByOldest}) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       _allReadingListData =
           await _readingListService.getReadingListSortByOldestOrNewest(
-              token: token, sortByOldest: sortByOldest);
+        token: token,
+        sortByOldest: sortByOldest ?? true,
+      );
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
@@ -90,14 +95,18 @@ class SavedViewModel with ChangeNotifier {
     }
   }
 
+  ///membuat reading list baru ke service reading list
   Future<void> createReadingList(
-      {required String name, required String description}) async {
+      {required String? name, required String? description}) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       await _readingListService.postReadingList(
-          token: token, name: name, description: description);
+        token: token,
+        name: name ?? '',
+        description: description ?? '',
+      );
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
@@ -105,16 +114,21 @@ class SavedViewModel with ChangeNotifier {
     }
   }
 
+  ///mengubah informasi reading list ke service reading list
   Future<void> updateReadingList(
-      {required String id,
-      required String name,
-      required String description}) async {
+      {required String? id,
+      required String? name,
+      required String? description}) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       await _readingListService.putReadingList(
-          token: token, id: id, name: name, description: description);
+        token: token,
+        id: id ?? '',
+        name: name ?? '',
+        description: description ?? '',
+      );
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
@@ -122,12 +136,16 @@ class SavedViewModel with ChangeNotifier {
     }
   }
 
-  Future<void> removeReadingList({required String id}) async {
+  ///menghapus reading list dari service reading list
+  Future<void> removeReadingList({required String? id}) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      await _readingListService.deleteReadingList(token: token, id: id);
+      await _readingListService.deleteReadingList(
+        token: token,
+        id: id ?? '',
+      );
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();

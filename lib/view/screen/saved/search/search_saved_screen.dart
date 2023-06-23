@@ -1,3 +1,4 @@
+import 'package:capstone_project/utils/components/empty/empty.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_view_model.dart';
 import 'package:capstone_project/view/screen/saved/search/search_saved_view_model.dart';
 import 'package:flutter/material.dart';
@@ -24,23 +25,26 @@ class SearchSavedScreen extends StatefulWidget {
 }
 
 class _SearchSavedScreen extends State<SearchSavedScreen> {
-  final TextEditingController _descriptionController = TextEditingController();
+  //text editing controller
   final TextEditingController _editListNameController = TextEditingController();
   final TextEditingController _editDescriptionController =
       TextEditingController();
   final TextEditingController _searchController = TextEditingController();
+
+  //focus node
   final FocusNode _editListNameNode = FocusNode();
   final FocusNode _editDescriptionNode = FocusNode();
+
+  //form key
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  //provider
   late final SearchSavedViewModel provider;
 
   @override
   void initState() {
     provider = Provider.of<SearchSavedViewModel>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      provider.showReadingListByName(name: '');
-    });
+    provider.allReadingListData.clear();
     super.initState();
   }
 
@@ -48,6 +52,8 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
   void dispose() {
     super.dispose();
     _searchController.dispose();
+    _editDescriptionController.dispose();
+    _editListNameController.dispose();
   }
 
   @override
@@ -87,26 +93,7 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
             } else {
               if (_searchController.text.isEmpty ||
                   searchSavedProvider.allReadingListData.isEmpty) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset('assets/images/nothing_here.png'),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Text(
-                        'Woops! Sorry, no result found.',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: MyColor.neutralHigh,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+                return const Empty();
               } else {
                 return ListView.separated(
                   itemCount: searchSavedProvider.allReadingListData.length,
@@ -115,9 +102,8 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
                         builder: (context, detailReadingListProvider, _) {
                       return GestureDetector(
                         onTap: () {
-                          detailReadingListProvider.showReadingList(
-                              id: searchSavedProvider
-                                  .allReadingListData[indexList].id!);
+                          detailReadingListProvider.id =
+                              provider.allReadingListData[indexList].id;
                           Navigator.pushNamed(
                             context,
                             DetailReadingListScreen.routeName,
@@ -127,11 +113,15 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
                           deleteEvent: () {
                             searchSavedProvider.removeReadingList(
                                 id: searchSavedProvider
-                                    .allReadingListData[indexList].id!);
+                                    .allReadingListData[indexList].id);
+                            _editListNameController.clear();
+                            _editDescriptionController.clear();
                             _searchController.clear();
-                            searchSavedProvider.showReadingListByName(
-                                name: _searchController.text);
-                            Navigator.pop(context);
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                              searchSavedProvider.showReadingListByName(
+                                  name: _searchController.text);
+                            }
                           },
                           editReadingListBottomSheetBuilder: (context) {
                             return CustomBottomSheetBuilder(
@@ -217,7 +207,7 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
                                                 id: searchSavedProvider
                                                     .allReadingListData[
                                                         indexList]
-                                                    .id!,
+                                                    .id,
                                                 name: _editListNameController
                                                     .text,
                                                 description:
@@ -225,6 +215,9 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
                                                         .text,
                                               );
                                               _searchController.clear();
+                                              _editListNameController.clear();
+                                              _editDescriptionController
+                                                  .clear();
                                               if (context.mounted) {
                                                 Navigator.pop(context);
                                                 searchSavedProvider
@@ -243,22 +236,18 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
                               cancelEvent: () {
                                 _editListNameController.clear();
                                 _editDescriptionController.clear();
-                                Navigator.pop(context);
+                                if (context.mounted) {
+                                  Navigator.pop(context);
+                                }
                               },
                             );
                           },
                           judulList: searchSavedProvider
-                                      .allReadingListData[indexList].name ==
-                                  null
-                              ? '-'
-                              : searchSavedProvider
-                                  .allReadingListData[indexList].name!,
+                              .allReadingListData[indexList].name!,
                           totalArtikel: searchSavedProvider
-                                  .allReadingListData[indexList].articleTotal ??
-                              0,
+                              .allReadingListData[indexList].articleTotal!,
                           deskripsi: searchSavedProvider
-                                  .allReadingListData[indexList].description ??
-                              '-',
+                              .allReadingListData[indexList].description!,
                           editListNameTextEditingController:
                               _editListNameController,
                           editDescriptionTextEditingController:
@@ -267,7 +256,7 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
                           editDescriptionFocusNode: _editDescriptionNode,
                           daftarArtikel: searchSavedProvider
                                       .allReadingListData[indexList]
-                                      .articleTotal! ==
+                                      .articleTotal ==
                                   0
                               ? null
                               : ListView.separated(
@@ -278,38 +267,20 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
                                   itemBuilder: (context, indexArticle) {
                                     return HorizontalArticleCard(
                                       urlGambarArtikel: searchSavedProvider
-                                                  .allReadingListData[indexList]
-                                                  .readingListArticles ==
-                                              null
-                                          ? '-'
-                                          : searchSavedProvider
-                                              .allReadingListData[indexList]
-                                              .readingListArticles![
-                                                  indexArticle]
-                                              .article!
-                                              .image!,
+                                          .allReadingListData[indexList]
+                                          .readingListArticles![indexArticle]
+                                          .article!
+                                          .image!,
                                       kategoriArtikel: searchSavedProvider
-                                                  .allReadingListData[indexList]
-                                                  .readingListArticles ==
-                                              null
-                                          ? '-'
-                                          : searchSavedProvider
-                                              .allReadingListData[indexList]
-                                              .readingListArticles![
-                                                  indexArticle]
-                                              .article!
-                                              .category!,
+                                          .allReadingListData[indexList]
+                                          .readingListArticles![indexArticle]
+                                          .article!
+                                          .category!,
                                       judulArtikel: searchSavedProvider
-                                                  .allReadingListData[indexList]
-                                                  .readingListArticles ==
-                                              null
-                                          ? '-'
-                                          : searchSavedProvider
-                                              .allReadingListData[indexList]
-                                              .readingListArticles![
-                                                  indexArticle]
-                                              .article!
-                                              .title!,
+                                          .allReadingListData[indexList]
+                                          .readingListArticles![indexArticle]
+                                          .article!
+                                          .title!,
                                     );
                                   },
                                   separatorBuilder: (context, indexArticle) {
@@ -319,9 +290,11 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
                                   },
                                 ),
                           cancelEvent: () {
+                            _editDescriptionController.clear();
                             _editListNameController.clear();
-                            _descriptionController.clear();
-                            Navigator.pop(context);
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                            }
                           },
                         ),
                       );

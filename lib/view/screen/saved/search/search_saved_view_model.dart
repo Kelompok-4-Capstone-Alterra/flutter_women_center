@@ -24,13 +24,16 @@ class SearchSavedViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> showReadingListByName({required String name}) async {
+  ///menampilkan semua reading list berdasarkan "name" dari service reading lsit
+  Future<void> showReadingListByName({required String? name}) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       _allReadingListData = await _readingListService.getReadingListByName(
-          token: token, name: name);
+        token: token,
+        name: name ?? '',
+      );
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
@@ -38,16 +41,21 @@ class SearchSavedViewModel with ChangeNotifier {
     }
   }
 
+  ///mengubah informasi reading list dari service reading list
   Future<void> updateReadingList(
-      {required String id,
-      required String name,
-      required String description}) async {
+      {required String? id,
+      required String? name,
+      required String? description}) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       await _readingListService.putReadingList(
-          token: token, id: id, name: name, description: description);
+        token: token,
+        id: id ?? '',
+        name: name ?? '',
+        description: description ?? '',
+      );
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
@@ -55,12 +63,16 @@ class SearchSavedViewModel with ChangeNotifier {
     }
   }
 
-  Future<void> removeReadingList({required String id}) async {
+  ///menghapus reading list dari service reading list
+  Future<void> removeReadingList({required String? id}) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      await _readingListService.deleteReadingList(token: token, id: id);
+      await _readingListService.deleteReadingList(
+        token: token,
+        id: id ?? '',
+      );
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();

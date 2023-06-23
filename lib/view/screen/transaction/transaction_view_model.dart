@@ -13,11 +13,15 @@ class TransactionViewModel with ChangeNotifier {
   MyState _state = MyState.initial;
   String _message = '';
   final TransactionsService _transactionsService = TransactionsService();
-  List<TransactionsModel> _allTransactionsData = <TransactionsModel>[];
+  List<TransactionsModel> _allTransactionsDataOngoing = <TransactionsModel>[];
+  List<TransactionsModel> _allTransactionsDataHistory = <TransactionsModel>[];
 
   MyState get state => _state;
   String get message => _message;
-  List<TransactionsModel> get allTransactionsData => _allTransactionsData;
+  List<TransactionsModel> get allTransactionsDataOngoing =>
+      _allTransactionsDataOngoing;
+  List<TransactionsModel> get allTransactionsDataHistory =>
+      _allTransactionsDataHistory;
 
   void changeState(MyState state) {
     _state = state;
@@ -43,13 +47,21 @@ class TransactionViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  ///menampilkan semua transaksi untuk status "waiting" dan "completed" dari service transactions
   Future<void> showAllTransactions({required bool? statusOngoing}) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      _allTransactionsData = await _transactionsService.getAllTransactions(
-          token: token, statusOngoing: statusOngoing ?? true);
+      print(token);
+      if (statusOngoing == true) {
+        _allTransactionsDataOngoing = await _transactionsService
+            .getAllTransactions(token: token, statusOngoing: true);
+      }
+      if (statusOngoing == false) {
+        _allTransactionsDataHistory = await _transactionsService
+            .getAllTransactions(token: token, statusOngoing: false);
+      }
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
@@ -57,7 +69,9 @@ class TransactionViewModel with ChangeNotifier {
     }
   }
 
+  ///melakukan rating dan review counseling ke service transactions
   Future<void> createRateAndReviewCounselor({
+    required String? counselorId,
     required String? transactionId,
     required int? rating,
     required String? review,
@@ -68,9 +82,31 @@ class TransactionViewModel with ChangeNotifier {
       final token = _loginData.getString('token') ?? '';
       await _transactionsService.postReviewCounselor(
         token: token,
+        counselorId: counselorId ?? '',
         transactionId: transactionId ?? '',
         rating: rating ?? 3,
         review: review ?? '',
+      );
+      changeState(MyState.loaded);
+    } catch (e) {
+      _message = e.toString();
+      changeState(MyState.failed);
+    }
+  }
+
+  ///mengarahkan user berdasarkan tombol link dari service transactions
+  Future<void> linkToCounseling({
+    required String? userId,
+    required String? transactionId,
+  }) async {
+    try {
+      changeState(MyState.loading);
+      _loginData = await SharedPreferences.getInstance();
+      final token = _loginData.getString('token') ?? '';
+      await _transactionsService.postUserJoinTransaction(
+        token: token,
+        userId: userId ?? '',
+        transactionId: transactionId ?? '',
       );
       changeState(MyState.loaded);
     } catch (e) {
