@@ -48,6 +48,23 @@ class HomeListItem extends StatelessWidget {
                 child: Image(
                   image: NetworkImage(imageUrl),
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.error,
+                          color: MyColor.danger,
+                        ),
+                        Text(
+                          'Image Error',
+                          style: TextStyle(
+                            color: MyColor.danger,
+                          ),
+                        )
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
