@@ -12,21 +12,22 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? tabs;
   final SearchTextBox? searchTextBox;
   final Widget? homeText;
+  final TabController? controller;
   final void Function(int)? onTap;
 
-  const CustomAppBar({
-    super.key,
-    required this.preferredSize,
-    required this.judul,
-    required this.home,
-    required this.searchField,
-    required this.tabBar,
-    this.searchTextBox,
-    this.actions,
-    this.tabs,
-    this.homeText,
-    this.onTap,
-  });
+  const CustomAppBar(
+      {super.key,
+      required this.preferredSize,
+      required this.judul,
+      required this.home,
+      required this.searchField,
+      required this.tabBar,
+      this.searchTextBox,
+      this.actions,
+      this.tabs,
+      this.homeText,
+      this.onTap,
+      this.controller});
 
   @override
   final Size preferredSize;
@@ -82,6 +83,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: TabBar(
+                      controller: controller,
                       onTap: onTap,
                       dividerColor: Colors.transparent,
                       isScrollable: true,
