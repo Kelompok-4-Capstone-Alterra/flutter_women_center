@@ -48,6 +48,23 @@ class ArticleListPostWidget extends StatelessWidget {
                     width: 135,
                     height: 128,
                     fit: BoxFit.fill,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.error,
+                            color: MyColor.danger,
+                          ),
+                          Text(
+                            'Image Error',
+                            style: TextStyle(
+                              color: MyColor.danger,
+                            ),
+                          )
+                        ],
+                      );
+                    },
                   ),
                 ),
                 Expanded(
@@ -98,7 +115,6 @@ class ArticleListPostWidget extends StatelessWidget {
                             dataReadingList
                                 .readingListArticles![index].article!.id!);
                       } else {
-                        provider.toggleArticleSaved(article.id ?? '');
                         showModalBottomSheet(
                           useRootNavigator: true,
                           isScrollControlled: true,

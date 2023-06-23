@@ -10,6 +10,8 @@ class ArticleListPostProvider extends ChangeNotifier {
 
   ReadingListModel dataReadingList = ReadingListModel();
   final ArticleService _articleService = ArticleService();
+  ValueNotifier<bool> isButtonPressed = ValueNotifier<bool>(false);
+  String selectedReadingListId = '';
   final ReadingListService _readingListService = ReadingListService();
   late SharedPreferences _loginData;
   String _message = '';
@@ -23,6 +25,11 @@ class ArticleListPostProvider extends ChangeNotifier {
     changeState(MyState.loading);
     _loginData = await SharedPreferences.getInstance();
     changeState(MyState.loaded);
+  }
+
+  void setSelectedReadingListId(String readingListId) {
+    selectedReadingListId = readingListId;
+    notifyListeners();
   }
 
   void changeState(MyState state) {
@@ -88,5 +95,19 @@ class ArticleListPostProvider extends ChangeNotifier {
 
   bool isArticleSaved(String articleId) {
     return savedArticleIds.contains(articleId);
+  }
+
+  Future<void> saveToReadingList(String articleId, String readingListId) async {
+    try {
+      changeState(MyState.loading);
+      _loginData = await SharedPreferences.getInstance();
+      final token = _loginData.getString('token') ?? '';
+      await _readingListService.postArticleToReadingList(
+          token, articleId, readingListId);
+      changeState(MyState.loaded);
+    } catch (e) {
+      _message = e.toString();
+      changeState(MyState.failed);
+    }
   }
 }

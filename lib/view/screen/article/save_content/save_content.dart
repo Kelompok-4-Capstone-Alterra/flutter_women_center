@@ -5,6 +5,7 @@ import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bott
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/components/text_box/text_box.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_post/article_list_post_view_model.dart';
 import 'package:capstone_project/view/screen/article/save_content/save_content_view_model.dart';
 import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
 
@@ -224,7 +225,8 @@ class _SaveContentState extends State<SaveContent> {
             child: PrimaryButton(
               teks: 'Save',
               onPressed: () {
-                provider.toggleArticleSaved(widget.articleId);
+                Provider.of<ArticleListPostProvider>(context, listen: false)
+                    .toggleArticleSaved(widget.articleId);
                 provider.saveToReadingList(
                     widget.articleId, provider.selectedReadingListId);
                 provider.isButtonPressed.value = true;
