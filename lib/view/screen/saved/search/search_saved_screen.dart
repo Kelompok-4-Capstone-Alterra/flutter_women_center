@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../utils/components/appbar/custom_appbar.dart';
 import '../../../../utils/components/buttons/primary_button.dart';
-import '../../../../utils/components/loading/loading.dart';
 import '../../../../utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 import '../../../../utils/components/text_box/search_text_box.dart';
 import '../../../../utils/my_color.dart';
@@ -25,10 +24,7 @@ class SearchSavedScreen extends StatefulWidget {
 }
 
 class _SearchSavedScreen extends State<SearchSavedScreen> {
-  final TextEditingController _listNameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final FocusNode _listNameNode = FocusNode();
-  final FocusNode _descriptionNode = FocusNode();
   final TextEditingController _editListNameController = TextEditingController();
   final TextEditingController _editDescriptionController =
       TextEditingController();
@@ -174,7 +170,7 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
                                           validator: (value) {
                                             if (value == null ||
                                                 value.isEmpty) {
-                                              return 'Wajib diisi';
+                                              return 'list name is required';
                                             }
                                             return null;
                                           },
@@ -183,7 +179,7 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
                                           height: 16,
                                         ),
                                         Text(
-                                          'Description (optional)',
+                                          'Description',
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w400,
@@ -203,7 +199,7 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
                                           validator: (value) {
                                             if (value == null ||
                                                 value.isEmpty) {
-                                              return 'Wajib diisi';
+                                              return 'description is required';
                                             }
                                             return null;
                                           },

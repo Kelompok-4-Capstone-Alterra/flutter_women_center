@@ -95,7 +95,7 @@ class _DetailReadingListScreenState extends State<DetailReadingListScreen> {
                             currentFocus: _editListNameNode,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Wajib diisi';
+                                return 'list name is required';
                               }
                               return null;
                             },
@@ -104,7 +104,7 @@ class _DetailReadingListScreenState extends State<DetailReadingListScreen> {
                             height: 16,
                           ),
                           Text(
-                            'Description (optional)',
+                            'Description',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
@@ -121,7 +121,7 @@ class _DetailReadingListScreenState extends State<DetailReadingListScreen> {
                             currentFocus: _editDescriptionNode,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Wajib diisi';
+                                return 'description is required';
                               }
                               return null;
                             },

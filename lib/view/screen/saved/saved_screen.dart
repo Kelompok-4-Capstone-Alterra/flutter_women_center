@@ -128,7 +128,7 @@ class _SavedScreenState extends State<SavedScreen> {
                                   currentFocus: _listNameNode,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Wajib diisi';
+                                      return 'list name is required';
                                     }
                                     return null;
                                   },
@@ -137,7 +137,7 @@ class _SavedScreenState extends State<SavedScreen> {
                                   height: 16,
                                 ),
                                 Text(
-                                  'Description (optional)',
+                                  'Description',
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
@@ -154,7 +154,7 @@ class _SavedScreenState extends State<SavedScreen> {
                                   currentFocus: _descriptionNode,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Wajib diisi';
+                                      return 'description is required';
                                     }
                                     return null;
                                   },
@@ -311,7 +311,7 @@ class _SavedScreenState extends State<SavedScreen> {
                                             validator: (value) {
                                               if (value == null ||
                                                   value.isEmpty) {
-                                                return 'Wajib diisi';
+                                                return 'list name is required';
                                               }
                                               return null;
                                             },
@@ -320,7 +320,7 @@ class _SavedScreenState extends State<SavedScreen> {
                                             height: 16,
                                           ),
                                           Text(
-                                            'Description (optional)',
+                                            'Description',
                                             style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w400,
@@ -340,7 +340,7 @@ class _SavedScreenState extends State<SavedScreen> {
                                             validator: (value) {
                                               if (value == null ||
                                                   value.isEmpty) {
-                                                return 'Wajib diisi';
+                                                return 'description is required';
                                               }
                                               return null;
                                             },
