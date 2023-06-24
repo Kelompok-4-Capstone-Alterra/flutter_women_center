@@ -66,7 +66,6 @@ class SavedViewModel with ChangeNotifier {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      print(token);
       _allReadingListData =
           await _readingListService.getAllReadingList(token: token);
       changeState(MyState.loaded);
