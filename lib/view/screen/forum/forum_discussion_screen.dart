@@ -1,6 +1,7 @@
 import 'package:capstone_project/model/forum_model.dart';
 import 'package:capstone_project/model/topic_model.dart';
 import 'package:capstone_project/utils/components/empty/empty.dart';
+import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
 import 'package:capstone_project/view/screen/forum/forum_discussion_view_model.dart';
 import 'package:capstone_project/view/screen/forum/widget/forum_item_widget.dart';
 import 'package:capstone_project/view/screen/forum/widget/option_sort_by_widget.dart';
@@ -79,195 +80,201 @@ class _ForumDiscussionScreenState extends State<ForumDiscussionScreen> {
               teks: 'New Forum',
               widget: const Icon(Icons.add),
               onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (context) {
-                    return CustomBottomSheetBuilder(
-                      header: true,
-                      tinggi: MediaQuery.of(context).size.height * 0.80,
-                      judul: 'Create New Forum',
-                      isi: [
-                        Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 18, bottom: 10),
-                                child: Text(
-                                  'Topic\'s Category',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: MyColor.neutralHigh,
-                                    fontWeight: FontWeight.w400,
+                if (forumDiscussionProvider.isLogin) {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) {
+                      return CustomBottomSheetBuilder(
+                        header: true,
+                        tinggi: MediaQuery.of(context).size.height * 0.80,
+                        judul: 'Create New Forum',
+                        isi: [
+                          Form(
+                            key: _formKey,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 18, bottom: 10),
+                                  child: Text(
+                                    'Topic\'s Category',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: MyColor.neutralHigh,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              DropdownSearch<TopicModel>(
-                                itemAsString: (item) => item.name!,
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  textAlign: TextAlign.left,
-                                  baseStyle: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: MyColor.neutralHigh,
-                                  ),
-                                  dropdownSearchDecoration: InputDecoration(
-                                    hintText: 'Choose topic\'s category',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(3),
-                                    ),
-                                    isDense: true,
-                                    hintStyle: TextStyle(
+                                DropdownSearch<TopicModel>(
+                                  itemAsString: (item) => item.name!,
+                                  dropdownDecoratorProps:
+                                      DropDownDecoratorProps(
+                                    textAlign: TextAlign.left,
+                                    baseStyle: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
-                                      color: MyColor.neutralMediumLow,
+                                      color: MyColor.neutralHigh,
                                     ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(3),
-                                      borderSide: BorderSide(
+                                    dropdownSearchDecoration: InputDecoration(
+                                      hintText: 'Choose topic\'s category',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(3),
+                                      ),
+                                      isDense: true,
+                                      hintStyle: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
                                         color: MyColor.neutralMediumLow,
-                                        width: .25,
                                       ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(3),
-                                      borderSide: BorderSide(
-                                        color: MyColor.primaryMain,
-                                        width: .25,
-                                      ),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(3),
-                                      borderSide: BorderSide(
-                                        color: MyColor.danger,
-                                        width: .25,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                items: forumDiscussionProvider.topicData,
-                                validator: (value) {
-                                  if (value == null) {
-                                    return 'Please fill this field';
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {
-                                  _categoryValue = value!.id;
-                                },
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 18, bottom: 10),
-                                child: Text(
-                                  'Forum\'s Topic',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: MyColor.neutralHigh,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                              TextBox(
-                                textEditingController: _forumTopicController,
-                                hintText:
-                                    'Ex : How to improve your leadership skills',
-                                onFieldSubmitted: (value) {
-                                  MyFocusNode.change(
-                                    context: context,
-                                    currentFocus: _forumTopicNode,
-                                    nextFocus: _forumLinkNode,
-                                  );
-                                },
-                                validator: (p0) {
-                                  if (p0 == null || p0.isEmpty) {
-                                    return 'Please fill this field';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 18, bottom: 10),
-                                child: Text(
-                                  'Forum\'s Link',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: MyColor.neutralHigh,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                              TextBox(
-                                textEditingController: _forumLinkController,
-                                hintText: 'Ex : Whatsapp Group\'s Link, etc.',
-                                onFieldSubmitted: (value) {
-                                  MyFocusNode.change(
-                                    context: context,
-                                    currentFocus: _forumLinkNode,
-                                    nextFocus: _forumLinkNode,
-                                  );
-                                },
-                                validator: (p0) {
-                                  if (p0 == null || p0.isEmpty) {
-                                    return 'Please fill this field';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(height: 16),
-                              PrimaryButton(
-                                teks: 'Create',
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    forumDiscussionProvider.createForum(
-                                      ForumModel(
-                                        categoryId: _categoryValue,
-                                        topic: _forumTopicController.text,
-                                        link: _forumLinkController.text,
-                                      ),
-                                    );
-                                    forumDiscussionProvider.fetchForum();
-                                    _forumLinkController.clear();
-                                    _forumTopicController.clear();
-                                    _categoryValue = 0;
-                                    Navigator.pop(context);
-                                  }
-                                },
-                                customChild: Consumer<ForumDiscussionViewModel>(
-                                  builder: (context, value, _) {
-                                    if (value.forumState == MyState.loading) {
-                                      return const SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(3),
+                                        borderSide: BorderSide(
+                                          color: MyColor.neutralMediumLow,
+                                          width: .25,
                                         ),
-                                      );
-                                    } else {
-                                      return Text(
-                                        'Create',
-                                        style: TextStyle(
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.w500,
-                                          color: MyColor.white,
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(3),
+                                        borderSide: BorderSide(
+                                          color: MyColor.primaryMain,
+                                          width: .25,
                                         ),
-                                      );
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(3),
+                                        borderSide: BorderSide(
+                                          color: MyColor.danger,
+                                          width: .25,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  items: forumDiscussionProvider.topicData,
+                                  validator: (value) {
+                                    if (value == null) {
+                                      return 'Please fill this field';
                                     }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    _categoryValue = value!.id;
                                   },
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 18, bottom: 10),
+                                  child: Text(
+                                    'Forum\'s Topic',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: MyColor.neutralHigh,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                                TextBox(
+                                  textEditingController: _forumTopicController,
+                                  hintText:
+                                      'Ex : How to improve your leadership skills',
+                                  onFieldSubmitted: (value) {
+                                    MyFocusNode.change(
+                                      context: context,
+                                      currentFocus: _forumTopicNode,
+                                      nextFocus: _forumLinkNode,
+                                    );
+                                  },
+                                  validator: (p0) {
+                                    if (p0 == null || p0.isEmpty) {
+                                      return 'Please fill this field';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 18, bottom: 10),
+                                  child: Text(
+                                    'Forum\'s Link',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: MyColor.neutralHigh,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                                TextBox(
+                                  textEditingController: _forumLinkController,
+                                  hintText: 'Ex : Whatsapp Group\'s Link, etc.',
+                                  onFieldSubmitted: (value) {
+                                    MyFocusNode.change(
+                                      context: context,
+                                      currentFocus: _forumLinkNode,
+                                      nextFocus: _forumLinkNode,
+                                    );
+                                  },
+                                  validator: (p0) {
+                                    if (p0 == null || p0.isEmpty) {
+                                      return 'Please fill this field';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(height: 16),
+                                PrimaryButton(
+                                  teks: 'Create',
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      forumDiscussionProvider.createForum(
+                                        ForumModel(
+                                          categoryId: _categoryValue,
+                                          topic: _forumTopicController.text,
+                                          link: _forumLinkController.text,
+                                        ),
+                                      );
+                                      forumDiscussionProvider.fetchForum();
+                                      _forumLinkController.clear();
+                                      _forumTopicController.clear();
+                                      _categoryValue = 0;
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                  customChild:
+                                      Consumer<ForumDiscussionViewModel>(
+                                    builder: (context, value, _) {
+                                      if (value.forumState == MyState.loading) {
+                                        return const SizedBox(
+                                          height: 20,
+                                          width: 20,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                          ),
+                                        );
+                                      } else {
+                                        return Text(
+                                          'Create',
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.w500,
+                                            color: MyColor.white,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
-                );
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  Navigator.pushNamed(context, LoginScreen.routeName);
+                }
               },
               customHeight: 36,
               customWidth: 134,
