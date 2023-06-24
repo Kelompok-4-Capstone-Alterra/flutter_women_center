@@ -7,11 +7,13 @@ class CustomBottomSheetBuilder extends StatefulWidget {
   final List<Widget> isi;
   final double tinggi;
   final bool header;
+  final void Function()? cancelEvent;
 
   const CustomBottomSheetBuilder({
     super.key,
     required this.tinggi,
     this.judul,
+    this.cancelEvent,
     required this.isi,
     required this.header,
   });
@@ -61,9 +63,10 @@ class _CustomBottomSheetBuilder extends State<CustomBottomSheetBuilder> {
                         ),
                         TextActionButton(
                           teks: 'Cancel',
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
+                          onPressed: widget.cancelEvent ??
+                              () {
+                                Navigator.pop(context);
+                              },
                         ),
                       ],
                     ),

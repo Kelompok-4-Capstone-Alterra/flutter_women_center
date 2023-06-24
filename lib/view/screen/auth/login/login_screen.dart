@@ -128,8 +128,13 @@ class _LogniScreenState extends State<LoginScreen> {
                       hintText: "Ex : johndoe",
                       keyboardType: TextInputType.text,
                       validator: (p0) {
-                        if (p0 == null || p0.isEmpty) {
+                        if (p0 == null ||
+                            p0.isEmpty ||
+                            !RegExp(r'^(?!\s+$)').hasMatch(p0)) {
                           return 'username is required';
+                        }
+                        if (!RegExp(r'^[^\s]*$').hasMatch(p0)) {
+                          return 'username cannot contain spaces';
                         }
                         return null;
                       },

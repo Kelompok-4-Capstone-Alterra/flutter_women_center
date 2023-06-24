@@ -3,7 +3,20 @@ import 'package:capstone_project/view/screen/saved/widgets/article_popup_menu_bu
 import 'package:flutter/material.dart';
 
 class VerticalArticleCard extends StatelessWidget {
-  const VerticalArticleCard({super.key});
+  final void Function()? deleteEvent;
+  final String articleImageLink;
+  final String articleTitle;
+  final String articleAuthor;
+  final String articleCategory;
+
+  const VerticalArticleCard({
+    super.key,
+    required this.deleteEvent,
+    required this.articleImageLink,
+    required this.articleTitle,
+    required this.articleAuthor,
+    required this.articleCategory,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,18 +28,22 @@ class VerticalArticleCard extends StatelessWidget {
         border: Border.all(color: MyColor.neutralLow, width: .5),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(3),
               topRight: Radius.circular(3),
             ),
-            child: Image.network(
-              'https://images.unsplash.com/photo-1542435503-956c469947f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80',
-              fit: BoxFit.fill,
-              width: 135,
-            ),
+            child: !articleImageLink.startsWith('https://')
+                ? const SizedBox(
+                    width: 135, height: double.infinity, child: Placeholder())
+                : Image.network(
+                    articleImageLink,
+                    fit: BoxFit.fill,
+                    width: 135,
+                  ),
           ),
           SizedBox(
             height: double.infinity,
@@ -41,8 +58,9 @@ class VerticalArticleCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'How to improve your skill as a woman?',
+                    articleTitle,
                     overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
@@ -50,7 +68,7 @@ class VerticalArticleCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Kim Jennie',
+                    articleAuthor,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 12,
@@ -59,7 +77,7 @@ class VerticalArticleCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '23 March 2023',
+                    articleCategory,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 8,
@@ -71,7 +89,17 @@ class VerticalArticleCard extends StatelessWidget {
               ),
             ),
           ),
-          const ArticlePopupMenuButton(deleteEvent: null),
+          SizedBox(
+            height: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ArticlePopupMenuButton(
+                  deleteEvent: deleteEvent,
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

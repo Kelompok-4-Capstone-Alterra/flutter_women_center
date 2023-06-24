@@ -6,12 +6,28 @@ class TransactionCard extends StatelessWidget {
   final bool showButton;
   final String labelButton;
   final void Function()? onPressed;
+  final String profilePicture;
+  final String id;
+  final String name;
+  final String topic;
+  final String consultationMethod;
+  final String date;
+  final String time;
+  final String price;
 
   const TransactionCard({
     super.key,
     required this.showButton,
     required this.labelButton,
-    this.onPressed,
+    required this.profilePicture,
+    required this.id,
+    required this.name,
+    required this.topic,
+    required this.consultationMethod,
+    required this.date,
+    required this.time,
+    required this.price,
+    required this.onPressed,
   });
 
   @override
@@ -36,11 +52,15 @@ class TransactionCard extends StatelessWidget {
               height: 72,
               width: 64,
               padding: const EdgeInsets.fromLTRB(16, 16, 8, 18),
-              child: const CircleAvatar(
-                radius: 20,
-                backgroundImage: NetworkImage(
-                    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80'),
-              ),
+              child: !profilePicture.startsWith('https://')
+                  ? const CircleAvatar(
+                      radius: 20,
+                      backgroundImage: AssetImage('assets/images/profile.jpg'),
+                    )
+                  : CircleAvatar(
+                      radius: 20,
+                      backgroundImage: NetworkImage(profilePicture),
+                    ),
             ),
             Expanded(
               child: Padding(
@@ -59,7 +79,8 @@ class TransactionCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '1234567',
+                              id,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
@@ -67,7 +88,8 @@ class TransactionCard extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'John Doe',
+                              name,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
@@ -78,7 +100,8 @@ class TransactionCard extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    'Self Development',
+                                    topic,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
@@ -91,7 +114,8 @@ class TransactionCard extends StatelessWidget {
                                 ),
                                 Expanded(
                                   child: Text(
-                                    'Video Call',
+                                    consultationMethod,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
@@ -102,7 +126,8 @@ class TransactionCard extends StatelessWidget {
                               ],
                             ),
                             Text(
-                              '20 May 2023, 09:00',
+                              '$date, $time',
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w500,
@@ -110,7 +135,8 @@ class TransactionCard extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'Rp 125,000',
+                              price,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,

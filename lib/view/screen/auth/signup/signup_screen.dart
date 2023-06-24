@@ -140,8 +140,13 @@ class _SignupScreenState extends State<SignupScreen> {
                       hintText: "Ex : johndoe",
                       keyboardType: TextInputType.text,
                       validator: (p0) {
-                        if (p0 == null || p0.isEmpty) {
+                        if (p0 == null ||
+                            p0.isEmpty ||
+                            !RegExp(r'^(?!\s+$)').hasMatch(p0)) {
                           return 'name is required';
+                        }
+                        if (!RegExp(r'^[^\s].*').hasMatch(p0)) {
+                          return 'invalid name';
                         }
                         return null;
                       },
@@ -165,7 +170,9 @@ class _SignupScreenState extends State<SignupScreen> {
                       hintText: "Ex : johndoe@example.com",
                       keyboardType: TextInputType.text,
                       validator: (p0) {
-                        if (p0 == null || p0.isEmpty) {
+                        if (p0 == null ||
+                            p0.isEmpty ||
+                            !RegExp(r'^(?!\s+$)').hasMatch(p0)) {
                           return 'email is required';
                         } else if (!RegExp(
                           r"^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$",
@@ -194,8 +201,13 @@ class _SignupScreenState extends State<SignupScreen> {
                       hintText: "Ex : johndoe",
                       keyboardType: TextInputType.text,
                       validator: (p0) {
-                        if (p0 == null || p0.isEmpty) {
+                        if (p0 == null ||
+                            p0.isEmpty ||
+                            !RegExp(r'^(?!\s+$)').hasMatch(p0)) {
                           return 'username is required';
+                        }
+                        if (!RegExp(r'^[^\s]*$').hasMatch(p0)) {
+                          return 'username cannot contain spaces';
                         }
                         return null;
                       },

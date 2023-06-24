@@ -10,6 +10,7 @@ import 'package:capstone_project/view/screen/profile/profilel_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/components/buttons/primary_button.dart';
+import '../../../utils/constant_text.dart';
 import '../../../utils/my_color.dart';
 import '../home/home_view_model.dart';
 
@@ -79,6 +80,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  void _showImage(ImageProvider<Object> imageData) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Container(
+            width: 200,
+            height: 300,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: imageData,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,11 +134,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: ListView(
                 children: [
                   CircleAvatar(
-                    radius: 32,
-                    child: Icon(
-                      Icons.person,
-                      size: 50,
-                      color: MyColor.primaryBorder,
+                    radius: 40,
+                    child: Consumer<ProfileViewModel>(
+                      builder: (context, value, child) {
+                        if (value.state == MyState.loading) {
+                          return const SizedBox();
+                        } else {
+                          return value.userData.picturePath == ''
+                              ? Icon(
+                                  Icons.person,
+                                  size: 50,
+                                  color: MyColor.primaryBorder,
+                                )
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(40),
+                                  child: GestureDetector(
+                                    child: Image.network(
+                                      value.userData.picturePath ?? '',
+                                      fit: BoxFit.cover,
+                                      width: 80,
+                                      height: 80,
+                                    ),
+                                    onTap: () {
+                                      _showImage(
+                                        NetworkImage(
+                                          profileProvider
+                                                  .userData.picturePath ??
+                                              '',
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                        }
+                      },
                     ),
                   ),
                   SizedBox(
@@ -226,8 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           if (value.showAboutUs)
                             const ReadOnlyTextBox(
-                              value:
-                                  "Our women's center is dedicated to promoting gender equity and supporting the health, well-being, and empowerment of women. We provide a safe and inclusive space for women to access resources, connect with other women, and become agents of positive change in their lives and communities.",
+                              value: about,
                             ),
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.01,
@@ -251,8 +300,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           if (value.showFaq)
                             const ReadOnlyTextBox(
-                              value:
-                                  "Our women's center is dedicated to promoting gender equity and supporting the health, well-being, and empowerment of women. We provide a safe and inclusive space for women to access resources, connect with other women, and become agents of positive change in their lives and communities.",
+                              value: faq,
                             ),
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.01,
@@ -276,8 +324,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           if (value.showTermAndConditions)
                             const ReadOnlyTextBox(
-                              value:
-                                  "Our women's center is dedicated to promoting gender equity and supporting the health, well-being, and empowerment of women. We provide a safe and inclusive space for women to access resources, connect with other women, and become agents of positive change in their lives and communities.",
+                              value: termAndConditions,
                             ),
                         ],
                       );

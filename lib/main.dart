@@ -1,14 +1,16 @@
 import 'dart:io';
 
 import 'package:capstone_project/utils/key/naviagtor_key.dart';
+import 'package:capstone_project/view/screen/article/article_detail/article_detail_view_model.dart';
+import 'package:capstone_project/view/screen/article/article_detail/comment/comment_view_model.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_post/article_list_post_view_model.dart';
+import 'package:capstone_project/view/screen/article/save_content/save_content_view_model.dart';
 import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_screen.dart';
 import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_view_model.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
 import 'package:capstone_project/view/screen/counselor_detail/counselor_detail_view_model.dart';
 import 'package:capstone_project/view/screen/counselor_list/counselor_list_screen.dart';
 import 'package:capstone_project/view/screen/counselor_list/counselor_list_view_model.dart';
-
-import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar_view_model.dart';
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
@@ -33,13 +35,15 @@ import 'package:capstone_project/view/screen/profile/edit_profile/edit_profile_s
 import 'package:capstone_project/view/screen/profile/edit_profile/edit_profile_view_model.dart';
 import 'package:capstone_project/view/screen/profile/profile_screen.dart';
 import 'package:capstone_project/view/screen/profile/profilel_view_model.dart';
-import 'package:capstone_project/view/screen/saved/acticle/article_screen.dart';
-import 'package:capstone_project/view/screen/saved/acticle/article_view_model.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_screen.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_view_model.dart';
 import 'package:capstone_project/view/screen/saved/saved_screen.dart';
 import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
+import 'package:capstone_project/view/screen/saved/search/search_saved_screen.dart';
+import 'package:capstone_project/view/screen/saved/search/search_saved_view_model.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
+import 'package:capstone_project/view/screen/transaction/transaction_search/search_transactions_screen.dart';
+import 'package:capstone_project/view/screen/transaction/transaction_search/search_transactions_view_model.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_view_model.dart';
 import 'package:capstone_project/view/screen/voucher/voucher_screen.dart';
 import 'package:capstone_project/view/screen/voucher/voucher_view_model.dart';
@@ -86,9 +90,6 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => DetailReadingListViewmodel(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ArticleViewModel(),
         ),
         ChangeNotifierProvider(
           create: (context) => CounselingTopicViewModel(),
@@ -162,6 +163,27 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => MidtransViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => SearchSavedViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SearchTransactionsViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ArticleListProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ArticleListPostProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CommentProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ArticleDetailProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SaveContentProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -178,7 +200,6 @@ class MyApp extends StatelessWidget {
           ArticleListScreen.routename: (context) => const ArticleListScreen(),
           DetailReadingListScreen.routeName: (context) =>
               const DetailReadingListScreen(),
-          ArticleScreen.routeName: (context) => const ArticleScreen(),
           CounselingTopicScreen.routeName: (context) =>
               const CounselingTopicScreen(),
           CounselorListScreen.routeName: (context) =>
@@ -187,15 +208,8 @@ class MyApp extends StatelessWidget {
               const CounselorDetailScreen(
                 id: '',
               ),
-          ArticleDetailsScreen.routename: (context) => ArticleDetailsScreen(
-                articles: Articles(
-                    title: '',
-                    author: '',
-                    date: '',
-                    desc: '',
-                    image: '',
-                    category: ''),
-              ),
+          ArticleDetailsScreen.routename: (context) =>
+              const ArticleDetailsScreen(),
           LoginScreen.routeName: (context) => const LoginScreen(),
           SignupScreen.routeName: (context) => const SignupScreen(),
           VerificationScreen.routeName: (context) => const VerificationScreen(),
@@ -213,6 +227,9 @@ class MyApp extends StatelessWidget {
           VoucherScreen.routeName: (context) => const VoucherScreen(),
           CareerListScreen.routeName: (context) => const CareerListScreen(),
           CareerDetailScreen.routeName: (context) => const CareerDetailScreen(),
+          SearchSavedScreen.routeName: (context) => const SearchSavedScreen(),
+          SearchTransactionsScreen.routeName: (context) =>
+              const SearchTransactionsScreen(),
         },
       ),
     );

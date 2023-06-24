@@ -1,15 +1,15 @@
-import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
 import 'package:capstone_project/utils/components/buttons/floating_button.dart';
+import 'package:capstone_project/utils/components/loading/loading.dart';
 import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 
 import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
-import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
+import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
-import 'package:capstone_project/view/screen/article/article_list/widgets/bottomsheet_content.dart';
-import 'package:capstone_project/view/screen/article/widget/save_content.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_post/article_list_post.dart';
+import 'package:capstone_project/view/screen/article/article_list/bottomsheet/bottomsheet_content.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:core';
@@ -18,186 +18,101 @@ import '../../../../utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 
 class ArticleListScreen extends StatefulWidget {
   static const String routename = '/article_list_screen';
-  const ArticleListScreen({super.key});
+
+  const ArticleListScreen({Key? key}) : super(key: key);
 
   @override
   State<ArticleListScreen> createState() => _ArticleListScreenState();
 }
 
-class _ArticleListScreenState extends State<ArticleListScreen> {
+class _ArticleListScreenState extends State<ArticleListScreen>
+    with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
+  TabController? _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      final provider = Provider.of<ArticleListProvider>(context, listen: false);
+      provider.fetchTopicsAndArticles();
+    });
+  }
 
   @override
   void dispose() {
-    _searchController.dispose();
     super.dispose();
+    _searchController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 4,
-      child: Scaffold(
-        appBar: CustomAppBar(
-          preferredSize: Size(MySize.screenWidth(context), double.maxFinite),
-          home: false,
-          judul: 'Article',
-          searchField: true,
-          tabBar: true,
-          onTap: (index) {
-            Provider.of<ArticleListProvider>(context, listen: false)
-                .changeSelectedTab(index);
-          },
-          tabs: const [
-            Tab(text: 'All'),
-            Tab(text: 'Mental Health'),
-            Tab(text: 'Self Improvement'),
-            Tab(text: 'Spiritual'),
-          ],
-          searchTextBox: SearchTextBox(
-            textEditingController: _searchController,
-            onChanged: (value) {
-              Provider.of<ArticleListProvider>(context, listen: false)
-                  .changeSearchString(value);
-            },
+    return Consumer<ArticleListProvider>(builder: (context, provider, _) {
+      if (provider.myState == MyState.loading) {
+        return const Scaffold(body: Loading());
+      } else if (provider.myState == MyState.failed) {
+        return const Center(
+          child: Text('Failed to load data'),
+        );
+      } else {
+        _tabController = TabController(
+          length: provider.topics.length,
+          vsync: this,
+        );
+        return Scaffold(
+          appBar: CustomAppBar(
+            preferredSize: Size(MySize.screenWidth(context), double.maxFinite),
+            home: false,
+            judul: 'Article',
+            searchField: true,
+            tabBar: true,
+            controller: _tabController,
+            tabs: provider.getListTopic(),
+            searchTextBox: SearchTextBox(
+              textEditingController: _searchController,
+              onChanged: (value) {
+                provider.updateSearchText(value);
+                provider.searchArticles(value);
+              },
+            ),
           ),
-        ),
-        body: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-          ),
-          child: Column(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: Consumer<ArticleListProvider>(
-                          builder: (context, provider, child) {
-                        return Text(
-                          provider.sortValue,
-                          style: TextStyle(
-                            color: MyColor.neutralMediumLow,
-                          ),
-                        );
-                      }),
+          body: DefaultTabController(
+            length: provider.topics.length,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: Text(
+                      provider.sortValues.toUpperCase().replaceAll('_', ' '),
+                      style: TextStyle(
+                        color: MyColor.neutralMediumLow,
+                      ),
                     ),
-                    Expanded(
-                      child: Consumer<ArticleListProvider>(
-                          builder: (context, provider, child) {
-                        return ListView.builder(
-                          itemBuilder: (context, index) {
-                            final articles = provider.articles[index];
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ArticleDetailsScreen(
-                                        articles: articles),
-                                  ),
-                                );
-                              },
-                              child: Card(
-                                surfaceTintColor: Colors.transparent,
-                                elevation: 2,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(3),
-                                  ),
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Image.asset(
-                                        articles.image,
-                                        width: 135,
-                                        height: 128,
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Container(
-                                        padding: const EdgeInsets.all(16),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Text(
-                                              articles.title,
-                                              style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            const SizedBox(
-                                              height: 16,
-                                            ),
-                                            Text(
-                                              articles.author,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400,
-                                                color: MyColor.neutralMedium,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 16,
-                                            ),
-                                            Text(
-                                              articles.formattedDate,
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w400,
-                                                color: MyColor.neutralMedium,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        showModalBottomSheet(
-                                          useRootNavigator: true,
-                                          isScrollControlled: true,
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return Wrap(children: const [
-                                              SaveContent()
-                                            ]);
-                                          },
-                                        );
-                                      },
-                                      icon: const Icon(Icons.bookmark_border),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                          itemCount: provider.articles.length,
-                        );
-                      }),
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: provider.topics.map((topic) {
+                        final articles = provider.listArticles
+                            .where((article) => article.topic == topic.name)
+                            .toList();
+                        return ArticleListPostWidget(articles: articles);
+                      }).toList(),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-        floatingActionButton: SizedBox(
-          height: 50,
-          width: 130,
-          child: FloatingButton(
-            onPressed: () {
-              showModalBottomSheet(
+          floatingActionButton: SizedBox(
+            height: 50,
+            width: 130,
+            child: FloatingButton(
+              onPressed: () {
+                showModalBottomSheet(
                   isScrollControlled: true,
                   useRootNavigator: true,
                   context: context,
@@ -210,17 +125,17 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
                       header: true,
                       judul: 'Sort By',
                     );
-                  });
-            },
-            teks: 'Sort By',
-            widget: const Icon(Icons.sort),
+                  },
+                );
+              },
+              teks: 'Sort By',
+              widget: const Icon(Icons.sort),
+            ),
           ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        bottomNavigationBar: const BottomNavBar(
-          currentIndex: 0,
-        ),
-      ),
-    );
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+        );
+      }
+    });
   }
 }

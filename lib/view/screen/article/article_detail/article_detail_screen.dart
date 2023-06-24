@@ -1,23 +1,31 @@
-import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
-import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
-import 'package:capstone_project/view/screen/article/article_detail/widget/comment_content.dart';
-import 'package:capstone_project/view/screen/article/widget/save_content.dart';
+import 'package:capstone_project/view/screen/article/article_detail/article_detail_view_model.dart';
+import 'package:capstone_project/view/screen/article/article_detail/comment/comment_content.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_post/article_list_post_view_model.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
+import 'package:capstone_project/view/screen/article/save_content/save_content.dart';
+import 'package:capstone_project/view/screen/article/save_content/save_content_view_model.dart';
+import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+
+import 'package:provider/provider.dart';
 
 class ArticleDetailsScreen extends StatelessWidget {
   static const String routename = '/article_details_screen';
-  final Articles articles;
 
-  const ArticleDetailsScreen({Key? key, required this.articles})
-      : super(key: key);
+  const ArticleDetailsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final articleId = ModalRoute.of(context)!.settings.arguments as String;
+    final provider =
+        Provider.of<ArticleListPostProvider>(context, listen: false);
+
     return Scaffold(
       appBar: CustomAppBar(
         preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
@@ -32,30 +40,36 @@ class ArticleDetailsScreen extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    showModalBottomSheet(
-                        useRootNavigator: true,
-                        isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(16),
+                    if (provider.isLoggedIn() == true) {
+                      showModalBottomSheet(
+                          useRootNavigator: true,
+                          isScrollControlled: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(16),
+                            ),
                           ),
-                        ),
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Wrap(
-                            children: [
-                              CustomBottomSheetBuilder(
-                                tinggi:
-                                    MediaQuery.of(context).size.height * 0.9,
-                                isi: const [
-                                  CommentContent(),
-                                ],
-                                header: true,
-                                judul: 'Comments',
-                              ),
-                            ],
-                          );
-                        });
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Wrap(
+                              children: [
+                                CustomBottomSheetBuilder(
+                                  tinggi:
+                                      MediaQuery.of(context).size.height * 0.9,
+                                  isi: [
+                                    CommentContent(
+                                      articleId: articleId,
+                                    ),
+                                  ],
+                                  header: true,
+                                  judul: 'Comments',
+                                ),
+                              ],
+                            );
+                          });
+                    } else {
+                      Navigator.pushNamed(context, '/login_screen');
+                    }
                   },
                   icon: const Icon(Icons.comment),
                 ),
@@ -63,83 +77,119 @@ class ArticleDetailsScreen extends StatelessWidget {
                   width: 20,
                 ),
                 IconButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                        useRootNavigator: true,
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Wrap(children: const [SaveContent()]);
-                        });
+                  onPressed: () async {
+                    if (provider.isLoggedIn() == true) {
+                      if (provider.isArticleSaved(articleId)) {
+                        provider.toggleArticleSaved(articleId);
+                        final detailProvider =
+                            Provider.of<DetailReadingListViewmodel>(context,
+                                listen: false);
+                        // detailProvider.removeArticleFromReadingList(
+                        //     id: detailProvider.readingListData
+                        //         .readingListArticles![index].id);
+                      } else {
+                        showModalBottomSheet(
+                          useRootNavigator: true,
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Wrap(
+                              children: [
+                                CustomBottomSheetBuilder(
+                                  tinggi:
+                                      MediaQuery.of(context).size.height * 0.8,
+                                  isi: [
+                                    SaveContent(
+                                      articleId: articleId,
+                                    ),
+                                  ],
+                                  header: true,
+                                  judul: 'Save to...',
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    } else {
+                      Navigator.pushNamed(context, '/login_screen');
+                    }
                   },
-                  icon: const Icon(Icons.bookmark_border),
+                  icon: Consumer<ArticleListPostProvider>(
+                    builder: (context, provider, _) {
+                      final isArticleSaved = provider.isArticleSaved(articleId);
+                      return isArticleSaved
+                          ? Icon(Icons.bookmark, color: MyColor.primaryMain)
+                          : const Icon(Icons.bookmark_border);
+                    },
+                  ),
                 ),
               ],
             ),
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    articles.title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
+      body: Consumer<ArticleListProvider>(builder: (context, provider, _) {
+        final articles = provider.getArticleById(articleId);
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      articles!.title ?? '',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    articles.formattedDate,
-                    style: TextStyle(
-                      fontSize: 12,
+                    const Spacer(),
+                    Text(
+                      articles.formattedDate,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: MyColor.neutralMedium,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text(
+                  articles.topic!.toUpperCase(),
+                  style: TextStyle(
+                      fontSize: 14,
                       color: MyColor.neutralMedium,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              Text(
-                articles.category,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: MyColor.neutralMedium,
-                    fontWeight: FontWeight.w500),
-              ),
-              Text(
-                articles.author,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: MyColor.neutralMedium,
-                    fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              Image.asset(articles.image),
-              const SizedBox(
-                height: 16,
-              ),
-              Text(
-                articles.desc,
-                textAlign: TextAlign.justify,
-              ),
-            ],
+                      fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  articles.author ?? '',
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: MyColor.neutralMedium,
+                      fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Image.network(
+                  articles.image ?? '',
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Html(data: articles.description ?? '')
+              ],
+            ),
           ),
-        ),
-      ),
-      bottomNavigationBar: const BottomNavBar(
-        currentIndex: 0,
-      ),
+        );
+      }),
     );
   }
 }

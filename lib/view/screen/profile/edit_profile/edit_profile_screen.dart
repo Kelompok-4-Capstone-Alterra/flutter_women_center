@@ -1,8 +1,14 @@
+import 'dart:io';
+
+import 'package:capstone_project/utils/components/text_box/read_only_text_box.dart';
+import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/profile/change_password/change_password_screen.dart';
+import 'package:capstone_project/view/screen/profile/edit_profile/edit_profile_view_model.dart';
 import 'package:capstone_project/view/screen/profile/profilel_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../model/user_model.dart';
 import '../../../../utils/components/appbar/custom_appbar.dart';
 import '../../../../utils/components/buttons/primary_button.dart';
 import '../../../../utils/components/text_box/regular_text_box/text_box.dart';
@@ -22,16 +28,40 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  late final ProfileViewModel profileProvider;
+  late final EditProfileViewModel editProfileProvider;
 
   @override
   void dispose() {
     _usernameController.dispose();
     _nameController.dispose();
-    _emailController.dispose();
     _phoneController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    profileProvider = Provider.of<ProfileViewModel>(context, listen: false);
+    _usernameController.text = profileProvider.userData.username ?? '';
+    _nameController.text = profileProvider.userData.name ?? '';
+    _phoneController.text = profileProvider.userData.phone ?? '';
+    editProfileProvider =
+        Provider.of<EditProfileViewModel>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        editProfileProvider.initImage();
+        profileProvider.initProfile();
+        editProfileProvider.changeState(MyState.initial);
+      },
+    );
+    editProfileProvider.addListener(() {
+      if (editProfileProvider.state == MyState.loaded) {
+        profileProvider.initProfile();
+        editProfileProvider.changeState(MyState.initial);
+      }
+    });
+    super.initState();
   }
 
   void _showAlert(BuildContext context) {
@@ -57,6 +87,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             PrimaryButton(
               teks: 'Sure',
               onPressed: () {
+                editProfileProvider.updateProfile(
+                  UserModel(
+                    username: _usernameController.text,
+                    name: _nameController.text,
+                    phone: _phoneController.text,
+                    pictureFile: editProfileProvider.imageFile,
+                  ),
+                );
                 Navigator.pop(context);
               },
             ),
@@ -77,15 +115,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
+  void _showImage(ImageProvider<Object> imageData) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Container(
+            width: 200,
+            height: 300,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: imageData,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final profileProvider =
-        Provider.of<ProfileViewModel>(context, listen: false);
-    _usernameController.text = profileProvider.userData.username ?? '';
-    _nameController.text = profileProvider.userData.name ?? '';
-    _emailController.text = profileProvider.userData.email ?? '';
-    _phoneController.text = profileProvider.userData.phone ?? '';
-
     return Scaffold(
       appBar: CustomAppBar(
         preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
@@ -162,17 +213,81 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             CircleAvatar(
                               radius: 40,
                               backgroundColor: MyColor.primaryMain,
+                              child: Consumer<EditProfileViewModel>(
+                                builder: (context, value, child) {
+                                  if (value.imageFile == null &&
+                                      profileProvider.userData.picturePath ==
+                                          '') {
+                                    return IconButton(
+                                      icon: Icon(
+                                        Icons.person,
+                                        color: MyColor.white,
+                                        size: 50,
+                                      ),
+                                      onPressed: () {
+                                        editProfileProvider.setImageFile();
+                                      },
+                                    );
+                                  } else if (value.imageFile == null &&
+                                      profileProvider.userData.picturePath !=
+                                          '') {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(40),
+                                      child: GestureDetector(
+                                        child: Image.network(
+                                          profileProvider
+                                                  .userData.picturePath ??
+                                              '',
+                                          fit: BoxFit.cover,
+                                          width: 80,
+                                          height: 80,
+                                        ),
+                                        onTap: () {
+                                          _showImage(
+                                            NetworkImage(
+                                              profileProvider
+                                                      .userData.picturePath ??
+                                                  '',
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  } else {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(40),
+                                      child: GestureDetector(
+                                        child: Image.file(
+                                          File(value.imageFile?.path ?? ''),
+                                          fit: BoxFit.cover,
+                                          width: 80,
+                                          height: 80,
+                                        ),
+                                        onTap: () {
+                                          _showImage(
+                                            FileImage(
+                                              File(value.imageFile?.path ?? ''),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
                             ),
                             CircleAvatar(
-                              radius: 18,
+                              radius: 15,
                               backgroundColor: MyColor.neutralHigh,
                               child: IconButton(
                                 icon: Icon(
                                   Icons.edit,
                                   color: MyColor.white,
-                                  size: 18,
+                                  size: 15,
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  editProfileProvider.setImageFile();
+                                },
                               ),
                             ),
                           ],
@@ -181,6 +296,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    Text(
+                      'Email',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: MyColor.neutralHigh,
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
+                    ReadOnlyTextBox(
+                      value: profileProvider.userData.email ?? '',
+                      textColor: MyColor.neutralMediumLow,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
                     ),
                     Text(
                       'Username',
@@ -198,8 +331,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       hintText: "Ex : johndoe",
                       keyboardType: TextInputType.text,
                       validator: (p0) {
-                        if (p0 == null || p0.isEmpty) {
-                          return 'usernama tidak boleh kosong';
+                        if (p0 == null ||
+                            p0.isEmpty ||
+                            !RegExp(r'^(?!\s+$)').hasMatch(p0)) {
+                          return 'username is required';
+                        }
+                        if (!RegExp(r'^[^\s]*$').hasMatch(p0)) {
+                          return 'username cannot contain spaces';
                         }
                         return null;
                       },
@@ -223,33 +361,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       hintText: "Ex : johndoe",
                       keyboardType: TextInputType.text,
                       validator: (p0) {
-                        if (p0 == null || p0.isEmpty) {
-                          return 'nama tidak boleh kosong';
+                        if (p0 == null ||
+                            p0.isEmpty ||
+                            !RegExp(r'^(?!\s+$)').hasMatch(p0)) {
+                          return 'name is required';
                         }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
-                    ),
-                    Text(
-                      'Email',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: MyColor.neutralHigh,
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
-                    ),
-                    TextBox(
-                      textEditingController: _emailController,
-                      hintText: "Ex : johndoe@example.com",
-                      keyboardType: TextInputType.text,
-                      validator: (p0) {
-                        if (p0 == null || p0.isEmpty) {
-                          return 'email tidak boleh kosong';
+                        if (!RegExp(r'^[^\s].*').hasMatch(p0)) {
+                          return 'invalid name';
                         }
                         return null;
                       },
@@ -274,7 +392,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       keyboardType: TextInputType.text,
                       validator: (p0) {
                         if (p0 == null || p0.isEmpty) {
-                          return 'nomor tidak boleh kosong';
+                          return 'phone number is required';
+                        }
+                        if (!RegExp(r'^[0-9]+$').hasMatch(p0)) {
+                          return 'must be a number';
+                        }
+                        if (!p0.startsWith('0')) {
+                          return 'start with 0';
+                        }
+                        if (p0.length < 8 || p0.length > 15) {
+                          return 'minimum 8 number and maximum 15 number';
                         }
                         return null;
                       },
@@ -300,12 +427,36 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       height: MediaQuery.of(context).size.height * 0.02,
                     ),
                     PrimaryButton(
-                        teks: 'Save Changes',
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            _showAlert(context);
+                      teks: 'Save Changes',
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          _showAlert(context);
+                        }
+                      },
+                      customChild: Consumer<EditProfileViewModel>(
+                        builder: (context, value, _) {
+                          if (value.state == MyState.loading) {
+                            return SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: MyColor.white,
+                                strokeWidth: 2,
+                              ),
+                            );
+                          } else {
+                            return Text(
+                              'Save Changes',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w500,
+                                color: MyColor.white,
+                              ),
+                            );
                           }
-                        }),
+                        },
+                      ),
+                    ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
