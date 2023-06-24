@@ -9,14 +9,7 @@ class CounselingTopicService extends InterceptorApi {
   Future<List<TopicModel>> getCounselingTopic(String token) async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.getTopics;
-      Response response = await dio.get(
-        url,
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-          },
-        ),
-      );
+      final Response response = await dio.get(url);
       topics = (response.data['data']['topics'] as List)
           .map((e) => TopicModel.fromJson(e))
           .toList();

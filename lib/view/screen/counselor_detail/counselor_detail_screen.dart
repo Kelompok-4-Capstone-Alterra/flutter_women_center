@@ -1,5 +1,4 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
-import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 import 'package:capstone_project/utils/components/formarter/date_formater.dart';
 import 'package:capstone_project/utils/components/formarter/money_formater.dart';
 import 'package:capstone_project/utils/my_color.dart';
@@ -14,24 +13,27 @@ import 'package:star_rating/star_rating.dart';
 class CounselorDetailScreen extends StatefulWidget {
   static const routeName = '/counselor_detail';
 
-  const CounselorDetailScreen({super.key, required this.id});
+  final String id;
+  final int? topicId;
 
-  final int id;
+  const CounselorDetailScreen({super.key, required this.id, this.topicId});
 
   @override
   State<CounselorDetailScreen> createState() => _CounselorDetailScreenState();
 }
 
 class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
+  String selectedTime = '';
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () {
+    Future.delayed(Duration.zero, () async {
       final provider =
           Provider.of<CounselorDetailViewModel>(context, listen: false);
-      provider.getCounselorDetail(widget.id);
-      provider.getAvaibleTime();
-      provider.getCustomerReview(widget.id);
+      provider.selectedTime = '';
+      await provider.getCounselorDetail(widget.id);
+      await provider.getAvaibleTime(widget.id);
+      await provider.getCustomerReview(widget.id);
     });
   }
 
@@ -68,7 +70,8 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                       children: [
                         ClipRRect(
                           child: Image.network(
-                            provider.counselorDetail[0]['image'],
+                            provider.counselorDetail.profilePicture ??
+                                'https://cdn-icons-png.flaticon.com/512/7867/7867562.png',
                             width: double.infinity,
                             height: 240,
                             fit: BoxFit.cover,
@@ -78,7 +81,7 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                           height: 16,
                         ),
                         Text(
-                          provider.counselorDetail[0]['name'],
+                          provider.counselorDetail.name ?? '',
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -90,8 +93,7 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                         StarRating(
                           mainAxisAlignment: MainAxisAlignment.start,
                           length: 5,
-                          rating:
-                              provider.counselorDetail[0]['rating'].toDouble(),
+                          rating: provider.counselorDetail.rating!.toDouble(),
                           between: 2,
                           starSize: 20,
                           color: MyColor.warning,
@@ -100,7 +102,7 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                           height: 10,
                         ),
                         Text(
-                          provider.counselorDetail[0]['specialist'],
+                          provider.counselorDetail.topic ?? '',
                           style: TextStyle(
                             fontSize: 14,
                             color: MyColor.neutralMediumLow,
@@ -111,7 +113,7 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                         ),
                         Text(
                           moneyFormatter.formatRupiah(
-                              provider.counselorDetail[0]['price']),
+                              provider.counselorDetail.price ?? 0),
                           style: TextStyle(
                             fontSize: 14,
                             color: MyColor.primaryMain,
@@ -121,7 +123,7 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                           height: 16,
                         ),
                         Text(
-                          provider.counselorDetail[0]['description'],
+                          provider.counselorDetail.description ?? '',
                           style: const TextStyle(
                             fontSize: 12,
                           ),
@@ -154,87 +156,106 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                       child: CircularProgressIndicator(),
                     );
                   case MyState.loaded:
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: provider.avaibleTime.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.only(right: 16),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: provider.selectedTime ==
-                                        provider.avaibleTime[index]['id']
-                                    ? MyColor.primaryMain
-                                    : provider.avaibleTime[index]['status'] ==
-                                            'active'
-                                        ? MyColor.neutralHigh
-                                        : const Color(0xFFE7E4E4),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (provider.avaibleTime[index]['status'] ==
-                                    'active') {
-                                  provider.setSelectedTime(
-                                      provider.avaibleTime[index]['id']);
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: provider.selectedTime ==
-                                        provider.avaibleTime[index]['id']
-                                    ? MyColor.primaryMain
-                                    : provider.avaibleTime[index]['status'] ==
-                                            'active'
-                                        ? MyColor.white
-                                        : const Color(0xFFE7E4E4),
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(5),
-                                  ),
+                    if (provider.avaibleTime.times?.length == null) {
+                      return const SizedBox(
+                        child: Center(
+                            child: Text('Counselor Dont Have Avaible Time')),
+                      );
+                    } else {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: provider.avaibleTime.times?.length ?? 0,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            String time =
+                                provider.avaibleTime.times?[index].time ?? '';
+                            time = time.substring(0, 5);
+                            return Container(
+                              margin: const EdgeInsets.only(right: 16),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: provider.selectedTime ==
+                                          provider.avaibleTime.times?[index].id
+                                      ? MyColor.primaryMain
+                                      : provider.avaibleTime.times?[index]
+                                                  .isAvailable ==
+                                              true
+                                          ? MyColor.neutralHigh
+                                          : const Color(0xFFE7E4E4),
+                                  width: 1,
                                 ),
-                                elevation: 0,
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  (provider.selectedTime ==
-                                          provider.avaibleTime[index]['id'])
-                                      ? Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8),
-                                          child: Icon(
-                                            Icons.check,
-                                            size: 16,
-                                            color: MyColor.white,
-                                          ),
-                                        )
-                                      : const SizedBox(),
-                                  Text(
-                                    provider.avaibleTime[index]['time'],
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: provider.selectedTime ==
-                                              provider.avaibleTime[index]['id']
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (provider.avaibleTime.times?[index]
+                                          .isAvailable ==
+                                      true) {
+                                    provider.setSelectedTime(
+                                      id: provider.avaibleTime.times?[index].id,
+                                      timeID: time,
+                                      dateID: provider.avaibleTime.dateId,
+                                    );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: provider.selectedTime ==
+                                          provider.avaibleTime.times?[index].id
+                                      ? MyColor.primaryMain
+                                      : provider.avaibleTime.times?[index]
+                                                  .isAvailable ==
+                                              true
                                           ? MyColor.white
-                                          : provider.avaibleTime[index]
-                                                      ['status'] ==
-                                                  'active'
-                                              ? MyColor.neutralHigh
-                                              : MyColor.white,
+                                          : const Color(0xFFE7E4E4),
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5),
                                     ),
                                   ),
-                                ],
+                                  elevation: 0,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    (provider.selectedTime ==
+                                            provider
+                                                .avaibleTime.times?[index].id)
+                                        ? Padding(
+                                            padding:
+                                                const EdgeInsets.only(right: 8),
+                                            child: Icon(
+                                              Icons.check,
+                                              size: 16,
+                                              color: MyColor.white,
+                                            ),
+                                          )
+                                        : const SizedBox(),
+                                    Text(
+                                      time,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: provider.selectedTime ==
+                                                provider.avaibleTime
+                                                    .times?[index].id
+                                            ? MyColor.white
+                                            : provider.avaibleTime.times?[index]
+                                                        .isAvailable ==
+                                                    true
+                                                ? MyColor.neutralHigh
+                                                : MyColor.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
+                            );
+                          },
+                        ),
+                      );
+                    }
+
                   default:
                     return const SizedBox(
                       child: Text('No Data Avaible'),
@@ -266,22 +287,29 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              if (provider.selectedTime != 0) {
+                              if (provider.selectedTime != '') {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => CounselingAppointment(
-                                      counselorId: provider.counselorDetail[0]
-                                          ['id'],
+                                      counselorId: widget.id,
                                       selectedMethod: 'Chat',
                                       selectedTimeId: provider.selectedTime,
+                                      dateId: provider.dateId,
+                                      profilePicture: provider
+                                          .counselorDetail.profilePicture,
+                                      username: provider.counselorDetail.name,
+                                      topic: provider.counselorDetail.topic,
+                                      price: provider.counselorDetail.price,
+                                      timeStart: provider.timeId,
+                                      topicId: widget.topicId,
                                     ),
                                   ),
                                 );
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: provider.selectedTime != 0
+                              backgroundColor: provider.selectedTime != ''
                                   ? MyColor.primaryMain
                                   : const Color(0xFFE7E4E4),
                               shape: const RoundedRectangleBorder(
@@ -305,22 +333,29 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              if (provider.selectedTime != 0) {
+                              if (provider.selectedTime != '') {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => CounselingAppointment(
-                                      counselorId: provider.counselorDetail[0]
-                                          ['id'],
+                                      counselorId: widget.id,
                                       selectedMethod: 'Video Call',
                                       selectedTimeId: provider.selectedTime,
+                                      dateId: provider.dateId,
+                                      profilePicture: provider
+                                          .counselorDetail.profilePicture,
+                                      username: provider.counselorDetail.name,
+                                      topic: provider.counselorDetail.topic,
+                                      price: provider.counselorDetail.price,
+                                      timeStart: provider.timeId,
+                                      topicId: widget.topicId,
                                     ),
                                   ),
                                 );
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: provider.selectedTime != 0
+                              backgroundColor: provider.selectedTime != ''
                                   ? MyColor.primaryMain
                                   : const Color(0xFFE7E4E4),
                               shape: const RoundedRectangleBorder(
@@ -363,113 +398,12 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                       child: CircularProgressIndicator(),
                     );
                   case MyState.loaded:
-                    // return SizedBox(
-                    //   height: MediaQuery.of(context).size.height * 0.1,
-                    //   child: ListView.builder(
-                    //     itemCount: provider.customerReview.length,
-                    //     scrollDirection: Axis.horizontal,
-                    //     shrinkWrap: true,
-                    //     itemBuilder: (context, index) {
-                    //       // return Placeholder();
-                    //       return Container(
-                    //         margin: const EdgeInsets.only(right: 16),
-                    //         padding: const EdgeInsets.only(
-                    //             left: 8, right: 8, top: 8, bottom: 8),
-                    //         decoration: BoxDecoration(
-                    //           border: Border.all(
-                    //             color: MyColor.neutralLow,
-                    //             width: 1,
-                    //           ),
-                    //           borderRadius: BorderRadius.circular(3),
-                    //         ),
-                    //         child: Row(
-                    //           children: [
-                    //             CircleAvatar(
-                    //               radius: 20,
-                    //               backgroundImage: NetworkImage(
-                    //                 provider.customerReview[index]['image'],
-                    //               ),
-                    //             ),
-                    //             const SizedBox(
-                    //               width: 20,
-                    //             ),
-                    //             SizedBox(
-                    //               width: 200,
-                    //               child: Column(
-                    //                 crossAxisAlignment:
-                    //                     CrossAxisAlignment.start,
-                    //                 children: [
-                    //                   Row(
-                    //                     mainAxisAlignment:
-                    //                         MainAxisAlignment.spaceBetween,
-                    //                     children: [
-                    //                       StarRating(
-                    //                         mainAxisAlignment:
-                    //                             MainAxisAlignment.start,
-                    //                         length: 5,
-                    //                         rating: provider
-                    //                             .customerReview[index]['rating']
-                    //                             .toDouble(),
-                    //                         between: 2,
-                    //                         starSize: 12,
-                    //                         color: MyColor.warning,
-                    //                       ),
-                    //                       Text(
-                    //                         DateFormatter.format(
-                    //                             provider.customerReview[index]
-                    //                                 ['createdAt']),
-                    //                         style: TextStyle(
-                    //                             fontSize: 8,
-                    //                             color: MyColor.neutralHigh),
-                    //                       ),
-                    //                     ],
-                    //                   ),
-                    //                   const SizedBox(
-                    //                     height: 5,
-                    //                   ),
-                    //                   Text(
-                    //                     provider.customerReview[index]['name'],
-                    //                     style: TextStyle(
-                    //                       fontSize: 12,
-                    //                       color: MyColor.neutralHigh,
-                    //                       fontWeight: FontWeight.bold,
-                    //                     ),
-                    //                   ),
-                    //                   const SizedBox(
-                    //                     height: 5,
-                    //                   ),
-                    //                   SizedBox(
-                    //                     height:
-                    //                         MediaQuery.of(context).size.height *
-                    //                             0.035,
-                    //                     child: Text(
-                    //                       provider.customerReview[index]
-                    //                           ['review'],
-                    //                       style: TextStyle(
-                    //                         fontSize: 12,
-                    //                         color: MyColor.neutralHigh,
-                    //                       ),
-                    //                       overflow: TextOverflow.ellipsis,
-                    //                       maxLines: 2,
-                    //                     ),
-                    //                   ),
-                    //                 ],
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       );
-
-                    //     },
-                    //   ),
-                    // );
                     return Column(children: [
                       ListView.builder(
-                        itemCount: provider.customerReview.length,
+                        itemCount: provider.counselorReview.reviews?.length,
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          // return Placeholder();
                           return Container(
                             margin: const EdgeInsets.only(bottom: 16),
                             padding: const EdgeInsets.only(
@@ -486,7 +420,9 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                                 CircleAvatar(
                                   radius: 20,
                                   backgroundImage: NetworkImage(
-                                    provider.customerReview[index]['image'],
+                                    provider.counselorReview.reviews?[index]
+                                            .userProfile ??
+                                        'https://cdn-icons-png.flaticon.com/512/7867/7867562.png',
                                   ),
                                 ),
                                 const SizedBox(
@@ -508,16 +444,24 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                                                 MainAxisAlignment.start,
                                             length: 5,
                                             rating: provider
-                                                .customerReview[index]['rating']
-                                                .toDouble(),
+                                                        .counselorReview
+                                                        .reviews?[index]
+                                                        .rating ==
+                                                    null
+                                                ? 0
+                                                : provider.counselorReview
+                                                    .reviews![index].rating!
+                                                    .toDouble(),
                                             between: 2,
                                             starSize: 12,
                                             color: MyColor.warning,
                                           ),
                                           Text(
-                                            DateFormatter.format(
-                                                provider.customerReview[index]
-                                                    ['createdAt']),
+                                            DateFormatter.format(provider
+                                                    .counselorReview
+                                                    .reviews?[index]
+                                                    .createdAt ??
+                                                '2023-01-01'),
                                             style: TextStyle(
                                                 fontSize: 8,
                                                 color: MyColor.neutralHigh),
@@ -528,7 +472,9 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                                         height: 5,
                                       ),
                                       Text(
-                                        provider.customerReview[index]['name'],
+                                        provider.counselorReview.reviews?[index]
+                                                .username ??
+                                            '',
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: MyColor.neutralHigh,
@@ -543,8 +489,9 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                                             MediaQuery.of(context).size.height *
                                                 0.035,
                                         child: Text(
-                                          provider.customerReview[index]
-                                              ['review'],
+                                          provider.counselorReview
+                                                  .reviews?[index].review ??
+                                              '',
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: MyColor.neutralHigh,
@@ -569,31 +516,46 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                     );
                 }
               }),
-              ElevatedButton(
-                onPressed: () {
-                  Provider.of<CounselorDetailViewModel>(context, listen: false)
-                      .loadMoreCustomerReview(widget.id);
-                },
-                style: ElevatedButton.styleFrom(
-                  fixedSize: Size(MediaQuery.of(context).size.width, 40),
-                  backgroundColor: MyColor.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                  side: BorderSide(color: MyColor.primaryMain, width: 1),
-                  elevation: 0,
-                ),
-                child: Text(
-                  'Load More',
-                  style: TextStyle(color: MyColor.primaryMain),
-                ),
-              ),
+              Consumer<CounselorDetailViewModel>(
+                  builder: (context, provider, _) {
+                switch (provider.myState) {
+                  case MyState.loading:
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  case MyState.loaded:
+                    if (provider.currentPages ==
+                        provider.counselorReview.totalPage) {
+                      return const SizedBox();
+                    } else {
+                      return ElevatedButton(
+                        onPressed: () {
+                          provider.loadMoreCustomerReview(widget.id);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          fixedSize:
+                              Size(MediaQuery.of(context).size.width, 40),
+                          backgroundColor: MyColor.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                          side:
+                              BorderSide(color: MyColor.primaryMain, width: 1),
+                          elevation: 0,
+                        ),
+                        child: Text(
+                          'Load More',
+                          style: TextStyle(color: MyColor.primaryMain),
+                        ),
+                      );
+                    }
+                  default:
+                    return const SizedBox();
+                }
+              }),
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: const BottomNavBar(
-        currentIndex: 0,
       ),
     );
   }

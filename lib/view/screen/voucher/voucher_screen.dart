@@ -1,4 +1,5 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
+import 'package:capstone_project/utils/components/formarter/money_formater.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
@@ -9,9 +10,10 @@ import 'package:provider/provider.dart';
 class VoucherScreen extends StatefulWidget {
   static const String routeName = '/voucher';
 
-  final int? voucherId;
+  final String? voucherId;
+  final String? id;
 
-  const VoucherScreen({super.key, this.voucherId});
+  const VoucherScreen({super.key, this.voucherId, this.id});
 
   @override
   State<VoucherScreen> createState() => _VoucherScreenState();
@@ -23,7 +25,7 @@ class _VoucherScreenState extends State<VoucherScreen> {
     super.initState();
     Future.delayed(Duration.zero, () {
       final provider = Provider.of<VoucherViewModel>(context, listen: false);
-      provider.getVoucher();
+      provider.getVoucher(widget.id ?? '');
     });
   }
 
@@ -77,7 +79,7 @@ class _VoucherScreenState extends State<VoucherScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                provider.voucher[index]['type'],
+                                'Refund Voucher',
                                 style: TextStyle(
                                   fontSize: 8,
                                   fontWeight: FontWeight.bold,
@@ -86,7 +88,7 @@ class _VoucherScreenState extends State<VoucherScreen> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                provider.voucher[index]['name'],
+                                'Counseling Discount ${MoneyFormatter().formatRupiah(provider.voucher[index].value!)}',
                                 style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -108,7 +110,7 @@ class _VoucherScreenState extends State<VoucherScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      provider.voucher[index]['paymentMethod'],
+                                      'All payment method accepted',
                                       style: TextStyle(
                                         fontSize: 8,
                                         fontWeight: FontWeight.bold,
@@ -117,7 +119,7 @@ class _VoucherScreenState extends State<VoucherScreen> {
                                     ),
                                     widget.voucherId != null &&
                                             widget.voucherId ==
-                                                provider.voucher[index]['id']
+                                                provider.voucher[index].id
                                         ? ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: MyColor.white,
@@ -133,8 +135,8 @@ class _VoucherScreenState extends State<VoucherScreen> {
                                             ),
                                             onPressed: () {
                                               Navigator.pop(context, {
-                                                'id': provider.voucher[index]
-                                                    ['id'],
+                                                'id':
+                                                    provider.voucher[index].id,
                                                 'decide': 'cancel'
                                               });
                                             },
@@ -158,8 +160,8 @@ class _VoucherScreenState extends State<VoucherScreen> {
                                             ),
                                             onPressed: () {
                                               Navigator.pop(context, {
-                                                'id': provider.voucher[index]
-                                                    ['id'],
+                                                'id':
+                                                    provider.voucher[index].id,
                                                 'decide': 'choose'
                                               });
                                             },

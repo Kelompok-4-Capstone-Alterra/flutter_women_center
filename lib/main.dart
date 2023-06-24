@@ -24,6 +24,7 @@ import 'package:capstone_project/view/screen/auth/forgot_password/forgot_passwor
 import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_view_model.dart';
 import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
 import 'package:capstone_project/view/screen/auth/login/login_view_model.dart';
+import 'package:capstone_project/view/screen/midtrans/midtrans_view_model.dart';
 import 'package:capstone_project/view/screen/onboarding/onboarding_screen.dart';
 import 'package:capstone_project/view/screen/onboarding/onboarding_view_model.dart';
 import 'package:capstone_project/view/screen/profile/change_password/change_password_screen.dart';
@@ -158,6 +159,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => CareerDetailViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => MidtransViewModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -178,10 +182,10 @@ class MyApp extends StatelessWidget {
           CounselingTopicScreen.routeName: (context) =>
               const CounselingTopicScreen(),
           CounselorListScreen.routeName: (context) =>
-              const CounselorListScreen(),
+              const CounselorListScreen(topicId: 0),
           CounselorDetailScreen.routeName: (context) =>
               const CounselorDetailScreen(
-                id: 0,
+                id: '',
               ),
           ArticleDetailsScreen.routename: (context) => ArticleDetailsScreen(
                 articles: Articles(
