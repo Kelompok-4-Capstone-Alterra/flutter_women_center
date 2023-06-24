@@ -6,7 +6,7 @@ import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
-import 'package:capstone_project/view/screen/forum/join_forum_discussion_screen.dart';
+import 'package:capstone_project/view/screen/forum/forum_discussion_screen.dart';
 import 'package:capstone_project/view/screen/home/home_view_model.dart';
 import 'package:capstone_project/view/screen/home/search/search_screen.dart';
 import 'package:capstone_project/view/screen/home/widget/home_list.dart';
@@ -19,6 +19,7 @@ import 'package:provider/provider.dart';
 
 import '../../../utils/my_color.dart';
 import '../career/career_list/career_list_screen.dart';
+import '../forum/forum_discussion_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
     homeProvider = Provider.of<HomeViewModel>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       homeProvider.initUser();
+      Provider.of<ForumDiscussionViewModel>(context, listen: false).init();
     });
   }
 
@@ -111,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               HomeMenu(
                 icon: Icons.forum,
-                direction: JoinForumDiscussionScreen.routeName,
+                direction: ForumDiscussionScreen.routeName,
                 title: 'Forum',
               ),
             ],
@@ -293,7 +295,7 @@ class _HomeScreenState extends State<HomeScreen> {
           HomeList(
             title: 'Newest Forum',
             subtitle: "Let's join to the newest forum discussion!",
-            direction: JoinForumDiscussionScreen.routeName,
+            direction: ForumDiscussionScreen.routeName,
             listItem: ListView.builder(
               itemCount: 10,
               scrollDirection: Axis.horizontal,

@@ -12,4 +12,8 @@ class Endpoint {
   static const String publicArticles = '/users/public/articles';
   static const String publicCounselor = '/users/public/counselors';
   static const String publicCareer = '/users/public/careers';
+  static const String publicTopics = '/users/public/topics';
+  static const String forum = '/users/forums';
+  static const String publicForum = '/users/public/forums';
+  static const String forumJoin = '/users/forums/joins';
 }

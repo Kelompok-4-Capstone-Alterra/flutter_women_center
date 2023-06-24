@@ -17,7 +17,15 @@ class FloatingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      decoration: const BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 4,
+            offset: Offset(2, 5),
+          ),
+        ],
+      ),
       height: 36,
       child: FloatingActionButton.extended(
         splashColor: MyColor.primaryPressed,

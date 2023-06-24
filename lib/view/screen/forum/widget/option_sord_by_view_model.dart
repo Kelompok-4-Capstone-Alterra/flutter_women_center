@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class JoinForumDiscussionViewModel extends ChangeNotifier {
+class OptionSortByViewModel extends ChangeNotifier {
   String? selectedSortBy;
   String? url;
 
