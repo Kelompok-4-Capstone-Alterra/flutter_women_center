@@ -98,7 +98,6 @@ class DetailReadingListViewmodel with ChangeNotifier {
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
-      print(_message);
       changeState(MyState.failed);
     }
   }
