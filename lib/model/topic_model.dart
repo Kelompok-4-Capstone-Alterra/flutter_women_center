@@ -3,7 +3,11 @@ class TopicModel {
   String? name;
   String? image;
 
-  TopicModel({this.id, this.name, this.image});
+  TopicModel({
+    this.id,
+    this.name,
+    this.image,
+  });
 
   TopicModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
