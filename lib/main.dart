@@ -1,6 +1,10 @@
 import 'dart:io';
 
 import 'package:capstone_project/utils/key/naviagtor_key.dart';
+import 'package:capstone_project/view/screen/article/article_detail/article_detail_view_model.dart';
+import 'package:capstone_project/view/screen/article/article_detail/comment/comment_view_model.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_post/article_list_post_view_model.dart';
+import 'package:capstone_project/view/screen/article/save_content/save_content_view_model.dart';
 import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_screen.dart';
 import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_view_model.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
@@ -163,6 +167,21 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => SearchTransactionsViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => ArticleListProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ArticleListPostProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CommentProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ArticleDetailProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SaveContentProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -187,15 +206,8 @@ class MyApp extends StatelessWidget {
               const CounselorDetailScreen(
                 id: 0,
               ),
-          ArticleDetailsScreen.routename: (context) => ArticleDetailsScreen(
-                articles: Articles(
-                    title: '',
-                    author: '',
-                    date: '',
-                    desc: '',
-                    image: '',
-                    category: ''),
-              ),
+          ArticleDetailsScreen.routename: (context) =>
+              const ArticleDetailsScreen(),
           LoginScreen.routeName: (context) => const LoginScreen(),
           SignupScreen.routeName: (context) => const SignupScreen(),
           VerificationScreen.routeName: (context) => const VerificationScreen(),

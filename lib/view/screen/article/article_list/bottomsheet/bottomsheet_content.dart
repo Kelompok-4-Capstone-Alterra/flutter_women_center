@@ -32,13 +32,13 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
                   children: [
                     InkWell(
                       onTap: () {
-                        provider.filterMostViewed();
+                        provider.sortArticles('most_viewed');
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Most Viewed'),
-                          (provider.sortValue == 'Most Viewed')
+                          (provider.sortValues == 'most_viewed')
                               ? Icon(Icons.check, color: MyColor.primaryMain)
                               : const SizedBox(),
                         ],
@@ -49,13 +49,13 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
                     ),
                     InkWell(
                       onTap: () {
-                        provider.filterNewest();
+                        provider.sortArticles('newest');
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Newest'),
-                          (provider.sortValue == 'Newest')
+                          (provider.sortValues == 'newest')
                               ? Icon(Icons.check, color: MyColor.primaryMain)
                               : const SizedBox(),
                         ],
@@ -66,13 +66,13 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
                     ),
                     InkWell(
                       onTap: () {
-                        provider.filterOldest();
+                        provider.sortArticles('oldest');
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Oldest'),
-                          (provider.sortValue == 'Oldest')
+                          (provider.sortValues == 'oldest')
                               ? Icon(Icons.check, color: MyColor.primaryMain)
                               : const SizedBox(),
                         ],
