@@ -2,14 +2,17 @@ import 'package:capstone_project/utils/components/buttons/primary_button.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../join_forum_discussion_view_model.dart';
+import '../forum_discussion_view_model.dart';
+import 'option_sord_by_view_model.dart';
 
 class OptionSortBy extends StatelessWidget {
   const OptionSortBy({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<JoinForumDiscussionViewModel>(
+    final forumProvider =
+        Provider.of<ForumDiscussionViewModel>(context, listen: false);
+    return Consumer<OptionSortByViewModel>(
       builder: (context, radioModel, child) {
         return Column(
           children: [
@@ -110,8 +113,9 @@ class OptionSortBy extends StatelessWidget {
               teks: 'Save',
               onPressed: () {
                 if (radioModel.selectedSortBy != null) {
-                  debugPrint('Pilihan: ${radioModel.selectedSortBy}');
-                  radioModel.selectedSortBy = null;
+                  forumProvider
+                      .changeSortBy(radioModel.selectedSortBy!.toLowerCase());
+                  forumProvider.fetchForum();
                   Navigator.pop(context);
                 } else if (radioModel.selectedSortBy == null) {
                   ScaffoldMessenger.of(context).showSnackBar(

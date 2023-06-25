@@ -17,8 +17,9 @@ import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_n
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
-import 'package:capstone_project/view/screen/forum/join_forum_discussion_screen.dart';
-import 'package:capstone_project/view/screen/forum/join_forum_discussion_view_model.dart';
+import 'package:capstone_project/view/screen/forum/forum_discussion_screen.dart';
+import 'package:capstone_project/view/screen/forum/forum_discussion_view_model.dart';
+import 'package:capstone_project/view/screen/forum/widget/option_sord_by_view_model.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:capstone_project/view/screen/home/home_view_model.dart';
 import 'package:capstone_project/view/screen/home/search/search_screen.dart';
@@ -144,7 +145,7 @@ class MyApp extends StatelessWidget {
           create: (context) => ChangePasswordViewModel(),
         ),
         ChangeNotifierProvider(
-          create: (context) => JoinForumDiscussionViewModel(),
+          create: (context) => OptionSortByViewModel(),
         ),
         ChangeNotifierProvider(
           create: (context) => ProfileViewModel(),
@@ -166,6 +167,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => SearchTransactionsViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ForumDiscussionViewModel(),
         ),
         ChangeNotifierProvider(
           create: (context) => ArticleListProvider(),
@@ -218,8 +222,6 @@ class MyApp extends StatelessWidget {
           EditProfileScreen.routeName: (context) => const EditProfileScreen(),
           ChangePasswordScreen.routeName: (context) =>
               const ChangePasswordScreen(),
-          JoinForumDiscussionScreen.routeName: (context) =>
-              const JoinForumDiscussionScreen(),
           CounselingAppointment.routeName: (context) =>
               const CounselingAppointment(),
           VoucherScreen.routeName: (context) => const VoucherScreen(),
@@ -228,6 +230,8 @@ class MyApp extends StatelessWidget {
           SearchSavedScreen.routeName: (context) => const SearchSavedScreen(),
           SearchTransactionsScreen.routeName: (context) =>
               const SearchTransactionsScreen(),
+          ForumDiscussionScreen.routeName: (context) =>
+              const ForumDiscussionScreen(),
         },
       ),
     );

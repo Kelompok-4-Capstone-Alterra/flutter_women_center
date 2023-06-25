@@ -4,14 +4,8 @@ import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:capstone_project/view/screen/profile/profile_screen.dart';
 import 'package:capstone_project/view/screen/saved/saved_screen.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
-import 'package:capstone_project/view/screen/home/home_screen.dart';
-import 'package:capstone_project/view/screen/profile/profile_screen.dart';
-import 'package:capstone_project/view/screen/saved/saved_screen.dart';
-import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../../view/screen/profile/profilel_view_model.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int currentIndex;
