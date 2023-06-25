@@ -10,7 +10,7 @@ class ArticleListPostProvider extends ChangeNotifier {
   String selectedReadingListId = '';
   final ReadingListService _readingListService = ReadingListService();
   late SharedPreferences _loginData;
-  String _message = '';
+  String message = '';
   List<String> savedArticleIds = [];
 
   ArticleListPostProvider() {
@@ -49,7 +49,7 @@ class ArticleListPostProvider extends ChangeNotifier {
       myState = MyState.loaded;
       notifyListeners();
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       myState = MyState.failed;
       notifyListeners();
     }
@@ -65,7 +65,7 @@ class ArticleListPostProvider extends ChangeNotifier {
       myState = MyState.loaded;
       notifyListeners();
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       myState = MyState.failed;
     }
   }
@@ -92,7 +92,7 @@ class ArticleListPostProvider extends ChangeNotifier {
           token: token, articleId: articleId, readingListId: readingListId);
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       changeState(MyState.failed);
     }
   }

@@ -10,6 +10,7 @@ class OutlineButton extends StatelessWidget {
   final Color? customBackgroundColor;
   final Color? customTextColor;
   final void Function()? onPressed;
+  final Widget? customChild;
 
   const OutlineButton({
     Key? key,
@@ -19,6 +20,7 @@ class OutlineButton extends StatelessWidget {
     this.customTextColor,
     required this.teks,
     required this.onPressed,
+    this.customChild,
   }) : super(key: key);
 
   @override
@@ -59,13 +61,14 @@ class OutlineButton extends StatelessWidget {
         ),
       ),
       onPressed: onPressed,
-      child: Text(
-        teks,
-        style: const TextStyle(
-          fontSize: 14.0,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
+      child: customChild ??
+          Text(
+            teks,
+            style: const TextStyle(
+              fontSize: 14.0,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
     );
   }
 }

@@ -146,7 +146,7 @@ class ArticleService extends InterceptorApi {
 
   Future<List<Comment>> getAllComments(String token, String articleId) async {
     try {
-      String url = Endpoint.baseUrl + Endpoint.getArticles;
+      const String url = Endpoint.baseUrl + Endpoint.getArticles;
 
       Response response = await dio.get(
         '$url/$articleId/comments',
@@ -168,7 +168,7 @@ class ArticleService extends InterceptorApi {
   Future<List<Comment>> createComment(
       String token, String articleId, Comment comment) async {
     try {
-      String url = Endpoint.baseUrl + Endpoint.getArticles;
+      const String url = Endpoint.baseUrl + Endpoint.getArticles;
 
       Response response = await dio.post(
         '$url/$articleId/comments',
@@ -192,7 +192,7 @@ class ArticleService extends InterceptorApi {
   Future<List<Comment>> deleteComments(
       String token, String articleId, String commentId) async {
     try {
-      String url = Endpoint.baseUrl + Endpoint.getArticles;
+      const String url = Endpoint.baseUrl + Endpoint.getArticles;
       Response response = await dio.delete(
         '$url/$articleId/comments/$commentId',
         options: Options(
