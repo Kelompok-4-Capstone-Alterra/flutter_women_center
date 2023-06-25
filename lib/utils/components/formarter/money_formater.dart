@@ -5,4 +5,5 @@ class MoneyFormatter {
     final formatter = NumberFormat("#,###");
     return "Rp. ${formatter.format(price)}";
   }
+
 }
