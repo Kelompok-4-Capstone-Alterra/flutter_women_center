@@ -46,6 +46,7 @@ dependencies:
   dropdown_search: ^5.0.6
   url_launcher: ^6.1.11
   dio: ^5.2.0
+  webview_flutter: ^4.2.2
   file_picker: ^4.6.1
   open_file: ^3.2.1
   mockito: ^5.4.0

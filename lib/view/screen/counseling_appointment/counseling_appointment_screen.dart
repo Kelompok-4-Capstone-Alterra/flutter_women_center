@@ -4,8 +4,7 @@ import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_view_model.dart';
-import 'package:capstone_project/view/screen/home/home_screen.dart';
-import 'package:capstone_project/view/screen/transaction/transaction_screen.dart';
+import 'package:capstone_project/view/screen/midtrans/midtrans_webview.dart';
 import 'package:capstone_project/view/screen/voucher/voucher_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,15 +12,29 @@ import 'package:provider/provider.dart';
 class CounselingAppointment extends StatefulWidget {
   static const String routeName = '/counseling_appointment_screen';
 
-  final int? counselorId;
-  final int? selectedTimeId;
+  final String? counselorId;
+  final String? selectedTimeId;
   final String? selectedMethod;
+  final String? dateId;
+  final String? timeStart;
+  final String? username;
+  final String? topic;
+  final int? topicId;
+  final String? profilePicture;
+  final num? price;
 
   const CounselingAppointment({
     super.key,
     this.counselorId,
     this.selectedTimeId,
     this.selectedMethod,
+    this.dateId,
+    this.timeStart,
+    this.username,
+    this.topic,
+    this.topicId,
+    this.profilePicture,
+    this.price,
   });
 
   @override
@@ -35,8 +48,7 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
     Future.delayed(Duration.zero, () {
       final provider =
           Provider.of<CounselingAppointmentViewModel>(context, listen: false);
-      provider.getAvailableTime(widget.selectedTimeId!);
-      provider.getCounselorDetail(widget.counselorId!);
+      provider.getVoucher(widget.counselorId ?? '');
     });
   }
 
@@ -83,7 +95,7 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                           CircleAvatar(
                             radius: 30,
                             backgroundImage: NetworkImage(
-                              provider.counselorDetail[0]['image'],
+                              widget.profilePicture ?? '',
                             ),
                           ),
                           const SizedBox(
@@ -97,7 +109,7 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  provider.counselorDetail[0]['name'],
+                                  widget.username ?? '',
                                   style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold),
@@ -106,7 +118,7 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                                   height: 8,
                                 ),
                                 Text(
-                                  provider.counselorDetail[0]['specialist'],
+                                  widget.topic ?? '',
                                   style: const TextStyle(
                                     fontSize: 12,
                                   ),
@@ -157,27 +169,14 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Consumer<CounselingAppointmentViewModel>(
-                          builder: (context, provider, _) {
-                        switch (provider.myState) {
-                          case MyState.loading:
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          case MyState.loaded:
-                            return Text(
-                              provider.availableTime[0]['time'],
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: MyColor.primaryMain),
-                            );
-                          default:
-                            return const Center(
-                              child: Text('Data Not Avaible'),
-                            );
-                        }
-                      }),
+                      Text(
+                        widget.timeStart ?? '',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: MyColor.primaryMain,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -241,7 +240,8 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.only(
+                    left: 16, right: 16, top: 8, bottom: 8),
                 child: Row(
                   children: [
                     const Icon(
@@ -253,7 +253,7 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.7,
                       child: const Text(
-                        'Semua yang disampaikan dengan konselor / psikolog bersifat rahasia sehingga privasi anda dijamin 100% aman',
+                        'Semua yang disampaikan dengan konselor / psikolog bersifat rahasia sehingga privasi anda dijamin 100% aman ',
                         style: TextStyle(
                           fontSize: 8,
                           fontWeight: FontWeight.bold,
@@ -285,6 +285,7 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                           MaterialPageRoute(
                             builder: (context) => VoucherScreen(
                               voucherId: provider.selectedVoucher,
+                              id: widget.counselorId,
                             ),
                           ),
                         );
@@ -334,7 +335,7 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.7,
                               child: Text(
-                                provider.selectedVoucher == 0
+                                provider.selectedVoucher == ''
                                     ? 'Apply Voucher'
                                     : 'Voucher Applied',
                                 style: const TextStyle(
@@ -397,7 +398,7 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                             ),
                           ),
                           Text(
-                            MoneyFormatter().formatRupiah(245000),
+                            MoneyFormatter().formatRupiah(widget.price ?? 0),
                           ),
                         ],
                       ),
@@ -420,14 +421,15 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                       Consumer<CounselingAppointmentViewModel>(
                           builder: (context, provider, _) {
                         provider.countTotal(
-                            id: provider.selectedVoucher, price: 245000);
+                            id: provider.selectedVoucher,
+                            price: widget.price!.toInt());
                         switch (provider.myState) {
                           case MyState.loading:
                             return const Center(
                               child: CircularProgressIndicator(),
                             );
                           case MyState.loaded:
-                            return provider.selectedVoucher == 0
+                            return provider.selectedVoucher == ''
                                 ? const SizedBox()
                                 : Column(
                                     children: [
@@ -446,7 +448,7 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                                             ),
                                           ),
                                           Text(
-                                            '-${MoneyFormatter().formatRupiah(provider.useVoucher[0]['discount'])}',
+                                            '-${MoneyFormatter().formatRupiah(provider.useVoucher[0].value!)}',
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: MyColor.success,
@@ -482,8 +484,8 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                               case MyState.loaded:
                                 return Text(
                                   MoneyFormatter().formatRupiah(
-                                      provider.selectedVoucher == 0
-                                          ? 245000
+                                      provider.selectedVoucher == ''
+                                          ? widget.price ?? 0
                                           : provider.total),
                                   style: const TextStyle(
                                     fontSize: 14,
@@ -552,105 +554,48 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
             const SizedBox(
               height: 16,
             ),
-            SizedBox(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.06,
-              child: ElevatedButton(
-                onPressed: () async {
-                  bool isTrue = true;
-                  if (isTrue) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3),
-                            ),
-                          ),
-                          backgroundColor: Colors.white,
-                          content: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Icon(
-                                  Icons.check_circle,
-                                  size: 50,
-                                  color: MyColor.success,
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                const Text(
-                                  "Payment has been received",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.justify,
-                                ),
-                              ],
+            Consumer<CounselingAppointmentViewModel>(
+                builder: (context, provider, _) {
+              switch (provider.myState) {
+                case MyState.loading:
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                case MyState.loaded:
+                  return SizedBox(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WebViewContainer(
+                              counselorId: widget.counselorId,
+                              counselorTopicKey: widget.topicId,
+                              counsultationDateId: widget.dateId,
+                              counsultationMethod: widget.selectedMethod,
+                              counsultationTimeId: widget.selectedTimeId,
+                              counsultationTimeStart: widget.timeStart,
+                              voucherId: provider.selectedVoucher,
                             ),
                           ),
                         );
                       },
-                    ).then((value) {
-                      // pop all screen
-                      Navigator.popUntil(
-                          context, ModalRoute.withName(HomeScreen.routeName));
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const TransactionScreen()),
-                      );
-                    });
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3),
-                            ),
-                          ),
-                          backgroundColor: Colors.white,
-                          content: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Icon(
-                                  Icons.sms_failed,
-                                  size: 50,
-                                  color: MyColor.danger,
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                const Text(
-                                  "Please complete your payment",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                  ),
-                                  textAlign: TextAlign.justify,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: MyColor.primaryMain,
-                  shape: const RoundedRectangleBorder(),
-                ),
-                child: Text(
-                  'Make Appointment',
-                  style: TextStyle(color: MyColor.white),
-                ),
-              ),
-            ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: MyColor.primaryMain,
+                        shape: const RoundedRectangleBorder(),
+                      ),
+                      child: Text(
+                        'Make Appointment',
+                        style: TextStyle(color: MyColor.white),
+                      ),
+                    ),
+                  );
+                default:
+                  return const SizedBox();
+              }
+            }),
           ],
         ),
       ),

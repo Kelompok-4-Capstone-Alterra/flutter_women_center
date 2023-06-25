@@ -11,7 +11,6 @@ import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_s
 import 'package:capstone_project/view/screen/counselor_detail/counselor_detail_view_model.dart';
 import 'package:capstone_project/view/screen/counselor_list/counselor_list_screen.dart';
 import 'package:capstone_project/view/screen/counselor_list/counselor_list_view_model.dart';
-
 import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar_view_model.dart';
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
@@ -28,6 +27,7 @@ import 'package:capstone_project/view/screen/auth/forgot_password/forgot_passwor
 import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_view_model.dart';
 import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
 import 'package:capstone_project/view/screen/auth/login/login_view_model.dart';
+import 'package:capstone_project/view/screen/midtrans/midtrans_view_model.dart';
 import 'package:capstone_project/view/screen/onboarding/onboarding_screen.dart';
 import 'package:capstone_project/view/screen/onboarding/onboarding_view_model.dart';
 import 'package:capstone_project/view/screen/profile/change_password/change_password_screen.dart';
@@ -162,6 +162,9 @@ class MyApp extends StatelessWidget {
           create: (context) => DetailCareerViewModel(),
         ),
         ChangeNotifierProvider(
+          create: (context) => MidtransViewModel(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => SearchSavedViewModel(),
         ),
         ChangeNotifierProvider(
@@ -204,10 +207,10 @@ class MyApp extends StatelessWidget {
           CounselingTopicScreen.routeName: (context) =>
               const CounselingTopicScreen(),
           CounselorListScreen.routeName: (context) =>
-              const CounselorListScreen(),
+              const CounselorListScreen(topicId: 0),
           CounselorDetailScreen.routeName: (context) =>
               const CounselorDetailScreen(
-                id: 0,
+                id: '',
               ),
           ArticleDetailsScreen.routename: (context) =>
               const ArticleDetailsScreen(),
