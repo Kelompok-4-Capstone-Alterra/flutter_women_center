@@ -1,53 +1,47 @@
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
+import 'package:capstone_project/utils/components/buttons/primary_button_icon_text.dart';
+import 'package:capstone_project/view/screen/career/career_detail/widget/info_career_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:provider/provider.dart';
 
-import '../../../../utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
-import '../../../../utils/components/buttons/outline_button.dart';
-import '../../../../utils/my_color.dart';
+import '../../../../../utils/components/buttons/outline_button.dart';
+import '../../../../../utils/my_color.dart';
+import '../../../../utils/components/formarter/money_formater.dart';
+import '../../auth/login/login_screen.dart';
+import 'career_detail_view_model.dart';
 
 class CareerDetailScreen extends StatefulWidget {
-  const CareerDetailScreen({super.key});
+  const CareerDetailScreen({super.key, required this.id});
 
   static const String routeName = '/careerDetail';
+  final String id;
 
   @override
   State<CareerDetailScreen> createState() => _CareerDetailScreenState();
 }
 
 class _CareerDetailScreenState extends State<CareerDetailScreen> {
-  final Map<String, dynamic> requirementJob = {
-    'persyaratan': [
-      {
-        'icon': 'assets/icons/location_on.png',
-        'text': 'Kunigan, Jakarta Selatan',
-      },
-      {
-        'icon': 'assets/icons/timer.png',
-        'text': 'Min. Pengalaman 1 Tahun',
-      },
-      {
-        'icon': 'assets/icons/work.png',
-        'text': 'Full Time',
-      },
-      {
-        'icon': 'assets/icons/menu_book.png',
-        'text': 'S1',
-      },
-    ],
-    'description':
-        'Amara Jaya Sejahtera adalah perusahaan yang bergerak di bidang distribusi produk kecantikan dan kesehatan. Kami berkomitmen untuk memberikan produk berkualitas tinggi kepada pelanggan kami di seluruh Indonesia. Saat ini, kami sedang mencari seorang Asisten Administrasi yang terampil dan bersemangat untuk bergabung dengan tim kami.\n\nAsisten administrasi akan bekerja di kantor setiap hari senin sampai dengan jumat jam 09.00 - 16.00. Asisten administrasi akan bertanggung jawab memahami product knowledge dengan baik, menjalin hubungan baik dengan pelanggan dan melakukan research.',
-    'requirement': [
-      'Wanita Max 30 tahun',
-      'Berdomisili Jabodetabek',
-      'Mampu berkomunikasi dengan baik secara lisan ataupun tertulis',
-      'Lancar berbahasa inggris',
-    ],
-    'apply':
-        'Kirim CV, Fotocopy KTP dan Sertifikat Vaksin ke :\nptamarajaya@gmail.com\nFile dikirimkan dalam bentuk PDF dan Subjek "Nama_Posisi"',
-  };
+  late final DetailCareerViewModel provider;
+
+  @override
+  void initState() {
+    provider = Provider.of<DetailCareerViewModel>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      provider.fetchCareerById(
+        id: widget.id,
+      );
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final MoneyFormatter moneyFormatter = MoneyFormatter();
+    final String formattedDate = provider.getCurrentDate(
+      date: provider.detailCareerList.createdAt ?? '',
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -82,9 +76,31 @@ class _CareerDetailScreenState extends State<CareerDetailScreen> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: 224,
-                    child: Image.network(
-                      'https://picsum.photos/200',
-                      fit: BoxFit.fill,
+                    child: Image(
+                      image: NetworkImage(
+                        provider.detailCareerList.image ?? '',
+                      ),
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                              size: 32,
+                            ),
+                            Text(
+                              'Image Error',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(
@@ -93,7 +109,7 @@ class _CareerDetailScreenState extends State<CareerDetailScreen> {
                   Container(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      '20 April 2023',
+                      formattedDate,
                       style: TextStyle(
                         color: MyColor.neutralMediumLow,
                         fontSize: 11,
@@ -107,7 +123,7 @@ class _CareerDetailScreenState extends State<CareerDetailScreen> {
                   Container(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'Asisten Administrasi',
+                      provider.detailCareerList.jobPosition ?? 'Tidak ada data',
                       style: TextStyle(
                         color: MyColor.neutralHigh,
                         fontSize: 16,
@@ -122,7 +138,7 @@ class _CareerDetailScreenState extends State<CareerDetailScreen> {
                   Container(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'PT Amara Jaya Sejahtera',
+                      provider.detailCareerList.companyName ?? 'Tidak ada data',
                       style: TextStyle(
                         color: MyColor.neutralHigh,
                         fontSize: 12,
@@ -137,7 +153,9 @@ class _CareerDetailScreenState extends State<CareerDetailScreen> {
                   Container(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'Rp 3,500,000 - 5,500,000',
+                      moneyFormatter.formatRupiah(
+                        provider.detailCareerList.salary ?? 0000,
+                      ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       textAlign: TextAlign.left,
@@ -158,29 +176,45 @@ class _CareerDetailScreenState extends State<CareerDetailScreen> {
                     crossAxisCount: 2,
                     childAspectRatio: 8,
                     mainAxisSpacing: 8,
-                    crossAxisSpacing: 12,
-                    children: List<Widget>.from(
-                        requirementJob['persyaratan']!.map((requirement) {
-                      return Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset(
-                            requirement['icon']!,
-                            width: MediaQuery.of(context).size.width * 0.04,
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            requirement['text']!,
-                            style: TextStyle(
-                              color: MyColor.neutralHigh,
-                              fontSize:
-                                  MediaQuery.of(context).size.width * 0.03,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      );
-                    })),
+                    crossAxisSpacing: 8,
+                    children: [
+                      InfoCareerWidget(
+                        icon: Icon(
+                          Icons.location_on,
+                          size: 20,
+                          color: MyColor.neutralHigh,
+                        ),
+                        infoCareer: provider.detailCareerList.location ??
+                            'Tidak ada data',
+                      ),
+                      InfoCareerWidget(
+                        icon: Icon(
+                          Icons.timer_outlined,
+                          size: 20,
+                          color: MyColor.neutralHigh,
+                        ),
+                        infoCareer:
+                            'Min Pengalaman ${provider.detailCareerList.minExperience} Tahun',
+                      ),
+                      InfoCareerWidget(
+                        icon: Icon(
+                          Icons.work_rounded,
+                          size: 20,
+                          color: MyColor.neutralHigh,
+                        ),
+                        infoCareer: provider.detailCareerList.jobType ??
+                            'Tidak ada data',
+                      ),
+                      InfoCareerWidget(
+                        icon: Icon(
+                          Icons.menu_book_rounded,
+                          size: 20,
+                          color: MyColor.neutralHigh,
+                        ),
+                        infoCareer: provider.detailCareerList.lastEducation ??
+                            'Tidak ada data',
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 24),
                   SizedBox(
@@ -199,10 +233,10 @@ class _CareerDetailScreenState extends State<CareerDetailScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'Description',
+                            RichText(
+                              textAlign: TextAlign.left,
+                              text: TextSpan(
+                                text: 'Description',
                                 style: TextStyle(
                                   color: MyColor.neutralHigh,
                                   fontSize: 12,
@@ -212,79 +246,14 @@ class _CareerDetailScreenState extends State<CareerDetailScreen> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            Text(
-                              requirementJob['description'],
-                              textAlign: TextAlign.justify,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: MyColor.neutralHigh,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: MyColor.neutralLow.withOpacity(0.7),
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            Container(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'Requirements',
-                                style: TextStyle(
+                            Html(
+                              data: provider.detailCareerList.description ??
+                                  'Tidak ada data',
+                              style: {
+                                'body': Style(
+                                  fontSize: const FontSize(12),
                                   color: MyColor.neutralHigh,
-                                  fontSize: 12,
-                                  letterSpacing: 0.5,
-                                  fontWeight: FontWeight.w500,
                                 ),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: (requirementJob['requirement']
-                                          as List<dynamic>?)
-                                      ?.length ??
-                                  0,
-                              itemBuilder: (BuildContext context, int index) {
-                                final requirement =
-                                    requirementJob['requirement']?[index] ?? '';
-                                return Row(
-                                  children: [
-                                    Icon(
-                                      Icons.circle,
-                                      size: 8,
-                                      color: MyColor.neutralHigh,
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: Text(
-                                        requirement,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                          color: MyColor.neutralHigh,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
                               },
                             ),
                           ],
@@ -309,10 +278,10 @@ class _CareerDetailScreenState extends State<CareerDetailScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'How to apply?',
+                            RichText(
+                              textAlign: TextAlign.left,
+                              text: TextSpan(
+                                text: 'How to Apply',
                                 style: TextStyle(
                                   color: MyColor.neutralHigh,
                                   fontSize: 12,
@@ -323,7 +292,7 @@ class _CareerDetailScreenState extends State<CareerDetailScreen> {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              requirementJob['apply'] ?? '',
+                              'Kirim CV, Fotocopy KTP dan Sertifikat Vaksin ke :\n${provider.detailCareerList.companyEmail}\nFile dikirimkan dalam bentuk PDF dan Subjek "Nama_Posisi"',
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontSize: 12,
@@ -340,7 +309,12 @@ class _CareerDetailScreenState extends State<CareerDetailScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            PrimaryButton(
+            PrimaryButtonIconText(
+              icon: Icon(
+                Icons.mail_rounded,
+                size: 24,
+                color: MyColor.white,
+              ),
               teks: 'Apply Now',
               onPressed: () {
                 showDialog(
@@ -366,8 +340,20 @@ class _CareerDetailScreenState extends State<CareerDetailScreen> {
                         const SizedBox(height: 16),
                         PrimaryButton(
                           teks: 'Yes, Apply Now',
-                          onPressed: () {
-                            Navigator.pop(context);
+                          onPressed: () async {
+                            if (provider.isLoggedIn()) {
+                              await provider.getApplyCareer(
+                                provider.detailCareerList.companyEmail ?? '',
+                              );
+                              if (mounted) {
+                                Navigator.pop(context);
+                              }
+                            } else {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                LoginScreen.routeName,
+                              );
+                            }
                           },
                         ),
                         const SizedBox(height: 8),
@@ -388,9 +374,6 @@ class _CareerDetailScreenState extends State<CareerDetailScreen> {
             const SizedBox(height: 16),
           ],
         ),
-      ),
-      bottomNavigationBar: const BottomNavBar(
-        currentIndex: 0,
       ),
     );
   }
