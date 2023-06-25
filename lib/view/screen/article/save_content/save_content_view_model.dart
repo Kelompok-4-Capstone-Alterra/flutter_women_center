@@ -1,5 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:capstone_project/model/reading_list_model.dart';
-import 'package:capstone_project/model/service/article_service.dart';
 import 'package:capstone_project/model/service/reading_list_service.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +13,9 @@ class SaveContentProvider extends ChangeNotifier {
   ValueNotifier<bool> isButtonPressed = ValueNotifier<bool>(false);
   int checkedIndex = -1;
   String? selectedArticleId;
-  final ArticleService _articleService = ArticleService();
   final ReadingListService _readingListService = ReadingListService();
   late SharedPreferences _loginData;
-  String _message = '';
+  String message = '';
 
   void changeState(MyState state) {
     myState = state;
@@ -24,7 +24,6 @@ class SaveContentProvider extends ChangeNotifier {
 
   SaveContentProvider() {
     initializeSharedPreferences();
-    loadSavedArticleIds(); // Menambahkan method ini
   }
 
   void initializeSharedPreferences() async {
@@ -33,31 +32,9 @@ class SaveContentProvider extends ChangeNotifier {
     changeState(MyState.loaded);
   }
 
-  bool isArticleSelected = false;
-
-  void toggleArticleSelection() {
-    isArticleSelected = !isArticleSelected;
-    notifyListeners();
-  }
-
-  void clearSelectedArticleId() {
-    selectedArticleId = null;
-    notifyListeners();
-  }
-
-  void loadSavedArticleIds() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    savedArticleIds = prefs.getKeys().whereType<String>().toList();
-  }
-
   void setSelectedReadingListId(String readingListId) {
     selectedReadingListId = readingListId;
     notifyListeners();
-  }
-
-  Future<void> saveArticleStatus(String articleId, bool isSaved) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(articleId, isSaved);
   }
 
   Future<void> showAllReadingList() async {
@@ -70,7 +47,7 @@ class SaveContentProvider extends ChangeNotifier {
       myState = MyState.loaded;
       notifyListeners();
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       myState = MyState.failed;
       notifyListeners();
     }
@@ -85,17 +62,16 @@ class SaveContentProvider extends ChangeNotifier {
           token: token, articleId: articleId, readingListId: readingListId);
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       changeState(MyState.failed);
     }
   }
 
   Future<void> toggleCheck(int index) async {
     if (checkedIndex == index) {
-      checkedIndex =
-          -1; // Batal mengcentang item jika sudah dicentang sebelumnya
+      checkedIndex = -1;
     } else {
-      checkedIndex = index; // Mengcentang item yang dipilih
+      checkedIndex = index;
     }
     notifyListeners();
   }
@@ -118,32 +94,13 @@ class SaveContentProvider extends ChangeNotifier {
       await _readingListService.postReadingList(
           token: token, name: name, description: description);
       await showAllReadingList();
-      if (context != null && context.findRenderObject() != null) {
+      if (context.findRenderObject() != null) {
         Navigator.pop(context); // Tutup bottom sheet jika masih ada
       }
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       changeState(MyState.failed);
     }
-  }
-
-  List<String> savedArticleIds = [];
-
-  void toggleArticleSaved(String articleId) {
-    if (savedArticleIds.contains(articleId)) {
-      savedArticleIds.remove(articleId);
-      saveArticleStatus(articleId,
-          false); // Menyimpan status false ke dalam SharedPreferences
-    } else {
-      savedArticleIds.add(articleId);
-      saveArticleStatus(
-          articleId, true); // Menyimpan status true ke dalam SharedPreferences
-    }
-    notifyListeners();
-  }
-
-  bool isArticleSaved(String articleId) {
-    return savedArticleIds.contains(articleId);
   }
 
   Future<void> refreshReadingList() async {
@@ -153,7 +110,7 @@ class SaveContentProvider extends ChangeNotifier {
       await _readingListService.getAllReadingList(token: token);
       myState = MyState.loaded;
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       myState = MyState.failed;
     }
   }

@@ -14,7 +14,7 @@ class ArticleListProvider extends ChangeNotifier {
   late SharedPreferences _loginData;
   List<TopicModel> topics = [];
   List<Tab> tabTopics = [];
-  String _message = '';
+  String message = '';
   List<Articles> listArticles = [];
   List<ReadingListModel> readingList = [];
   final ArticleService _articleService = ArticleService();
@@ -51,7 +51,7 @@ class ArticleListProvider extends ChangeNotifier {
         await getArticlesNoLogin();
       }
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       changeState(MyState.failed);
     }
   }
@@ -65,7 +65,7 @@ class ArticleListProvider extends ChangeNotifier {
     try {
       topics = await _articleService.getAllTopic();
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       changeState(MyState.failed);
     }
   }
@@ -88,7 +88,7 @@ class ArticleListProvider extends ChangeNotifier {
         changeState(MyState.loaded);
       }
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       changeState(MyState.failed);
     }
   }
@@ -99,7 +99,7 @@ class ArticleListProvider extends ChangeNotifier {
       listArticles = await _articleService.getAllArticlesNoLogin();
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       changeState(MyState.failed);
     }
   }
@@ -119,18 +119,17 @@ class ArticleListProvider extends ChangeNotifier {
       listArticles = await _articleService.searchArticles(token, searchText);
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       changeState(MyState.failed);
     }
   }
 
   Future<void> searchArticlesNoLogin(String searchText) async {
     try {
-      changeState(MyState.loading);
       listArticles = await _articleService.searchArticlesNonLogin(searchText);
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       changeState(MyState.failed);
     }
   }
@@ -148,7 +147,7 @@ class ArticleListProvider extends ChangeNotifier {
       listArticles = await _articleService.sortArticles(token, sortValue);
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       changeState(MyState.failed);
     }
   }
@@ -162,7 +161,7 @@ class ArticleListProvider extends ChangeNotifier {
       listArticles = await _articleService.sortArticlesNoLogin(sortValue);
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       changeState(MyState.failed);
     }
   }

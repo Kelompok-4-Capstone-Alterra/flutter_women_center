@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class CommentProvider extends ChangeNotifier {
   MyState myState = MyState.initial;
   late SharedPreferences _loginData;
-  String _message = '';
+  String message = '';
   List<Comment> comments = [];
   Map<String, dynamic> decodeToken = {};
   final ArticleService _articleService = ArticleService();
@@ -26,6 +26,7 @@ class CommentProvider extends ChangeNotifier {
 
   void changeState(MyState state) {
     myState = state;
+    notifyListeners();
   }
 
   void setCurrentUserId(String userId) {
@@ -35,10 +36,8 @@ class CommentProvider extends ChangeNotifier {
 
   bool getCurrentUserId(String anotherId) {
     if (currentUserId == anotherId) {
-      print(anotherId);
       return true;
     } else {
-      print(anotherId);
       return false;
     }
   }
@@ -53,14 +52,13 @@ class CommentProvider extends ChangeNotifier {
         changeState(MyState.failed);
         return;
       } else {
-        setCurrentUserId(decodeToken[
-            'id']); // Set nilai currentUserId sebelum memanggil changeState
+        setCurrentUserId(decodeToken['id']);
         comments = await _articleService.getAllComments(token, articleId);
         changeState(MyState.loaded);
         notifyListeners();
       }
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       changeState(MyState.failed);
     }
   }
@@ -82,7 +80,7 @@ class CommentProvider extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       changeState(MyState.failed);
     }
   }
@@ -90,9 +88,7 @@ class CommentProvider extends ChangeNotifier {
   Future<void> deleteComments(String articleId, String commentId) async {
     try {
       changeState(MyState.loading);
-
       _loginData = await SharedPreferences.getInstance();
-
       final token = _loginData.getString('token') ?? '';
       if (token.isEmpty) {
         changeState(MyState.failed);
@@ -100,11 +96,10 @@ class CommentProvider extends ChangeNotifier {
       }
       await _articleService.deleteComments(token, articleId, commentId);
       await getComments(articleId);
-
       changeState(MyState.loaded);
       notifyListeners();
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       changeState(MyState.failed);
     }
   }

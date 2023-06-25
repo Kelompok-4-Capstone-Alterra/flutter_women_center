@@ -7,7 +7,7 @@ class Comment {
   String? profilePicture;
   String? username;
   String? comment;
-  String? created_at;
+  String? createdAt;
 
   Comment({
     this.id,
@@ -16,7 +16,7 @@ class Comment {
     this.profilePicture,
     this.username,
     this.comment,
-    this.created_at,
+    this.createdAt,
   });
 
   Comment.fromJson(Map<String, dynamic> json) {
@@ -26,7 +26,7 @@ class Comment {
     profilePicture = json['profile_picture'];
     username = json['username'];
     comment = json['comment'];
-    created_at = json['created_at'];
+    createdAt = json['created_at'];
   }
 
   Map<String, dynamic> toJson() {
@@ -37,12 +37,12 @@ class Comment {
     data['profile_picture'] = profilePicture;
     data['username'] = username;
     data['comment'] = comment;
-    data['created_at'] = created_at;
+    data['created_at'] = createdAt;
     return data;
   }
 
   String get formattedCreatedDate {
-    final parsedDate = DateTime.parse(created_at!);
+    final parsedDate = DateTime.parse(createdAt!);
     final formatter = DateFormat('dd MMMM yyyy');
     return formatter.format(parsedDate);
   }

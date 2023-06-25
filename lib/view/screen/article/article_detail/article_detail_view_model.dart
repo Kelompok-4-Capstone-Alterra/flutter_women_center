@@ -8,7 +8,7 @@ class ArticleDetailProvider extends ChangeNotifier {
   MyState myState = MyState.initial;
   late SharedPreferences _loginData;
   List<Comment> comments = [];
-  String _message = '';
+  String message = '';
   List<String> savedArticleIds = [];
   final ReadingListService _readingListService = ReadingListService();
 
@@ -24,6 +24,7 @@ class ArticleDetailProvider extends ChangeNotifier {
 
   void changeState(MyState state) {
     myState = state;
+    notifyListeners();
   }
 
   bool isLoggedIn() {
@@ -31,40 +32,26 @@ class ArticleDetailProvider extends ChangeNotifier {
         _loginData.getString('token')!.isNotEmpty;
   }
 
-  Future<void> saveArticleStatus(String articleId, bool isSaved) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(articleId, isSaved);
-  }
-
   Future<void> removeArticleFromReadingList(String articleId) async {
     try {
       myState = MyState.loading;
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      await _readingListService.deleteReadingList(token: token, id: articleId);
-      savedArticleIds.remove(articleId);
-      saveArticleStatus(articleId, false);
+      await _readingListService.deleteArticleFromReadingList(
+          token: token, id: articleId);
       myState = MyState.loaded;
       notifyListeners();
     } catch (e) {
-      _message = e.toString();
+      message = e.toString();
       myState = MyState.failed;
     }
   }
 
-  bool isArticleSaved(String articleId) {
-    return savedArticleIds.contains(articleId);
-  }
-
-  void toggleArticleSaved(String articleId) {
-    if (savedArticleIds.contains(articleId)) {
-      savedArticleIds.remove(articleId);
-      saveArticleStatus(articleId,
-          false); // Menyimpan status false ke dalam SharedPreferences
-    } else {
+  void toggleArticleSaved(String articleId, bool saved) async {
+    if (saved) {
       savedArticleIds.add(articleId);
-      saveArticleStatus(
-          articleId, true); // Menyimpan status true ke dalam SharedPreferences
+    } else {
+      savedArticleIds.remove(articleId);
     }
     notifyListeners();
   }

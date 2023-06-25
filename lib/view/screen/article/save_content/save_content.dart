@@ -235,7 +235,6 @@ class _SaveContentState extends State<SaveContent> {
                 final detailProvider =
                     Provider.of<SavedViewModel>(context, listen: false);
                 detailProvider.showAllReadingList();
-                final articlePostProvider = Navigator.pop(context);
               },
             ),
           ),
