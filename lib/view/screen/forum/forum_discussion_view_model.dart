@@ -73,23 +73,16 @@ class ForumDiscussionViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void launchForum(String url) async {
-    try {
-      await launchUrlString(
-        url,
-        mode: LaunchMode.externalApplication,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  void joinForum(String forumId) async {
+  void joinForum(String forumId, String url) async {
     try {
       changeForumState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       await _forumService.joinForum(token: token, forumId: forumId);
+      await launchUrlString(
+        url,
+        mode: LaunchMode.externalApplication,
+      );
       _forumData = await _forumService.getAllForum(
           topic: _topic, sortBy: _sortBy, categoryId: _categoryId);
       changeForumState(MyState.loaded);

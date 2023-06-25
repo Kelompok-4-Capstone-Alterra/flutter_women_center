@@ -1,3 +1,4 @@
+import 'package:capstone_project/model/forum_model.dart';
 import 'package:capstone_project/model/mock_model.dart';
 import 'package:capstone_project/model/service/home_service.dart';
 import 'package:capstone_project/model/service/user_service.dart';
@@ -19,6 +20,8 @@ class HomeViewModel with ChangeNotifier {
   MyState _counselorState = MyState.initial;
   List<CareerMock> _careerMock = [];
   MyState _careerState = MyState.initial;
+  List<ForumModel> _forumMock = [];
+  MyState _forumState = MyState.initial;
 
   MyState get state => _state;
   String get message => _message;
@@ -29,6 +32,8 @@ class HomeViewModel with ChangeNotifier {
   MyState get counselorState => _counselorState;
   List<CareerMock> get careerMock => _careerMock;
   MyState get careerState => _careerState;
+  List<ForumModel> get forumMock => _forumMock;
+  MyState get forumState => _forumState;
 
   void changeState(MyState state) {
     _state = state;
@@ -47,6 +52,11 @@ class HomeViewModel with ChangeNotifier {
 
   void changeCareerState(MyState state) {
     _careerState = state;
+    notifyListeners();
+  }
+
+  void changeForumState(MyState state) {
+    _forumState = state;
     notifyListeners();
   }
 
@@ -95,6 +105,16 @@ class HomeViewModel with ChangeNotifier {
       changeCareerState(MyState.loaded);
     } catch (e) {
       changeCareerState(MyState.failed);
+    }
+  }
+
+  void initForumData() async {
+    try {
+      changeForumState(MyState.loading);
+      _forumMock = await _homeService.getForum();
+      changeForumState(MyState.loaded);
+    } catch (e) {
+      changeForumState(MyState.failed);
     }
   }
 }

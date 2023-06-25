@@ -5,6 +5,8 @@ import 'package:capstone_project/view/screen/article/article_detail/article_deta
 import 'package:capstone_project/view/screen/article/article_detail/comment/comment_view_model.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_post/article_list_post_view_model.dart';
 import 'package:capstone_project/view/screen/article/save_content/save_content_view_model.dart';
+import 'package:capstone_project/view/screen/auth/forgot_password/verification/verification_password_screen.dart';
+import 'package:capstone_project/view/screen/auth/forgot_password/verification/verification_password_veiw_model.dart';
 import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_screen.dart';
 import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_view_model.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
@@ -23,6 +25,8 @@ import 'package:capstone_project/view/screen/forum/widget/option_sord_by_view_mo
 import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:capstone_project/view/screen/home/home_view_model.dart';
 import 'package:capstone_project/view/screen/home/search/search_screen.dart';
+import 'package:capstone_project/view/screen/home/search/search_view_model.dart';
+import 'package:capstone_project/view/screen/home/search/tab_search/tab_search_view_model.dart';
 import 'package:capstone_project/view/screen/landing/landing_screen.dart';
 import 'package:capstone_project/view/screen/landing/landing_view_model.dart';
 import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_screen.dart';
@@ -186,6 +190,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => SaveContentProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => VerificationPasswordViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => HomeSearchViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TabSearchViewModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -232,6 +245,8 @@ class MyApp extends StatelessWidget {
               const SearchTransactionsScreen(),
           ForumDiscussionScreen.routeName: (context) =>
               const ForumDiscussionScreen(),
+          VerificationPasswordScreen.routeName: (context) =>
+              const VerificationPasswordScreen(),
         },
       ),
     );

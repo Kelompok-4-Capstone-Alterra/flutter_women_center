@@ -71,6 +71,7 @@ class ArticleListProvider extends ChangeNotifier {
 
   Future<void> getArticles() async {
     try {
+      changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       if (token.isEmpty) {

@@ -3,9 +3,10 @@ import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
 import 'package:capstone_project/view/screen/career/career_list/career_list_screen.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
-import 'package:capstone_project/view/screen/forum/join_forum_discussion_screen.dart';
+import 'package:capstone_project/view/screen/forum/forum_discussion_screen.dart';
 import 'package:capstone_project/view/screen/home/search/search_view_model.dart';
 import 'package:capstone_project/view/screen/home/search/tab_search/tab_search_screen.dart';
+import 'package:capstone_project/view/screen/home/search/tab_search/tab_search_view_model.dart';
 import 'package:capstone_project/view/screen/home/search/widget/category_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,6 +41,8 @@ class _SearchScreenState extends State<SearchScreen> {
         Provider.of<HomeSearchViewModel>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       homeSearchProvider.init();
+      Provider.of<TabSearchViewModel>(context, listen: false)
+          .changeSelectedTab(0);
     });
     super.initState();
   }
@@ -61,6 +64,8 @@ class _SearchScreenState extends State<SearchScreen> {
           textEditingController: _searchController,
           onChanged: (value) {
             homeSearchProvider.search(value);
+            Provider.of<TabSearchViewModel>(context, listen: false)
+                .searchData(value);
           },
         ),
       ),
@@ -108,18 +113,18 @@ class _SearchScreenState extends State<SearchScreen> {
                       CategoryBox(
                         customIcon: Icons.forum,
                         category: 'Forum',
-                        direction: JoinForumDiscussionScreen.routeName,
+                        direction: ForumDiscussionScreen.routeName,
                       ),
                     ],
                   ),
                 ],
               );
             } else if (value.state == MyState.loading) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (value.state == MyState.loaded) {
-              return TabSearch();
+              return const TabSearch();
             } else {
-              return Center(child: Text('Error'));
+              return const Center(child: Text('Error'));
             }
           },
         ),

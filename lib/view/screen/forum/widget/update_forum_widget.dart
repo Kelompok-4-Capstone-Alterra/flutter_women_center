@@ -1,7 +1,6 @@
 import 'package:capstone_project/model/topic_model.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/forum/forum_discussion_view_model.dart';
-import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -74,7 +73,7 @@ class _UpdateForumState extends State<UpdateForum> {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20, left: 16, right: 16),
+      padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

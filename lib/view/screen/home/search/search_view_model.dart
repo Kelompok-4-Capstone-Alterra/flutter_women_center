@@ -22,8 +22,7 @@ class HomeSearchViewModel extends ChangeNotifier {
       changeState(MyState.initial);
     } else {
       changeState(MyState.loading);
-      // add deley
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 1));
       changeState(MyState.loaded);
     }
   }

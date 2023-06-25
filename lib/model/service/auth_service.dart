@@ -68,4 +68,36 @@ class AuthService extends InterceptorApi {
       rethrow;
     }
   }
+
+  Future<String> requestOtpForgotPassword({required String email}) async {
+    try {
+      const String url = Endpoint.baseUrl + Endpoint.requestOptForgotPassword;
+      final response = await dio.post(
+        url,
+        data: {
+          'email': email,
+        },
+      );
+      return response.data["meta"]["message"].toString();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<String> requestNewPassword(
+      {required String email, required String otp}) async {
+    try {
+      const String url = Endpoint.baseUrl + Endpoint.requestNewPassword;
+      final response = await dio.post(
+        url,
+        data: {
+          'email': email,
+          'otp': otp,
+        },
+      );
+      return response.data["meta"]["message"].toString();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

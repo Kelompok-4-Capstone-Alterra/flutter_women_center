@@ -1,10 +1,12 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
 import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
+import 'package:capstone_project/utils/components/text_box/read_only_text_box.dart';
 import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
 import 'package:capstone_project/view/screen/forum/forum_discussion_screen.dart';
 import 'package:capstone_project/view/screen/home/home_view_model.dart';
@@ -17,8 +19,12 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 import '../../../utils/my_color.dart';
+import '../article/article_detail/article_detail_screen.dart';
+import '../auth/login/login_screen.dart';
 import '../career/career_list/career_list_screen.dart';
+import '../counselor_detail/counselor_detail_screen.dart';
 import '../forum/forum_discussion_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -40,9 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
     homeProvider = Provider.of<HomeViewModel>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       homeProvider.initUser();
-      homeProvider.initArticleaData();
+      Provider.of<ArticleListProvider>(context, listen: false).getArticles();
       homeProvider.initCounselorData();
       homeProvider.initCareerData();
+      homeProvider.initForumData();
       Provider.of<ForumDiscussionViewModel>(context, listen: false).init();
     });
   }
@@ -206,9 +213,9 @@ class _HomeScreenState extends State<HomeScreen> {
             title: 'Newest Articles',
             subtitle: 'These are our best new articles of the week!',
             direction: ArticleListScreen.routename,
-            listItem: Consumer<HomeViewModel>(
+            listItem: Consumer<ArticleListProvider>(
               builder: (context, value, _) {
-                if (value.articlesState == MyState.loading) {
+                if (value.myState == MyState.loading) {
                   return SizedBox(
                     height: 100,
                     child: Center(
@@ -217,8 +224,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   );
-                } else if (value.articlesState == MyState.loaded) {
-                  final dataArticle = value.articlesMock;
+                } else if (value.myState == MyState.loaded) {
+                  final dataArticle = value.listArticles;
                   return ListView.builder(
                     itemCount: dataArticle.length,
                     scrollDirection: Axis.horizontal,
@@ -227,7 +234,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         title: dataArticle[index].title ?? '',
                         subtitle: dataArticle[index].topic ?? '',
                         imageUrl: dataArticle[index].image ?? '',
-                        direction: '',
+                        onTapAction: () {
+                          Navigator.pushNamed(
+                            context,
+                            ArticleDetailsScreen.routename,
+                            arguments: dataArticle[index].id ?? 0,
+                          );
+                        },
                       );
                     },
                   );
@@ -275,8 +288,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         title: dataCounnselor[index].name ?? '',
                         subtitle: dataCounnselor[index].topic ?? '',
                         imageUrl: dataCounnselor[index].profilePicture ?? '',
-                        direction: '',
+                        onTapAction: () {},
                         extraWidget: RatingBar(
+                          ignoreGestures: true,
                           itemSize: 20,
                           initialRating: dataCounnselor[index].rating ?? 0,
                           direction: Axis.horizontal,
@@ -336,24 +350,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   );
                 } else if (value.careerState == MyState.loaded) {
-                  final dataCareer = value.careerMock;
+                  final dataForum = value.careerMock;
                   return ListView.builder(
-                    itemCount: dataCareer.length,
+                    itemCount: dataForum.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return HomeListItem(
-                        title: dataCareer[index].jobPosition ?? '',
-                        subtitle: dataCareer[index].companyName ?? '',
-                        imageUrl: dataCareer[index].image ?? '',
-                        direction: '',
+                        title: dataForum[index].jobPosition ?? '',
+                        subtitle: dataForum[index].companyName ?? '',
+                        imageUrl: dataForum[index].image ?? '',
+                        onTapAction: () {},
                         extraWidget: Text(
-                          dataCareer[index].salary == 0
+                          dataForum[index].salary == 0
                               ? 'Rp 0'
                               : '${NumberFormat.currency(
                                   locale: 'id',
                                   symbol: 'Rp ',
                                   decimalDigits: 0,
-                                ).format(dataCareer[index].salary)} ++',
+                                ).format(dataForum[index].salary)} ++',
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w500,
@@ -386,17 +400,118 @@ class _HomeScreenState extends State<HomeScreen> {
             title: 'Newest Forum',
             subtitle: "Let's join to the newest forum discussion!",
             direction: ForumDiscussionScreen.routeName,
-            listItem: ListView.builder(
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return const HomeListItem(
-                  title: 'Discrimination for being a women',
-                  subtitle: 'Discrimination',
-                  imageUrl:
-                      'https://dl.kaskus.id/jawaban-online.s3.amazonaws.com/media/ckeditor/uploads/2020/10/09/forum.jpg?AWSAccessKeyId=AKIAR42PIJU47XZXHDHE&Signature=zzh8RE5FOMlP6BlBNTd1vbjZ7ZI%3D&Expires=2102251972',
-                  direction: '',
-                );
+            listItem: Consumer<HomeViewModel>(
+              builder: (context, value, _) {
+                if (value.forumState == MyState.loading) {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: MyColor.primaryMain,
+                      ),
+                    ),
+                  );
+                } else if (value.forumState == MyState.loaded) {
+                  final dataForum = value.forumMock;
+                  return ListView.builder(
+                    itemCount: dataForum.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return HomeListItem(
+                        title: dataForum[index].topic ?? '',
+                        subtitle: dataForum[index].category ?? '',
+                        imageUrl: '',
+                        onTapAction: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (context) {
+                              return CustomBottomSheetBuilder(
+                                header: true,
+                                tinggi:
+                                    MediaQuery.of(context).size.height * 0.80,
+                                judul: 'Join Forum',
+                                isi: [
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 18, bottom: 10),
+                                        child: Text(
+                                          "Topic's Category",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: MyColor.neutralHigh,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                      ReadOnlyTextBox(
+                                          value:
+                                              dataForum[index].category ?? ''),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 18, bottom: 10),
+                                        child: Text(
+                                          "Forum's Topic",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: MyColor.neutralHigh,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                      ReadOnlyTextBox(
+                                          value: dataForum[index].topic ?? ''),
+                                      const SizedBox(height: 16),
+                                      PrimaryButton(
+                                        teks: 'Join',
+                                        onPressed: () {
+                                          final forumProvider = Provider.of<
+                                              ForumDiscussionViewModel>(
+                                            context,
+                                            listen: false,
+                                          );
+                                          if (forumProvider.isLogin) {
+                                            forumProvider.joinForum(
+                                                dataForum[index].id!,
+                                                dataForum[index].link!);
+                                          } else {
+                                            Navigator.pushNamed(
+                                              context,
+                                              LoginScreen.routeName,
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                  );
+                } else {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: Text(
+                        'Error',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: MyColor.secondaryMain,
+                        ),
+                      ),
+                    ),
+                  );
+                }
               },
             ),
           ),

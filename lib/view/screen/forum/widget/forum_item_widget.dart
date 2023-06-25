@@ -21,7 +21,7 @@ class ForumItem extends StatelessWidget {
     final String dateAgo = day == 0 ? 'Today' : "$day Days Ago";
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20, left: 16, right: 16),
+      padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -131,8 +131,7 @@ class ForumItem extends StatelessWidget {
               final forumProvider =
                   Provider.of<ForumDiscussionViewModel>(context, listen: false);
               if (forumProvider.isLogin) {
-                forumProvider.joinForum(forumData.id!);
-                forumProvider.launchForum(forumData.link!);
+                forumProvider.joinForum(forumData.id!, forumData.link!);
               } else {
                 Navigator.pushNamed(context, LoginScreen.routeName);
               }
