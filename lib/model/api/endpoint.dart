@@ -18,6 +18,9 @@ class Endpoint {
   static const String publicArticles = '/users/public/articles';
   static const String publicCounselor = '/users/public/counselors';
   static const String publicCareer = '/users/public/careers';
+  static const String forum = '/users/forums';
+  static const String publicForum = '/users/public/forums';
+  static const String forumJoin = '/users/forums/joins';
   static const String getArticles = '/users/articles';
   static const String getArticlesNoLogin = '/users/public/articles';
   static const String getPostComment = '/users/articles/:id/comments';

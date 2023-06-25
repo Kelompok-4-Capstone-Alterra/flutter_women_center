@@ -3,12 +3,10 @@ import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bott
 
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
-import 'package:capstone_project/view/screen/article/article_detail/article_detail_view_model.dart';
 import 'package:capstone_project/view/screen/article/article_detail/comment/comment_content.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_post/article_list_post_view_model.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
 import 'package:capstone_project/view/screen/article/save_content/save_content.dart';
-import 'package:capstone_project/view/screen/article/save_content/save_content_view_model.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_view_model.dart';
 import 'package:flutter/material.dart';
 
