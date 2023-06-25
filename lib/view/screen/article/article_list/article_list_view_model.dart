@@ -27,7 +27,7 @@ class ArticleListProvider extends ChangeNotifier {
   }
 
   ArticleListProvider() {
-    initializeSharedPreferences(); // Pindahkan pemanggilan ke dalam konstruktor
+    initializeSharedPreferences();
   }
 
   void initializeSharedPreferences() async {
@@ -36,12 +36,20 @@ class ArticleListProvider extends ChangeNotifier {
     changeState(MyState.loaded);
   }
 
+  bool isLoggedIn() {
+    return _loginData.containsKey('token') &&
+        _loginData.getString('token')!.isNotEmpty;
+  }
+
   Future<void> fetchTopicsAndArticles() async {
     try {
-      changeState(MyState.loading);
-      await getTopics();
-      await getArticles();
-      changeState(MyState.loaded);
+      if (isLoggedIn() == true) {
+        await getTopics();
+        await getArticles();
+      } else {
+        await getTopics();
+        await getArticlesNoLogin();
+      }
     } catch (e) {
       _message = e.toString();
       changeState(MyState.failed);
@@ -49,15 +57,8 @@ class ArticleListProvider extends ChangeNotifier {
   }
 
   List<Tab> getListTopic() {
-    tabTopics =
-        topics.map((topic) => Tab(text: topic.name?.toUpperCase())).toList();
+    tabTopics = topics.map((topic) => Tab(text: topic.name)).toList();
     return tabTopics;
-  }
-
-  Articles? getArticleById(String articleId) {
-    return listArticles.firstWhere(
-      (article) => article.id == articleId,
-    );
   }
 
   Future<void> getTopics() async {
@@ -69,18 +70,34 @@ class ArticleListProvider extends ChangeNotifier {
     }
   }
 
+  Articles? getArticleById(String articleId) {
+    return listArticles.firstWhere(
+      (article) => article.id == articleId,
+    );
+  }
+
   Future<void> getArticles() async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       if (token.isEmpty) {
-        listArticles = await _articleService.getAllArticlesNoLogin();
-        changeState(MyState.loaded);
+        changeState(MyState.failed);
       } else {
         listArticles = await _articleService.getAllArticles(token);
         changeState(MyState.loaded);
       }
+    } catch (e) {
+      _message = e.toString();
+      changeState(MyState.failed);
+    }
+  }
+
+  Future<void> getArticlesNoLogin() async {
+    try {
+      changeState(MyState.loading);
+      listArticles = await _articleService.getAllArticlesNoLogin();
+      changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
       changeState(MyState.failed);
@@ -97,11 +114,20 @@ class ArticleListProvider extends ChangeNotifier {
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       if (token.isEmpty) {
-        changeState(MyState.loading);
-        listArticles = await _articleService.searchArticlesNonLogin(searchText);
-        changeState(MyState.loaded);
+        changeState(MyState.failed);
       }
       listArticles = await _articleService.searchArticles(token, searchText);
+      changeState(MyState.loaded);
+    } catch (e) {
+      _message = e.toString();
+      changeState(MyState.failed);
+    }
+  }
+
+  Future<void> searchArticlesNoLogin(String searchText) async {
+    try {
+      changeState(MyState.loading);
+      listArticles = await _articleService.searchArticlesNonLogin(searchText);
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
@@ -117,9 +143,7 @@ class ArticleListProvider extends ChangeNotifier {
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       if (token.isEmpty) {
-        changeState(MyState.loading);
-        listArticles = await _articleService.sortArticlesNoLogin(sortValue);
-        changeState(MyState.loaded);
+        changeState(MyState.failed);
       }
       listArticles = await _articleService.sortArticles(token, sortValue);
       changeState(MyState.loaded);
@@ -129,39 +153,17 @@ class ArticleListProvider extends ChangeNotifier {
     }
   }
 
-  void filterMostViewed() {
-    myState = MyState.loading;
-    notifyListeners();
+  Future<void> sortArticlesNoLogin(String sortValue) async {
+    try {
+      sortValues = sortValue;
+      changeState(MyState.loaded);
 
-    sortValues = 'Most Viewed';
-
-    myState = MyState.loaded;
-    notifyListeners();
-  }
-
-  void filterNewest() {
-    myState = MyState.loading;
-    notifyListeners();
-
-    listArticles.sort((a, b) =>
-        DateTime.parse(b.date ?? '').compareTo(DateTime.parse(a.date ?? '')));
-
-    sortValues = 'Newest';
-
-    myState = MyState.loaded;
-    notifyListeners();
-  }
-
-  void filterOldest() {
-    myState = MyState.loading;
-    notifyListeners();
-
-    listArticles.sort((a, b) =>
-        DateTime.parse(a.date ?? '').compareTo(DateTime.parse(b.date ?? '')));
-
-    sortValues = 'Oldest';
-
-    myState = MyState.loaded;
-    notifyListeners();
+      changeState(MyState.loading);
+      listArticles = await _articleService.sortArticlesNoLogin(sortValue);
+      changeState(MyState.loaded);
+    } catch (e) {
+      _message = e.toString();
+      changeState(MyState.failed);
+    }
   }
 }

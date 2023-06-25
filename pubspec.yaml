@@ -46,11 +46,12 @@ dependencies:
   dropdown_search: ^5.0.6
   url_launcher: ^6.1.11
   dio: ^5.2.0
+  webview_flutter: ^4.2.2
   file_picker: ^4.6.1
   open_file: ^3.2.1
   mockito: ^5.4.0
   build_runner: ^2.3.3
-  flutter_html: ^2.2.1
+  flutter_widget_from_html: ^0.9.1
 
 dev_dependencies:
   flutter_test:

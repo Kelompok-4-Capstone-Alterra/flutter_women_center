@@ -1,5 +1,4 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
-import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 import 'package:capstone_project/utils/components/buttons/floating_button.dart';
 import 'package:capstone_project/utils/components/formarter/money_formater.dart';
 import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
@@ -16,7 +15,9 @@ import 'package:star_rating/star_rating.dart';
 class CounselorListScreen extends StatefulWidget {
   static const String routeName = '/counselor-list';
 
-  const CounselorListScreen({super.key});
+  final int topicId;
+
+  const CounselorListScreen({super.key, required this.topicId});
 
   @override
   State<CounselorListScreen> createState() => _CounselorListScreenState();
@@ -29,7 +30,8 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
     Future.delayed(Duration.zero, () {
       final provider =
           Provider.of<CounselorListViewModel>(context, listen: false);
-      provider.filterHighestRating();
+      provider.getCounselorList(
+          topic: widget.topicId, sortValue: 'highest_rating');
     });
   }
 
@@ -68,7 +70,7 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
               }),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.7,
+              height: MediaQuery.of(context).size.height * 1,
               child: Consumer<CounselorListViewModel>(
                 builder: (context, provider, _) {
                   switch (provider.myState) {
@@ -88,7 +90,8 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) {
                                   return CounselorDetailScreen(
-                                    id: provider.counselorList[index]['id'],
+                                    id: provider.counselorList[index].id!,
+                                    topicId: widget.topicId,
                                   );
                                 },
                               ));
@@ -108,18 +111,23 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
                                 ),
                                 child: Row(
                                   children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.2,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.4,
-                                      decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80'),
-                                          fit: BoxFit.cover,
-                                        ),
+                                    SizedBox(
+                                      width: 135,
+                                      height: double.infinity,
+                                      child: Image(
+                                        image: NetworkImage(provider
+                                                .counselorList[index]
+                                                .profilePicture ??
+                                            ''),
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return const Image(
+                                            image: NetworkImage(
+                                                'https://cdn-icons-png.flaticon.com/512/7867/7867562.png'),
+                                            fit: BoxFit.cover,
+                                          );
+                                        },
                                       ),
                                     ),
                                     const SizedBox(
@@ -142,7 +150,8 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
                                         children: [
                                           Text(
                                             provider.counselorList[index]
-                                                ['name'],
+                                                    .name ??
+                                                '',
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 12,
@@ -153,7 +162,8 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
                                           ),
                                           Text(
                                             provider.counselorList[index]
-                                                ['specialist'],
+                                                    .topic ??
+                                                '',
                                             style: const TextStyle(
                                               fontSize: 12,
                                             ),
@@ -166,7 +176,7 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
                                                 MainAxisAlignment.start,
                                             length: 5,
                                             rating: provider
-                                                .counselorList[index]['rating']
+                                                .counselorList[index].rating!
                                                 .toDouble(),
                                             between: 2,
                                             starSize: 20,
@@ -177,7 +187,9 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
                                           ),
                                           Text(
                                             moneyFormatter.formatRupiah(provider
-                                                .counselorList[index]['price']),
+                                                    .counselorList[index]
+                                                    .price ??
+                                                0),
                                             style: const TextStyle(
                                                 color: Color(0xFFAF1582),
                                                 fontSize: 12),
@@ -193,7 +205,7 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
                         },
                       );
                     default:
-                      return const Text('No Data Found');
+                      return const Center(child: Text('No Data Found'));
                   }
                 },
               ),
@@ -289,7 +301,6 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
           widget: const Icon(Icons.sort),
         ),
       ),
-      bottomNavigationBar: const BottomNavBar(currentIndex: 0),
     );
   }
 }

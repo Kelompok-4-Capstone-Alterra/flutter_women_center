@@ -12,6 +12,12 @@ class TopicModel {
   TopicModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'].toString();
-    image = json['image'];
+    name = json['name'];
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'image': image,
+      };
 }

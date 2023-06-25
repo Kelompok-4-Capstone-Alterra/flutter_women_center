@@ -37,7 +37,8 @@ class _SaveContentState extends State<SaveContent> {
     final GlobalKey<FormState> addReadingListFormKey = GlobalKey<FormState>();
     final FocusNode listNameNode = FocusNode();
     final FocusNode descriptionNode = FocusNode();
-    final provider = Provider.of<SaveContentProvider>(context, listen: false);
+    final saveContentProvider =
+        Provider.of<SaveContentProvider>(context, listen: false);
 
     return ConstrainedBox(
       constraints: BoxConstraints(
@@ -226,11 +227,15 @@ class _SaveContentState extends State<SaveContent> {
               teks: 'Save',
               onPressed: () {
                 Provider.of<ArticleListPostProvider>(context, listen: false)
-                    .toggleArticleSaved(widget.articleId);
-                provider.saveToReadingList(
-                    widget.articleId, provider.selectedReadingListId);
-                provider.isButtonPressed.value = true;
-                Navigator.pop(context);
+                    .toggleArticleSaved(widget.articleId, true);
+                saveContentProvider.saveToReadingList(widget.articleId,
+                    saveContentProvider.selectedReadingListId);
+                saveContentProvider.clearCheckedItems();
+                saveContentProvider.isButtonPressed.value = true;
+                final detailProvider =
+                    Provider.of<SavedViewModel>(context, listen: false);
+                detailProvider.showAllReadingList();
+                final articlePostProvider = Navigator.pop(context);
               },
             ),
           ),

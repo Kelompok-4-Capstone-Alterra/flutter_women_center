@@ -6,6 +6,7 @@ import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_post/article_list_post_view_model.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_view_model.dart';
 import 'package:capstone_project/view/screen/saved/saved_screen.dart';
 import 'package:capstone_project/view/screen/saved/search/search_saved_screen.dart';
@@ -320,6 +321,24 @@ class _DetailReadingListScreenState extends State<DetailReadingListScreen> {
                                                   .readingListData
                                                   .readingListArticles![index]
                                                   .id);
+                                      final articleProvider =
+                                          Provider.of<ArticleListPostProvider>(
+                                              context,
+                                              listen: false);
+                                      final saved =
+                                          articleProvider.isArticleSaved(
+                                              detailReadingListProvider
+                                                  .readingListData
+                                                  .readingListArticles![index]
+                                                  .article!
+                                                  .id!);
+                                      articleProvider.toggleArticleSaved(
+                                          detailReadingListProvider
+                                              .readingListData
+                                              .readingListArticles![index]
+                                              .article!
+                                              .id!,
+                                          !saved);
                                       if (context.mounted) {
                                         Navigator.pop(context);
                                         detailReadingListProvider
