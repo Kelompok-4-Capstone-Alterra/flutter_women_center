@@ -324,7 +324,7 @@ class _ForumDiscussionScreenState extends State<ForumDiscussionScreen> {
                         ),
                         indicatorSize: TabBarIndicatorSize.label,
                         tabs: [
-                          if (value.isLogin) const Tab(text: 'MY FORUM'),
+                          if (value.isLogin) const Tab(text: 'my forums'),
                           ...forumDiscussionProvider.topicData
                               .map((e) => Tab(text: e.name!))
                               .toList(),

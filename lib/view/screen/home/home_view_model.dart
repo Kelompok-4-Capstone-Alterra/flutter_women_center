@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:capstone_project/model/forum_model.dart';
 import 'package:capstone_project/model/mock_model.dart';
 import 'package:capstone_project/model/service/home_service.dart';
@@ -7,6 +9,8 @@ import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../model/career_model.dart';
+
 class HomeViewModel with ChangeNotifier {
   late SharedPreferences _loginData;
   MyState _state = MyState.initial;
@@ -14,11 +18,12 @@ class HomeViewModel with ChangeNotifier {
   final UserService _userService = UserService();
   final HomeService _homeService = HomeService();
   String _username = 'user';
+  bool _isLogin = false;
   List<ArticlesMock> _articlesMock = [];
   MyState _articlesState = MyState.initial;
   List<CounselorMock> _counselorMock = [];
   MyState _counselorState = MyState.initial;
-  List<CareerMock> _careerMock = [];
+  List<CareerModel> _careerMock = [];
   MyState _careerState = MyState.initial;
   List<ForumModel> _forumMock = [];
   MyState _forumState = MyState.initial;
@@ -30,10 +35,11 @@ class HomeViewModel with ChangeNotifier {
   MyState get articlesState => _articlesState;
   List<CounselorMock> get counselorMock => _counselorMock;
   MyState get counselorState => _counselorState;
-  List<CareerMock> get careerMock => _careerMock;
+  List<CareerModel> get careerMock => _careerMock;
   MyState get careerState => _careerState;
   List<ForumModel> get forumMock => _forumMock;
   MyState get forumState => _forumState;
+  bool get isLogin => _isLogin;
 
   void changeState(MyState state) {
     _state = state;
@@ -68,8 +74,10 @@ class HomeViewModel with ChangeNotifier {
       if (token.isNotEmpty) {
         final UserModel data = await _userService.getProfile(token: token);
         _username = data.username ?? 'user';
+        _isLogin = true;
       } else {
         _username = 'user';
+        _isLogin = false;
       }
       changeState(MyState.loaded);
     } catch (e) {

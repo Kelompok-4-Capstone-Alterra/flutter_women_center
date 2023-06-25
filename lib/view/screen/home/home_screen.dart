@@ -14,6 +14,7 @@ import 'package:capstone_project/view/screen/home/search/search_screen.dart';
 import 'package:capstone_project/view/screen/home/widget/home_list.dart';
 import 'package:capstone_project/view/screen/home/widget/home_list_item.dart';
 import 'package:capstone_project/view/screen/home/widget/home_menu.dart';
+import 'package:capstone_project/view/screen/voucher/voucher_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
@@ -23,8 +24,10 @@ import '../../../utils/components/modal_bottom_sheet/custom_bottom_sheet_builder
 import '../../../utils/my_color.dart';
 import '../article/article_detail/article_detail_screen.dart';
 import '../auth/login/login_screen.dart';
+import '../career/career_detail/career_detail_screen.dart';
 import '../career/career_list/career_list_screen.dart';
 import '../counselor_detail/counselor_detail_screen.dart';
+import '../counselor_list/counselor_list_view_model.dart';
 import '../forum/forum_discussion_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -46,8 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
     homeProvider = Provider.of<HomeViewModel>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       homeProvider.initUser();
-      Provider.of<ArticleListProvider>(context, listen: false).getArticles();
-      homeProvider.initCounselorData();
+      Provider.of<ArticleListProvider>(context, listen: false)
+          .getArticlesNoLogin();
+      Provider.of<CounselorListViewModel>(context, listen: false)
+          .getCounselorList(topic: 0, sortValue: 'highest_rating');
       homeProvider.initCareerData();
       homeProvider.initForumData();
       Provider.of<ForumDiscussionViewModel>(context, listen: false).init();
@@ -168,8 +173,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       PrimaryButton(
                         teks: 'Check Now',
-                        onPressed: () {},
-                        customWidth: 110,
+                        onPressed: () {
+                          if (homeProvider.isLogin) {
+                            Navigator.pushNamed(
+                                context, VoucherScreen.routeName,
+                                arguments: true);
+                          } else {
+                            Navigator.pushNamed(context, LoginScreen.routeName);
+                          }
+                        },
+                        customWidth: 105,
                         customBackgroundColor: MyColor.secondaryMain,
                         customTextColor: MyColor.white,
                       ),
@@ -267,9 +280,9 @@ class _HomeScreenState extends State<HomeScreen> {
             title: 'Our Best Counselors',
             subtitle: "The best counselors based on user's rate and review",
             direction: CounselingTopicScreen.routeName,
-            listItem: Consumer<HomeViewModel>(
+            listItem: Consumer<CounselorListViewModel>(
               builder: (context, value, _) {
-                if (value.counselorState == MyState.loading) {
+                if (value.myState == MyState.loading) {
                   return SizedBox(
                     height: 100,
                     child: Center(
@@ -278,8 +291,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   );
-                } else if (value.counselorState == MyState.loaded) {
-                  final dataCounnselor = value.counselorMock;
+                } else if (value.myState == MyState.loaded) {
+                  final dataCounnselor = value.counselorListData;
                   return ListView.builder(
                     itemCount: dataCounnselor.length,
                     scrollDirection: Axis.horizontal,
@@ -288,11 +301,31 @@ class _HomeScreenState extends State<HomeScreen> {
                         title: dataCounnselor[index].name ?? '',
                         subtitle: dataCounnselor[index].topic ?? '',
                         imageUrl: dataCounnselor[index].profilePicture ?? '',
-                        onTapAction: () {},
+                        onTapAction: () {
+                          final topicId = Provider.of<ForumDiscussionViewModel>(
+                                  context,
+                                  listen: false)
+                              .topicData
+                              .firstWhere((element) =>
+                                  element.name == dataCounnselor[index].topic)
+                              .id;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return CounselorDetailScreen(
+                                  id: dataCounnselor[index].id!,
+                                  topicId: topicId!,
+                                );
+                              },
+                            ),
+                          );
+                        },
                         extraWidget: RatingBar(
                           ignoreGestures: true,
                           itemSize: 20,
-                          initialRating: dataCounnselor[index].rating ?? 0,
+                          initialRating:
+                              dataCounnselor[index].rating!.toDouble(),
                           direction: Axis.horizontal,
                           itemCount: 5,
                           allowHalfRating: true,
@@ -337,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen> {
           HomeList(
             title: 'Newest Career Information',
             subtitle: 'We have the newest career information for you!',
-            direction: '',
+            direction: CareerListScreen.routeName,
             listItem: Consumer<HomeViewModel>(
               builder: (context, value, _) {
                 if (value.careerState == MyState.loading) {
@@ -350,24 +383,35 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   );
                 } else if (value.careerState == MyState.loaded) {
-                  final dataForum = value.careerMock;
+                  final dataCareer = value.careerMock;
                   return ListView.builder(
-                    itemCount: dataForum.length,
+                    itemCount: dataCareer.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return HomeListItem(
-                        title: dataForum[index].jobPosition ?? '',
-                        subtitle: dataForum[index].companyName ?? '',
-                        imageUrl: dataForum[index].image ?? '',
-                        onTapAction: () {},
+                        title: dataCareer[index].jobPosition ?? '',
+                        subtitle: dataCareer[index].companyName ?? '',
+                        imageUrl: dataCareer[index].image ?? '',
+                        onTapAction: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return CareerDetailScreen(
+                                  id: dataCareer[index].id!,
+                                );
+                              },
+                            ),
+                          );
+                        },
                         extraWidget: Text(
-                          dataForum[index].salary == 0
+                          dataCareer[index].salary == 0
                               ? 'Rp 0'
                               : '${NumberFormat.currency(
                                   locale: 'id',
                                   symbol: 'Rp ',
                                   decimalDigits: 0,
-                                ).format(dataForum[index].salary)} ++',
+                                ).format(dataCareer[index].salary)} ++',
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w500,

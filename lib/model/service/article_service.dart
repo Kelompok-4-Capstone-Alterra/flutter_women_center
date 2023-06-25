@@ -93,12 +93,12 @@ class ArticleService extends InterceptorApi {
     }
   }
 
-  Future<List<Articles>> getAllArticlesNoLogin() async {
+  Future<List<Articles>> getAllArticlesNoLogin({String? search}) async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.getArticlesNoLogin;
-      Response response = await dio.get(
-        url,
-      );
+      Response response = await dio.get(url, queryParameters: {
+        'search': search ?? '',
+      });
       articles = (response.data['data']['articles'] as List)
           .map((e) => Articles.fromJson(e))
           .toList();

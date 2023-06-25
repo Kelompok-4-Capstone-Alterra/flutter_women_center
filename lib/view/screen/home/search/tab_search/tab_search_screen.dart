@@ -10,6 +10,9 @@ import 'package:provider/provider.dart';
 import '../../../../../utils/components/empty/empty.dart';
 import '../../../../../utils/my_color.dart';
 import '../../../article/article_detail/article_detail_screen.dart';
+import '../../../career/career_detail/career_detail_screen.dart';
+import '../../../counselor_detail/counselor_detail_screen.dart';
+import '../../../forum/forum_discussion_view_model.dart';
 
 class TabSearch extends StatefulWidget {
   const TabSearch({super.key});
@@ -216,6 +219,27 @@ class _TabSearchState extends State<TabSearch> {
                               ),
                             ),
                           ],
+                          onTapAction: () {
+                            final topicId =
+                                Provider.of<ForumDiscussionViewModel>(context,
+                                        listen: false)
+                                    .topicData
+                                    .firstWhere((element) =>
+                                        element.name ==
+                                        dataCounselor[index].topic)
+                                    .id;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return CounselorDetailScreen(
+                                    id: dataCounselor[index].id!,
+                                    topicId: topicId!,
+                                  );
+                                },
+                              ),
+                            );
+                          },
                         );
                       },
                     );
@@ -300,6 +324,18 @@ class _TabSearchState extends State<TabSearch> {
                               ],
                             )
                           ],
+                          onTapAction: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return CareerDetailScreen(
+                                    id: dataCareer[index].id!,
+                                  );
+                                },
+                              ),
+                            );
+                          },
                         );
                       },
                     );

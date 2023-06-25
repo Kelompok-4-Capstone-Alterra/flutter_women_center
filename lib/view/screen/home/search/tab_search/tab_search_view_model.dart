@@ -1,6 +1,8 @@
 import 'package:capstone_project/model/article_model.dart';
+import 'package:capstone_project/model/career_model.dart';
 import 'package:capstone_project/model/mock_model.dart';
 import 'package:capstone_project/model/service/article_service.dart';
+import 'package:capstone_project/model/service/career_service.dart';
 import 'package:capstone_project/model/service/forum_service.dart';
 import 'package:capstone_project/model/service/home_service.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
@@ -14,7 +16,7 @@ class TabSearchViewModel extends ChangeNotifier {
   int _selectedTab = 0;
   List<Articles> _articles = [];
   List<CounselorMock> _counselors = [];
-  List<CareerMock> _careers = [];
+  List<CareerModel> _careers = [];
   List<ForumModel> _forums = [];
   final ArticleService _articleService = ArticleService();
   final HomeService _homeService = HomeService();
@@ -24,7 +26,7 @@ class TabSearchViewModel extends ChangeNotifier {
   int get selectedTab => _selectedTab;
   List<Articles> get articles => _articles;
   List<CounselorMock> get counselors => _counselors;
-  List<CareerMock> get careers => _careers;
+  List<CareerModel> get careers => _careers;
   List<ForumModel> get forums => _forums;
 
   void changeState(MyState state) {
@@ -44,9 +46,9 @@ class TabSearchViewModel extends ChangeNotifier {
   void searchData(String query) async {
     try {
       changeState(MyState.loading);
-      _articles = await _articleService.getAllArticlesNoLogin();
-      _counselors = await _homeService.getCounselor();
-      _careers = await _homeService.getCareer();
+      _articles = await _articleService.getAllArticlesNoLogin(search: query);
+      _counselors = await _homeService.getCounselor(search: query);
+      _careers = await _homeService.getCareer(search: query);
       _forums = await _forumService.getAllForum(topic: query);
       changeState(MyState.loaded);
     } catch (e) {
