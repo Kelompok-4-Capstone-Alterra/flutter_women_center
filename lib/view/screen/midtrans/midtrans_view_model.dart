@@ -75,9 +75,6 @@ class MidtransViewModel extends ChangeNotifier {
         notifyListeners();
         transactionDetail = await _getTransactionDetail.getTransactionDetail(
             token: token, transactionId: transactionID);
-        // print(transactionDetail.meta?.message);
-        // print(transactionDetail.meta?.status);
-        // print(transactionDetail.data?.status);
         myState = MyState.loaded;
         notifyListeners();
       }

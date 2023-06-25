@@ -49,6 +49,7 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
       final provider =
           Provider.of<CounselingAppointmentViewModel>(context, listen: false);
       provider.getVoucher(widget.counselorId ?? '');
+      provider.selectedVoucher = "";
     });
   }
 
@@ -448,7 +449,7 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                                             ),
                                           ),
                                           Text(
-                                            '-${MoneyFormatter().formatRupiah(provider.useVoucher[0].value!)}',
+                                            '-${MoneyFormatter().formatRupiah(provider.useVoucher[0].value ?? 0)}',
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: MyColor.success,
