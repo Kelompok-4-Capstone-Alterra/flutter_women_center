@@ -70,11 +70,20 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                       children: [
                         ClipRRect(
                           child: Image.network(
-                            provider.counselorDetail.profilePicture ??
-                                'https://cdn-icons-png.flaticon.com/512/7867/7867562.png',
+                            provider.counselorDetail.profilePicture ?? '',
                             width: double.infinity,
                             height: 240,
                             fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return SizedBox(
+                                child: Image.network(
+                                  provider.counselorDetail.profilePicture ?? '',
+                                  width: double.infinity,
+                                  height: 240,
+                                  fit: BoxFit.cover,
+                                ),
+                              );
+                            },
                           ),
                         ),
                         const SizedBox(
