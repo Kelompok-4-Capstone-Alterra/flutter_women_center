@@ -29,4 +29,5 @@ class Endpoint {
   static const String postArticleToReadingLists = '/users/reading-lists/save';
   static const String deleteArticleFromReadingLists =
       '/users/reading-lists/save/:id';
+  static const String publicTopics = '/users/public/topics';
 }
