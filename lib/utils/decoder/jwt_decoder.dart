@@ -12,7 +12,7 @@ class JwtDecoder {
   static Map<String, dynamic> decode(String token) {
     final splitToken = token.split("."); // Split the token by '.'
     if (splitToken.length != 3) {
-      throw FormatException('Invalid token');
+      throw const FormatException('Invalid token');
     }
     try {
       final payloadBase64 = splitToken[1]; // Payload is always the index 1
@@ -26,7 +26,7 @@ class JwtDecoder {
       // Return the decoded payload
       return decodedPayload;
     } catch (error) {
-      throw FormatException('Invalid payload');
+      throw const FormatException('Invalid payload');
     }
   }
 

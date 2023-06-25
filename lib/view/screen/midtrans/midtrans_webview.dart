@@ -59,6 +59,11 @@ class _WebViewContainerState extends State<WebViewContainer> {
                   provider.getCounselorDetail(
                       transactionID:
                           provider.transactionMidtrans.data!.transactionId!);
+                  if (provider.transactionDetail.data?.status == 'pending' ||
+                      provider.transactionDetail.data?.status == null) {
+                    //  make the program wait for 3 seconds
+                    Future.delayed(const Duration(seconds: 5), () {});
+                  }
                   if (provider.transactionDetail.data?.status == 'ongoing') {
                     showDialog(
                       context: context,

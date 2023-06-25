@@ -150,7 +150,7 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                 }
               }),
               const Text(
-                'Choose one of these time:',
+                'Choose one of these time: (WIB)',
                 style: TextStyle(fontSize: 12),
               ),
               const SizedBox(

@@ -32,7 +32,11 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
                   children: [
                     InkWell(
                       onTap: () {
-                        provider.sortArticles('most_viewed');
+                        if (provider.isLoggedIn() == true) {
+                          provider.sortArticles('most_viewed');
+                        } else {
+                          provider.sortArticlesNoLogin('most_viewed');
+                        }
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -49,7 +53,11 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
                     ),
                     InkWell(
                       onTap: () {
-                        provider.sortArticles('newest');
+                        if (provider.isLoggedIn() == true) {
+                          provider.sortArticles('newest');
+                        } else {
+                          provider.sortArticlesNoLogin('newest');
+                        }
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -66,7 +74,11 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
                     ),
                     InkWell(
                       onTap: () {
-                        provider.sortArticles('oldest');
+                        if (provider.isLoggedIn() == true) {
+                          provider.sortArticles('oldest');
+                        } else {
+                          provider.sortArticlesNoLogin('oldest');
+                        }
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

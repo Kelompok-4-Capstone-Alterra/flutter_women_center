@@ -12,13 +12,6 @@ class ArticleService extends InterceptorApi {
   late List<Comment> comments;
   late List<ReadingListModel> readingListModel;
 
-  String deleteCommentEndpoint(String articleId, String commentId) {
-    String endpoint = Endpoint.deleteComment;
-    endpoint = endpoint.replaceAll(':article_id', articleId);
-    endpoint = endpoint.replaceAll(':comment_id', commentId);
-    return endpoint;
-  }
-
   Future<List<TopicModel>> getAllTopic() async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.getTopics;
@@ -117,7 +110,7 @@ class ArticleService extends InterceptorApi {
 
   Future<List<Articles>> searchArticlesNonLogin(String searchText) async {
     try {
-      const String url = Endpoint.baseUrl + Endpoint.getArticles;
+      const String url = Endpoint.baseUrl + Endpoint.getArticlesNoLogin;
       Response response = await dio.get(
         url,
         queryParameters: {
@@ -135,7 +128,7 @@ class ArticleService extends InterceptorApi {
 
   Future<List<Articles>> sortArticlesNoLogin(String sortValue) async {
     try {
-      const String url = Endpoint.baseUrl + Endpoint.getArticles;
+      const String url = Endpoint.baseUrl + Endpoint.getArticlesNoLogin;
       Response response = await dio.get(
         url,
         queryParameters: {
@@ -153,10 +146,10 @@ class ArticleService extends InterceptorApi {
 
   Future<List<Comment>> getAllComments(String token, String articleId) async {
     try {
-      String url = Endpoint.baseUrl +
-          Endpoint.getPostComment.replaceAll(':id', articleId);
+      const String url = Endpoint.baseUrl + Endpoint.getArticles;
+
       Response response = await dio.get(
-        url,
+        '$url/$articleId/comments',
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
@@ -175,11 +168,10 @@ class ArticleService extends InterceptorApi {
   Future<List<Comment>> createComment(
       String token, String articleId, Comment comment) async {
     try {
-      String url = Endpoint.baseUrl +
-          Endpoint.getPostComment.replaceAll(':id', articleId);
+      const String url = Endpoint.baseUrl + Endpoint.getArticles;
 
       Response response = await dio.post(
-        url,
+        '$url/$articleId/comments',
         data: comment.toJson(),
         options: Options(
           headers: {
@@ -200,10 +192,9 @@ class ArticleService extends InterceptorApi {
   Future<List<Comment>> deleteComments(
       String token, String articleId, String commentId) async {
     try {
-      String url =
-          Endpoint.baseUrl + deleteCommentEndpoint(articleId, commentId);
+      const String url = Endpoint.baseUrl + Endpoint.getArticles;
       Response response = await dio.delete(
-        url,
+        '$url/$articleId/comments/$commentId',
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
