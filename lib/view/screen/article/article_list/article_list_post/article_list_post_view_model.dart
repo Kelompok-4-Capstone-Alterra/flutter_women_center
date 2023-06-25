@@ -6,10 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ArticleListPostProvider extends ChangeNotifier {
   MyState myState = MyState.initial;
-
-  ReadingListModel dataReadingList = ReadingListModel();
   List<ReadingListModel> readingList = [];
-  ValueNotifier<bool> isButtonPressed = ValueNotifier<bool>(false);
   String selectedReadingListId = '';
   final ReadingListService _readingListService = ReadingListService();
   late SharedPreferences _loginData;
@@ -37,13 +34,9 @@ class ArticleListPostProvider extends ChangeNotifier {
   }
 
   bool isLoggedIn() {
+    initializeSharedPreferences();
     return _loginData.containsKey('token') &&
         _loginData.getString('token')!.isNotEmpty;
-  }
-
-  Future<void> saveArticleStatus(String articleId, bool isSaved) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(articleId, isSaved);
   }
 
   Future<void> showAllReadingList() async {
@@ -52,7 +45,7 @@ class ArticleListPostProvider extends ChangeNotifier {
       notifyListeners();
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      readingList = (await _readingListService.getAllReadingList(token: token));
+      readingList = await _readingListService.getAllReadingList(token: token);
       myState = MyState.loaded;
       notifyListeners();
     } catch (e) {
@@ -67,7 +60,8 @@ class ArticleListPostProvider extends ChangeNotifier {
       myState = MyState.loading;
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      await _readingListService.deleteReadingList(token: token, id: articleId);
+      await _readingListService.deleteArticleFromReadingList(
+          token: token, id: articleId);
       myState = MyState.loaded;
       notifyListeners();
     } catch (e) {
@@ -76,15 +70,11 @@ class ArticleListPostProvider extends ChangeNotifier {
     }
   }
 
-  void toggleArticleSaved(String articleId) {
-    if (savedArticleIds.contains(articleId)) {
-      savedArticleIds.remove(articleId);
-      saveArticleStatus(articleId,
-          false); // Menyimpan status false ke dalam SharedPreferences
-    } else {
+  void toggleArticleSaved(String articleId, bool saved) async {
+    if (saved) {
       savedArticleIds.add(articleId);
-      saveArticleStatus(
-          articleId, true); // Menyimpan status true ke dalam SharedPreferences
+    } else {
+      savedArticleIds.remove(articleId);
     }
     notifyListeners();
   }

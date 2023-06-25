@@ -10,8 +10,10 @@ import 'package:capstone_project/view/screen/article/article_list/article_list_v
 import 'package:capstone_project/view/screen/article/save_content/save_content.dart';
 import 'package:capstone_project/view/screen/article/save_content/save_content_view_model.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_view_model.dart';
+import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
 
 import 'package:provider/provider.dart';
 
@@ -79,14 +81,24 @@ class ArticleDetailsScreen extends StatelessWidget {
                 IconButton(
                   onPressed: () async {
                     if (provider.isLoggedIn() == true) {
-                      if (provider.isArticleSaved(articleId)) {
-                        provider.toggleArticleSaved(articleId);
+                      final saved = provider.isArticleSaved(articleId);
+                      if (saved) {
+                        provider.toggleArticleSaved(articleId, false);
                         final detailProvider =
-                            Provider.of<DetailReadingListViewmodel>(context,
-                                listen: false);
-                        // detailProvider.removeArticleFromReadingList(
-                        //     id: detailProvider.readingListData
-                        //         .readingListArticles![index].id);
+                            Provider.of<SavedViewModel>(context, listen: false);
+                        final data = detailProvider.allReadingListData;
+                        String result = '';
+
+                        for (var detail in data) {
+                          for (var sangatDetail
+                              in detail.readingListArticles!) {
+                            if (sangatDetail.article!.id == articleId) {
+                              result = sangatDetail.id ?? '';
+                            }
+                          }
+                        }
+                        provider.removeArticleFromReadingList(result);
+                        detailProvider.showAllReadingList();
                       } else {
                         showModalBottomSheet(
                           useRootNavigator: true,
@@ -184,7 +196,7 @@ class ArticleDetailsScreen extends StatelessWidget {
                 const SizedBox(
                   height: 16,
                 ),
-                Html(data: articles.description ?? '')
+                HtmlWidget(articles.description ?? '')
               ],
             ),
           ),

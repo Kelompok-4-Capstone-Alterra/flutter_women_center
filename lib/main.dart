@@ -12,7 +12,6 @@ import 'package:capstone_project/view/screen/counselor_detail/counselor_detail_v
 import 'package:capstone_project/view/screen/counselor_list/counselor_list_screen.dart';
 import 'package:capstone_project/view/screen/counselor_list/counselor_list_view_model.dart';
 
-import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar_view_model.dart';
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';

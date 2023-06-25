@@ -11,6 +11,7 @@ class SaveContentProvider extends ChangeNotifier {
   String selectedReadingListId = '';
   ValueNotifier<bool> isButtonPressed = ValueNotifier<bool>(false);
   int checkedIndex = -1;
+  String? selectedArticleId;
   final ArticleService _articleService = ArticleService();
   final ReadingListService _readingListService = ReadingListService();
   late SharedPreferences _loginData;
@@ -26,15 +27,27 @@ class SaveContentProvider extends ChangeNotifier {
     loadSavedArticleIds(); // Menambahkan method ini
   }
 
-  void loadSavedArticleIds() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    savedArticleIds = prefs.getKeys().whereType<String>().toList();
-  }
-
   void initializeSharedPreferences() async {
     changeState(MyState.loading);
     _loginData = await SharedPreferences.getInstance();
     changeState(MyState.loaded);
+  }
+
+  bool isArticleSelected = false;
+
+  void toggleArticleSelection() {
+    isArticleSelected = !isArticleSelected;
+    notifyListeners();
+  }
+
+  void clearSelectedArticleId() {
+    selectedArticleId = null;
+    notifyListeners();
+  }
+
+  void loadSavedArticleIds() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    savedArticleIds = prefs.getKeys().whereType<String>().toList();
   }
 
   void setSelectedReadingListId(String readingListId) {
@@ -84,6 +97,11 @@ class SaveContentProvider extends ChangeNotifier {
     } else {
       checkedIndex = index; // Mengcentang item yang dipilih
     }
+    notifyListeners();
+  }
+
+  void clearCheckedItems() {
+    checkedIndex = -1;
     notifyListeners();
   }
 

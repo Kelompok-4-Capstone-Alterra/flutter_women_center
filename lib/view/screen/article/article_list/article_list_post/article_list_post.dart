@@ -4,27 +4,41 @@ import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bott
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_post/article_list_post_view_model.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
 import 'package:capstone_project/view/screen/article/save_content/save_content.dart';
+import 'package:capstone_project/view/screen/article/save_content/save_content_view_model.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_view_model.dart';
+import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:collection/collection.dart';
 
-class ArticleListPostWidget extends StatelessWidget {
+class ArticleListPostWidget extends StatefulWidget {
   final List<Articles> articles;
 
   const ArticleListPostWidget({Key? key, required this.articles})
       : super(key: key);
 
   @override
+  State<ArticleListPostWidget> createState() => _ArticleListPostWidgetState();
+}
+
+class _ArticleListPostWidgetState extends State<ArticleListPostWidget> {
+  @override
+  void initState() {
+    super.initState();
+    final detailProvider = Provider.of<SavedViewModel>(context, listen: false);
+    detailProvider.showAllReadingList();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final provider =
         Provider.of<ArticleListPostProvider>(context, listen: false);
-
     return ListView.builder(
-      itemCount: articles.length,
+      itemCount: widget.articles.length,
       itemBuilder: (context, index) {
-        final article = articles[index];
-
+        final article = widget.articles[index];
         return InkWell(
           onTap: () {
             Navigator.pushNamed(context, ArticleDetailsScreen.routename,
@@ -106,56 +120,66 @@ class ArticleListPostWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                IconButton(
-                  onPressed: () async {
-                    if (provider.isLoggedIn() == true) {
-                      if (provider.isArticleSaved(article.id ?? '')) {
-                        provider.toggleArticleSaved(article.id ?? '');
-                        final detailProvider =
-                            Provider.of<DetailReadingListViewmodel>(context,
-                                listen: false);
-                        final readingListId = detailProvider
-                            .readingListData.readingListArticles![index].id;
-                        detailProvider.removeArticleFromReadingList(
-                            id: readingListId);
-                      } else {
-                        showModalBottomSheet(
-                          useRootNavigator: true,
-                          isScrollControlled: true,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Wrap(
-                              children: [
-                                CustomBottomSheetBuilder(
-                                  tinggi:
-                                      MediaQuery.of(context).size.height * 0.8,
-                                  isi: [
-                                    SaveContent(
-                                      articleId: articles[index].id ?? '',
-                                    ),
-                                  ],
-                                  header: true,
-                                  judul: 'Save to...',
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                    } else {
-                      Navigator.pushNamed(context, '/login_screen');
-                    }
-                  },
-                  icon: Consumer<ArticleListPostProvider>(
+                Consumer<ArticleListPostProvider>(
                     builder: (context, provider, _) {
-                      final isArticleSaved =
-                          provider.isArticleSaved(article.id ?? '');
-                      return isArticleSaved
-                          ? Icon(Icons.bookmark, color: MyColor.primaryMain)
-                          : const Icon(Icons.bookmark_border);
+                  final isArticleSaved =
+                      provider.isArticleSaved(article.id ?? '');
+                  return IconButton(
+                    onPressed: () async {
+                      if (provider.isLoggedIn() == true) {
+                        final saved = provider.isArticleSaved(article.id ?? '');
+                        if (saved) {
+                          // provider.toggleArticleSaved(article.id ?? '', false);
+                          final detailProvider = Provider.of<SavedViewModel>(
+                              context,
+                              listen: false);
+                          final data = detailProvider.allReadingListData;
+                          String result = '';
+
+                          for (var detail in data) {
+                            for (var sangatDetail
+                                in detail.readingListArticles!) {
+                              if (sangatDetail.article!.id == article.id) {
+                                result = sangatDetail.id ?? '';
+                              }
+                            }
+                          }
+                          provider.toggleArticleSaved(article.id ?? '', !saved);
+                          provider.removeArticleFromReadingList(result);
+                          detailProvider.showAllReadingList();
+                        } else {
+                          showModalBottomSheet(
+                            useRootNavigator: true,
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Wrap(
+                                children: [
+                                  CustomBottomSheetBuilder(
+                                    tinggi: MediaQuery.of(context).size.height *
+                                        0.8,
+                                    isi: [
+                                      SaveContent(
+                                        articleId: article.id ?? '',
+                                      ),
+                                    ],
+                                    header: true,
+                                    judul: 'Save to...',
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      } else {
+                        Navigator.pushNamed(context, '/login_screen');
+                      }
                     },
-                  ),
-                ),
+                    icon: isArticleSaved
+                        ? Icon(Icons.bookmark, color: MyColor.primaryMain)
+                        : const Icon(Icons.bookmark_border),
+                  );
+                }),
               ],
             ),
           ),
