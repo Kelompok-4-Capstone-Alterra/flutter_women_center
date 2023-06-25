@@ -27,16 +27,6 @@ class DetailCareerViewModel extends ChangeNotifier {
         _loginData.getString('token')!.isNotEmpty;
   }
 
-  // Future<bool> isLoggedIn() async {
-  //   _loginData = await SharedPreferences.getInstance();
-  //   final token = _loginData.getString('token') ?? '';
-  //   if (token.isEmpty) {
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
-
   String getCurrentDate({required String date}) {
     final parse = DateTime.parse(date);
     final formatter = DateFormat('dd MMMM yyyy');
