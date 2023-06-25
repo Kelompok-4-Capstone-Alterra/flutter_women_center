@@ -2,7 +2,7 @@ import 'package:capstone_project/utils/components/buttons/primary_button.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button_icon_text.dart';
 import 'package:capstone_project/view/screen/career/career_detail/widget/info_career_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../utils/components/buttons/outline_button.dart';
@@ -246,15 +246,13 @@ class _CareerDetailScreenState extends State<CareerDetailScreen> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            Html(
-                              data: provider.detailCareerList.description ??
+                            HtmlWidget(
+                              provider.detailCareerList.description ??
                                   'Tidak ada data',
-                              style: {
-                                'body': Style(
-                                  fontSize: const FontSize(12),
-                                  color: MyColor.neutralHigh,
-                                ),
-                              },
+                              textStyle: TextStyle(
+                                fontSize: 12,
+                                color: MyColor.neutralHigh,
+                              ),
                             ),
                           ],
                         ),
