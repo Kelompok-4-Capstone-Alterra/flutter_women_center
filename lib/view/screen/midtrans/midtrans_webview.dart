@@ -55,16 +55,10 @@ class _WebViewContainerState extends State<WebViewContainer> {
               onPageStarted: (url) {
                 provider.loadingPercentage = 0;
                 if (url.contains('http://example.com')) {
-                  // Navigator.popUntil(context, (route) => route.isFirst);
-                  // Navigator.pushReplacement(context,
-                  //     MaterialPageRoute(builder: (context) {
-                  //   return const TransactionScreen();
-                  // }));
                   Navigator.pop(context);
                   provider.getCounselorDetail(
                       transactionID:
                           provider.transactionMidtrans.data!.transactionId!);
-                  print(provider.transactionDetail.data?.status);
                   if (provider.transactionDetail.data?.status == 'ongoing') {
                     showDialog(
                       context: context,

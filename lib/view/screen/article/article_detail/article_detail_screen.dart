@@ -11,7 +11,6 @@ import 'package:capstone_project/view/screen/article/save_content/save_content.d
 import 'package:capstone_project/view/screen/article/save_content/save_content_view_model.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 
 import 'package:provider/provider.dart';
 
@@ -184,7 +183,7 @@ class ArticleDetailsScreen extends StatelessWidget {
                 const SizedBox(
                   height: 16,
                 ),
-                Html(data: articles.description ?? '')
+                // Html(data: articles.description ?? '')
               ],
             ),
           ),
