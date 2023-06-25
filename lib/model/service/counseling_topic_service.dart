@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 class CounselingTopicService extends InterceptorApi {
   late List<TopicModel> topics;
 
-  Future<List<TopicModel>> getCounselingTopic(String token) async {
+  Future<List<TopicModel>> getCounselingTopic() async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.getTopics;
       final Response response = await dio.get(url);

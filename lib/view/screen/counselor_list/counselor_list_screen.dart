@@ -30,8 +30,7 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
     Future.delayed(Duration.zero, () {
       final provider =
           Provider.of<CounselorListViewModel>(context, listen: false);
-      provider.getCounselorList(
-          topic: widget.topicId, sortValue: 'highest_rating');
+      provider.getCounselorList(topic: widget.topicId);
     });
   }
 
