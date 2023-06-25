@@ -3,6 +3,7 @@ import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_n
 import 'package:capstone_project/utils/components/buttons/floating_button.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button_icon.dart';
+import 'package:capstone_project/utils/components/empty/empty.dart';
 import 'package:capstone_project/utils/components/loading/loading.dart';
 import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 import 'package:capstone_project/utils/components/text_box/regular_text_box/text_box.dart';
@@ -30,24 +31,33 @@ class SavedScreen extends StatefulWidget {
 }
 
 class _SavedScreenState extends State<SavedScreen> {
+  //text editing controller
   final TextEditingController _listNameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final FocusNode _listNameNode = FocusNode();
-  final FocusNode _descriptionNode = FocusNode();
   final TextEditingController _editListNameController = TextEditingController();
   final TextEditingController _editDescriptionController =
       TextEditingController();
   final TextEditingController _searchController = TextEditingController();
+
+  //focus node
+  final FocusNode _listNameNode = FocusNode();
+  final FocusNode _descriptionNode = FocusNode();
   final FocusNode _editListNameNode = FocusNode();
   final FocusNode _editDescriptionNode = FocusNode();
+
+  //form key
   final GlobalKey<FormState> _addReadingListFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _editReadingListFormKey = GlobalKey<FormState>();
 
+  //provider
   late final SavedViewModel provider;
+  late final DetailReadingListViewmodel providerDetailReadingList;
 
   @override
   void initState() {
     provider = Provider.of<SavedViewModel>(context, listen: false);
+    providerDetailReadingList =
+        Provider.of<DetailReadingListViewmodel>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       provider.showAllReadingList();
     });
@@ -98,7 +108,11 @@ class _SavedScreenState extends State<SavedScreen> {
                       cancelEvent: () {
                         _listNameController.clear();
                         _descriptionController.clear();
-                        Navigator.pop(context);
+                        _editListNameController.clear();
+                        _editDescriptionController.clear();
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                        }
                       },
                       isi: [
                         Form(
@@ -176,6 +190,8 @@ class _SavedScreenState extends State<SavedScreen> {
                                         );
                                         _listNameController.clear();
                                         _descriptionController.clear();
+                                        _editListNameController.clear();
+                                        _editDescriptionController.clear();
                                         if (context.mounted) {
                                           Navigator.pop(context);
                                           savedProvider.showAllReadingList();
@@ -227,6 +243,10 @@ class _SavedScreenState extends State<SavedScreen> {
         strokeWidth: 2,
         color: MyColor.primaryMain,
         onRefresh: () {
+          _listNameController.clear();
+          _descriptionController.clear();
+          _editListNameController.clear();
+          _editDescriptionController.clear();
           return provider.showAllReadingList();
         },
         child: Padding(
@@ -237,243 +257,214 @@ class _SavedScreenState extends State<SavedScreen> {
                 return const Loading();
               } else {
                 if (savedProvider.allReadingListData.isEmpty) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/images/nothing_here.png'),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        Text(
-                          'Woops! Sorry, no result found.',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: MyColor.neutralHigh,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
+                  return const Empty();
                 } else {
                   return ListView.separated(
                     itemCount: savedProvider.allReadingListData.length,
                     itemBuilder: (context, indexList) {
-                      return Consumer<DetailReadingListViewmodel>(
-                          builder: (context, detailReadingListProvider, _) {
-                        return GestureDetector(
-                          onTap: () {
-                            detailReadingListProvider.showReadingList(
-                                id: savedProvider
-                                    .allReadingListData[indexList].id!);
-                            Navigator.pushNamed(
-                              context,
-                              DetailReadingListScreen.routeName,
-                            );
-                          },
-                          child: SavedCard(
-                            editReadingListBottomSheetBuilder: (context) {
-                              return CustomBottomSheetBuilder(
-                                header: true,
-                                tinggi: 680,
-                                judul: 'Edit List Info',
-                                isi: [
-                                  Form(
-                                    key: _editReadingListFormKey,
-                                    child: SizedBox(
-                                      height: 680,
-                                      width: double.infinity,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'List Name',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
-                                              color: MyColor.neutralHigh,
-                                            ),
+                      return GestureDetector(
+                        onTap: () {
+                          providerDetailReadingList.id =
+                              provider.allReadingListData[indexList].id;
+                          providerDetailReadingList.showReadingList(
+                              id: provider.allReadingListData[indexList].id);
+                          Navigator.pushNamed(
+                            context,
+                            DetailReadingListScreen.routeName,
+                          );
+                        },
+                        child: SavedCard(
+                          editReadingListBottomSheetBuilder: (context) {
+                            return CustomBottomSheetBuilder(
+                              header: true,
+                              tinggi: 680,
+                              judul: 'Edit List Info',
+                              isi: [
+                                Form(
+                                  key: _editReadingListFormKey,
+                                  child: SizedBox(
+                                    height: 680,
+                                    width: double.infinity,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'List Name',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            color: MyColor.neutralHigh,
                                           ),
-                                          const SizedBox(
-                                            height: 10,
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        TextBox(
+                                          textEditingController:
+                                              _editListNameController,
+                                          hintText:
+                                              'Ex : How to heal my traumatized inner child',
+                                          currentFocus: _editListNameNode,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'list name is required';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 16,
+                                        ),
+                                        Text(
+                                          'Description',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            color: MyColor.neutralHigh,
                                           ),
-                                          TextBox(
-                                            textEditingController:
-                                                _editListNameController,
-                                            hintText:
-                                                'Ex : How to heal my traumatized inner child',
-                                            currentFocus: _editListNameNode,
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return 'list name is required';
-                                              }
-                                              return null;
-                                            },
-                                          ),
-                                          const SizedBox(
-                                            height: 16,
-                                          ),
-                                          Text(
-                                            'Description',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
-                                              color: MyColor.neutralHigh,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          TextBox(
-                                            textEditingController:
-                                                _editDescriptionController,
-                                            last: true,
-                                            hintText:
-                                                'Ex : This is an important list',
-                                            currentFocus: _editDescriptionNode,
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return 'description is required';
-                                              }
-                                              return null;
-                                            },
-                                          ),
-                                          const SizedBox(
-                                            height: 16,
-                                          ),
-                                          PrimaryButton(
-                                            teks: 'Save Changes',
-                                            onPressed: () {
-                                              if (_editReadingListFormKey
-                                                  .currentState!
-                                                  .validate()) {
-                                                savedProvider.updateReadingList(
-                                                  id: savedProvider
-                                                      .allReadingListData[
-                                                          indexList]
-                                                      .id!,
-                                                  name: _editListNameController
-                                                      .text,
-                                                  description:
-                                                      _editDescriptionController
-                                                          .text,
-                                                );
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        TextBox(
+                                          textEditingController:
+                                              _editDescriptionController,
+                                          last: true,
+                                          hintText:
+                                              'Ex : This is an important list',
+                                          currentFocus: _editDescriptionNode,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'description is required';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 16,
+                                        ),
+                                        PrimaryButton(
+                                          teks: 'Save Changes',
+                                          onPressed: () {
+                                            if (_editReadingListFormKey
+                                                .currentState!
+                                                .validate()) {
+                                              savedProvider.updateReadingList(
+                                                id: savedProvider
+                                                    .allReadingListData[
+                                                        indexList]
+                                                    .id,
+                                                name: _editListNameController
+                                                    .text,
+                                                description:
+                                                    _editDescriptionController
+                                                        .text,
+                                              );
+                                              _listNameController.clear();
+                                              _descriptionController.clear();
+                                              _editListNameController.clear();
+                                              _editDescriptionController
+                                                  .clear();
+                                              if (context.mounted) {
+                                                Navigator.pop(context);
                                                 savedProvider
                                                     .showAllReadingList();
-                                                Navigator.pop(context);
                                               }
-                                            },
-                                          ),
-                                        ],
-                                      ),
+                                            }
+                                          },
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                                cancelEvent: () {
-                                  _editListNameController.clear();
-                                  _editDescriptionController.clear();
+                                ),
+                              ],
+                              cancelEvent: () {
+                                _listNameController.clear();
+                                _descriptionController.clear();
+                                _editListNameController.clear();
+                                _editDescriptionController.clear();
+                                if (context.mounted) {
                                   Navigator.pop(context);
-                                },
-                              );
-                            },
-                            judulList: savedProvider
-                                        .allReadingListData[indexList].name ==
-                                    null
-                                ? '-'
-                                : savedProvider
-                                    .allReadingListData[indexList].name!,
-                            totalArtikel: savedProvider
-                                    .allReadingListData[indexList]
-                                    .articleTotal ??
-                                0,
-                            deskripsi: savedProvider
-                                    .allReadingListData[indexList]
-                                    .description ??
-                                '-',
-                            editListNameTextEditingController:
-                                _editListNameController,
-                            editDescriptionTextEditingController:
-                                _editDescriptionController,
-                            editListNameFocusNode: _editListNameNode,
-                            editDescriptionFocusNode: _editDescriptionNode,
-                            deleteEvent: () {
-                              savedProvider.removeReadingList(
-                                  id: savedProvider
-                                      .allReadingListData[indexList].id!);
+                                }
+                              },
+                            );
+                          },
+                          judulList:
+                              savedProvider.allReadingListData[indexList].name!,
+                          totalArtikel: savedProvider
+                              .allReadingListData[indexList].articleTotal!,
+                          deskripsi: savedProvider
+                              .allReadingListData[indexList].description!,
+                          editListNameTextEditingController:
+                              _editListNameController,
+                          editDescriptionTextEditingController:
+                              _editDescriptionController,
+                          editListNameFocusNode: _editListNameNode,
+                          editDescriptionFocusNode: _editDescriptionNode,
+                          deleteEvent: () {
+                            savedProvider.removeReadingList(
+                                id: savedProvider
+                                    .allReadingListData[indexList].id);
+                            _listNameController.clear();
+                            _descriptionController.clear();
+                            _editListNameController.clear();
+                            _editDescriptionController.clear();
+                            if (context.mounted) {
+                              Navigator.pop(context);
                               savedProvider.showAllReadingList();
+                            }
+                          },
+                          daftarArtikel: savedProvider
+                                      .allReadingListData[indexList]
+                                      .articleTotal ==
+                                  0
+                              ? null
+                              : ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: savedProvider
+                                      .allReadingListData[indexList]
+                                      .articleTotal!,
+                                  itemBuilder: (context, indexArticle) {
+                                    return HorizontalArticleCard(
+                                      urlGambarArtikel: savedProvider
+                                          .allReadingListData[indexList]
+                                          .readingListArticles![indexArticle]
+                                          .article!
+                                          .image!,
+                                      kategoriArtikel: savedProvider
+                                          .allReadingListData[indexList]
+                                          .readingListArticles![indexArticle]
+                                          .article!
+                                          .category!,
+                                      judulArtikel: savedProvider
+                                          .allReadingListData[indexList]
+                                          .readingListArticles![indexArticle]
+                                          .article!
+                                          .title!,
+                                    );
+                                  },
+                                  separatorBuilder: (context, indexArticle) {
+                                    return const SizedBox(
+                                      width: 8,
+                                    );
+                                  },
+                                ),
+                          cancelEvent: () {
+                            _listNameController.clear();
+                            _descriptionController.clear();
+                            _editListNameController.clear();
+                            _editDescriptionController.clear();
+                            if (context.mounted) {
                               Navigator.pop(context);
-                            },
-                            daftarArtikel: savedProvider
-                                        .allReadingListData[indexList]
-                                        .articleTotal! ==
-                                    0
-                                ? null
-                                : ListView.separated(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: savedProvider
-                                        .allReadingListData[indexList]
-                                        .articleTotal!,
-                                    itemBuilder: (context, indexArticle) {
-                                      return HorizontalArticleCard(
-                                        urlGambarArtikel: savedProvider
-                                                    .allReadingListData[
-                                                        indexList]
-                                                    .readingListArticles ==
-                                                null
-                                            ? '-'
-                                            : savedProvider
-                                                .allReadingListData[indexList]
-                                                .readingListArticles![
-                                                    indexArticle]
-                                                .article!
-                                                .image!,
-                                        kategoriArtikel: savedProvider
-                                                    .allReadingListData[
-                                                        indexList]
-                                                    .readingListArticles ==
-                                                null
-                                            ? '-'
-                                            : savedProvider
-                                                .allReadingListData[indexList]
-                                                .readingListArticles![
-                                                    indexArticle]
-                                                .article!
-                                                .category!,
-                                        judulArtikel: savedProvider
-                                                    .allReadingListData[
-                                                        indexList]
-                                                    .readingListArticles ==
-                                                null
-                                            ? '-'
-                                            : savedProvider
-                                                .allReadingListData[indexList]
-                                                .readingListArticles![
-                                                    indexArticle]
-                                                .article!
-                                                .title!,
-                                      );
-                                    },
-                                    separatorBuilder: (context, indexArticle) {
-                                      return const SizedBox(
-                                        width: 8,
-                                      );
-                                    },
-                                  ),
-                            cancelEvent: () {
-                              _editListNameController.clear();
-                              _editDescriptionController.clear();
-                              Navigator.pop(context);
-                            },
-                          ),
-                        );
-                      });
+                            }
+                          },
+                        ),
+                      );
                     },
                     separatorBuilder: (context, indexList) {
                       return const SizedBox(

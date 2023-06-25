@@ -5,34 +5,36 @@ class ReadingListModel {
   String? description;
   int? articleTotal;
   String? createdAt;
-  List<ReadingListArticlesModel>? readingListArticles;
+  List<ReadingListArticles>? readingListArticles;
 
-  ReadingListModel({
-    this.id,
-    this.userId,
-    this.name,
-    this.description,
-    this.articleTotal,
-    this.createdAt,
-    this.readingListArticles,
-  });
+  ReadingListModel(
+      {this.id,
+      this.userId,
+      this.name,
+      this.description,
+      this.articleTotal,
+      this.createdAt,
+      this.readingListArticles});
 
   ReadingListModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    userId = json['user_id'];
-    name = json['name'];
-    description = json['description'];
-    articleTotal = json['article_total'];
-    createdAt = json['created_at'];
-    if (readingListArticles != null) {
-      readingListArticles = [
-        ReadingListArticlesModel.fromJson(json['reading_list_articles'])
-      ];
+    id = json['id'] ?? '-';
+    userId = json['user_id'] ?? '-';
+    name = json['name'] ?? '-';
+    description = json['description'] ?? '-';
+    articleTotal = json['article_total'] ?? 0;
+    createdAt = json['created_at'] ?? '';
+    if (json['reading_list_articles'] != null) {
+      readingListArticles = <ReadingListArticles>[];
+      json['reading_list_articles'].forEach((v) {
+        readingListArticles!.add(ReadingListArticles.fromJson(v));
+      });
+    } else {
+      readingListArticles = [];
     }
   }
 
-  Map<String, dynamic> toMap() {
-    Map<String, dynamic> data = <String, dynamic>{};
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['user_id'] = userId;
     data['name'] = name;
@@ -40,62 +42,54 @@ class ReadingListModel {
     data['article_total'] = articleTotal;
     data['created_at'] = createdAt;
     if (readingListArticles != null) {
-      for (var element in readingListArticles!) {
-        data['reading_list_articles'] = element;
-      }
+      data['reading_list_articles'] =
+          readingListArticles!.map((v) => v.toJson()).toList();
     }
-
     return data;
   }
 }
 
-class ReadingListArticlesModel {
+class ReadingListArticles {
   String? id;
-  ArticleModel? article;
+  Article? article;
 
-  ReadingListArticlesModel({
-    this.id,
-    this.article,
-  });
+  ReadingListArticles({this.id, this.article});
 
-  ReadingListArticlesModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    article = ArticleModel.fromJson(json['article']);
+  ReadingListArticles.fromJson(Map<String, dynamic> json) {
+    id = json['id'] ?? '-';
+    article =
+        json['article'] != null ? Article.fromJson(json['article']) : Article();
   }
 
-  Map<String, dynamic> toMap() {
-    Map<String, dynamic> data = <String, dynamic>{};
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['article'] = article;
+    if (article != null) {
+      data['article'] = article!.toJson();
+    }
     return data;
   }
 }
 
-class ArticleModel {
+class Article {
   String? id;
   String? image;
   String? title;
   String? author;
   String? category;
 
-  ArticleModel({
-    this.id,
-    this.image,
-    this.title,
-    this.author,
-    this.category,
-  });
+  Article({this.id, this.image, this.title, this.author, this.category});
 
-  ArticleModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    image = json['image'];
-    title = json['title'];
-    author = json['author'];
-    category = json['category'];
+  Article.fromJson(Map<String, dynamic> json) {
+    id = json['id'] ?? '-';
+    image = json['image'] ?? '-';
+    title = json['title'] ?? '-';
+    author = json['author'] ?? '-';
+    category = json['category'] ?? '-';
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['image'] = image;
     data['title'] = title;

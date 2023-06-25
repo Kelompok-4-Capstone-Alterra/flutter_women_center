@@ -15,35 +15,52 @@ class DetailReadingListViewmodel with ChangeNotifier {
   String get message => _message;
   ReadingListModel get readingListData => _readingListData;
 
+  late String? id;
+
   void changeState(MyState state) {
     _state = state;
     notifyListeners();
   }
 
-  Future<void> showReadingList({required String id}) async {
+  ///menampilkan detail reading list beserta artikel-artikelnya dari service reading list
+  Future<void> showReadingList({required String? id}) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      _readingListData =
-          await _readingListService.getReadingList(token: token, id: id);
-      changeState(MyState.loaded);
+      _readingListData = await _readingListService.getReadingList(
+        token: token,
+        id: id ?? '',
+      );
+      if (_readingListData.id != null &&
+          _readingListData.name != null &&
+          _readingListData.userId != null &&
+          _readingListData.description != null &&
+          _readingListData.articleTotal != null &&
+          _readingListData.createdAt != null) {
+        changeState(MyState.loaded);
+      }
     } catch (e) {
       _message = e.toString();
       changeState(MyState.failed);
     }
   }
 
+  ///mengubah informasi reading list dari service reading list
   Future<void> updateReadingList(
-      {required String id,
-      required String name,
-      required String description}) async {
+      {required String? id,
+      required String? name,
+      required String? description}) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       await _readingListService.putReadingList(
-          token: token, id: id, name: name, description: description);
+        token: token,
+        id: id ?? '',
+        name: name ?? '',
+        description: description ?? '',
+      );
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
@@ -51,12 +68,16 @@ class DetailReadingListViewmodel with ChangeNotifier {
     }
   }
 
-  Future<void> removeReadingList({required String id}) async {
+  ///menghapus reading list dari service reading list
+  Future<void> removeReadingList({required String? id}) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      await _readingListService.deleteReadingList(token: token, id: id);
+      await _readingListService.deleteReadingList(
+        token: token,
+        id: id ?? '',
+      );
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
@@ -64,13 +85,16 @@ class DetailReadingListViewmodel with ChangeNotifier {
     }
   }
 
-  Future<void> removeArticleFromReadingList({required String id}) async {
+  ///menghapus artikel yang tersimpan pada reading list dari service reading list
+  Future<void> removeArticleFromReadingList({required String? id}) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
       await _readingListService.deleteArticleFromReadingList(
-          token: token, id: id);
+        token: token,
+        id: id ?? '',
+      );
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();

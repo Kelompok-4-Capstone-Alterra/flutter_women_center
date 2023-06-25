@@ -12,4 +12,13 @@ class Endpoint {
   static const String publicArticles = '/users/public/articles';
   static const String publicCounselor = '/users/public/counselors';
   static const String publicCareer = '/users/public/careers';
+  static const String getTopics = '/users/public/topics';
+  static const String getArticles = '/users/articles';
+  static const String getArticlesNoLogin = '/users/public/articles';
+  static const String getPostComment = '/users/articles/:id/comments';
+  static const String deleteComment =
+      '/users/articles/:article_id/comments/:comment_id';
+  static const String postArticleToReadingLists = '/users/reading-lists/save';
+  static const String deleteArticleFromReadingLists =
+      '/users/reading-lists/save/:id';
 }
