@@ -61,7 +61,7 @@ class _ArticleListPostWidgetState extends State<ArticleListPostWidget> {
                     article.image ?? '',
                     width: 135,
                     height: 128,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -129,7 +129,6 @@ class _ArticleListPostWidgetState extends State<ArticleListPostWidget> {
                       if (provider.isLoggedIn() == true) {
                         final saved = provider.isArticleSaved(article.id ?? '');
                         if (saved) {
-                          // provider.toggleArticleSaved(article.id ?? '', false);
                           final detailProvider = Provider.of<SavedViewModel>(
                               context,
                               listen: false);
