@@ -48,6 +48,8 @@ dependencies:
   dio: ^5.2.0
   file_picker: ^4.6.1
   open_file: ^3.2.1
+  mockito: ^5.4.0
+  build_runner: ^2.3.3
   flutter_html: ^2.2.1
 
 dev_dependencies:

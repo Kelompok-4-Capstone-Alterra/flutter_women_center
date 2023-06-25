@@ -53,7 +53,6 @@ class TransactionViewModel with ChangeNotifier {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      print(token);
       if (statusOngoing == true) {
         _allTransactionsDataOngoing = await _transactionsService
             .getAllTransactions(token: token, statusOngoing: true);
