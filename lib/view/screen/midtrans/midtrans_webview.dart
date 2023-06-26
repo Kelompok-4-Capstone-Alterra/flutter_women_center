@@ -52,103 +52,136 @@ class _WebViewContainerState extends State<WebViewContainer> {
         controller = WebViewController()
           ..setNavigationDelegate(
             NavigationDelegate(
-              onPageStarted: (url) {
+              onPageStarted: (url) async {
                 provider.loadingPercentage = 0;
                 if (url.contains('http://example.com')) {
                   Navigator.pop(context);
-                  provider.getCounselorDetail(
-                      transactionID:
-                          provider.transactionMidtrans.data!.transactionId!);
-                  if (provider.transactionDetail.data?.status == 'pending' ||
-                      provider.transactionDetail.data?.status == null) {
-                    //  make the program wait for 3 seconds
-                    Future.delayed(const Duration(seconds: 5), () {});
-                  }
-                  if (provider.transactionDetail.data?.status == 'ongoing') {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        Future.delayed(const Duration(seconds: 3), () {
-                          Navigator.popUntil(context, (route) => route.isFirst);
-                          Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) {
-                            return const TransactionScreen();
-                          }));
-                        });
-                        return AlertDialog(
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3),
-                            ),
-                          ),
-                          backgroundColor: Colors.white,
-                          content: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Icon(
-                                  Icons.check_circle,
-                                  size: 50,
-                                  color: MyColor.success,
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                const Text(
-                                  "Payment has been received",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      Future.delayed(const Duration(seconds: 5), () async {
+                        // Delay for 5 seconds
+                        await provider.getCounselorDetail(
+                            transactionID: provider
+                                .transactionMidtrans.data!.transactionId!);
+                        if (provider.transactionDetail.data?.status ==
+                            'ongoing') {
+                          // ignore: use_build_context_synchronously
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              Future.delayed(const Duration(seconds: 3), () {
+                                Navigator.popUntil(
+                                    context, (route) => route.isFirst);
+                                Navigator.pushReplacement(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return const TransactionScreen();
+                                }));
+                              });
+                              return AlertDialog(
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(3),
                                   ),
-                                  textAlign: TextAlign.justify,
                                 ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  } else if (provider.transactionDetail.data?.status ==
-                          'pending' ||
-                      provider.transactionDetail.data?.status == null) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        Future.delayed(const Duration(seconds: 3), () {
-                          Navigator.pop(context);
-                        });
-                        return AlertDialog(
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3),
-                            ),
-                          ),
-                          backgroundColor: Colors.white,
-                          content: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Icon(
-                                  Icons.sms_failed,
-                                  size: 50,
-                                  color: MyColor.danger,
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                const Text(
-                                  "Please complete your payment",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
+                                backgroundColor: Colors.white,
+                                content: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Icon(
+                                        Icons.check_circle,
+                                        size: 50,
+                                        color: MyColor.success,
+                                      ),
+                                      const SizedBox(
+                                        height: 16,
+                                      ),
+                                      const Text(
+                                        "Payment has been received",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                        ),
+                                        textAlign: TextAlign.justify,
+                                      ),
+                                    ],
                                   ),
-                                  textAlign: TextAlign.justify,
                                 ),
-                              ],
-                            ),
+                              );
+                            },
+                          );
+                        } else if (provider.transactionDetail.data?.status ==
+                                'pending' ||
+                            provider.transactionDetail.data?.status == null) {
+                          // ignore: use_build_context_synchronously
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              Future.delayed(const Duration(seconds: 3), () {
+                                Navigator.pop(context);
+                              });
+                              return AlertDialog(
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(3),
+                                  ),
+                                ),
+                                backgroundColor: Colors.white,
+                                content: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Icon(
+                                        Icons.sms_failed,
+                                        size: 50,
+                                        color: MyColor.danger,
+                                      ),
+                                      const SizedBox(
+                                        height: 16,
+                                      ),
+                                      const Text(
+                                        "Please complete your payment",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                        ),
+                                        textAlign: TextAlign.justify,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      });
+                      return AlertDialog(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(3),
                           ),
-                        );
-                      },
-                    );
-                  }
+                        ),
+                        backgroundColor: Colors.white,
+                        content: SingleChildScrollView(
+                          child: Column(
+                            children: const [
+                              CircularProgressIndicator(), // Show circular progress indicator
+                              SizedBox(
+                                height: 16,
+                              ),
+                              Text(
+                                "Please wait...",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                ),
+                                textAlign: TextAlign.justify,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
                 }
               },
               onProgress: (progress) {
