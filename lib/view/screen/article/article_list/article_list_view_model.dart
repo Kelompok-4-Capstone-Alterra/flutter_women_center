@@ -67,6 +67,7 @@ class ArticleListProvider extends ChangeNotifier {
     } catch (e) {
       message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -90,6 +91,7 @@ class ArticleListProvider extends ChangeNotifier {
     } catch (e) {
       message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -101,6 +103,7 @@ class ArticleListProvider extends ChangeNotifier {
     } catch (e) {
       message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -121,6 +124,7 @@ class ArticleListProvider extends ChangeNotifier {
     } catch (e) {
       message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -131,6 +135,7 @@ class ArticleListProvider extends ChangeNotifier {
     } catch (e) {
       message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -149,6 +154,7 @@ class ArticleListProvider extends ChangeNotifier {
     } catch (e) {
       message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -163,6 +169,7 @@ class ArticleListProvider extends ChangeNotifier {
     } catch (e) {
       message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 }

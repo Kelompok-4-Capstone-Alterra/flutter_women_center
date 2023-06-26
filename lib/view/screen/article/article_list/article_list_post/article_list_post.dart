@@ -84,6 +84,7 @@ class _ArticleListPostWidgetState extends State<ArticleListPostWidget> {
                           article.title ?? '',
                           style: const TextStyle(
                               fontSize: 14, fontWeight: FontWeight.w500),
+                          overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(
                           height: 16,

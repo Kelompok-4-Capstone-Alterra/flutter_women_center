@@ -23,7 +23,7 @@ class ArticleService extends InterceptorApi {
           .toList();
       return topics;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -43,7 +43,7 @@ class ArticleService extends InterceptorApi {
           .toList();
       return articles;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -66,7 +66,7 @@ class ArticleService extends InterceptorApi {
           .toList();
       return articles;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -89,7 +89,7 @@ class ArticleService extends InterceptorApi {
           .toList();
       return articles;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -104,7 +104,7 @@ class ArticleService extends InterceptorApi {
           .toList();
       return articles;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -122,7 +122,7 @@ class ArticleService extends InterceptorApi {
           .toList();
       return articles;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -140,7 +140,7 @@ class ArticleService extends InterceptorApi {
           .toList();
       return articles;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -161,7 +161,7 @@ class ArticleService extends InterceptorApi {
           .toList();
       return comments;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -185,7 +185,7 @@ class ArticleService extends InterceptorApi {
 
       return comments;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -206,7 +206,7 @@ class ArticleService extends InterceptorApi {
           .toList();
       return comments;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 }
