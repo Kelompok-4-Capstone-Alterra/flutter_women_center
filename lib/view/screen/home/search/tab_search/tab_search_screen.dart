@@ -191,7 +191,7 @@ class _TabSearchState extends State<TabSearch> {
                                   color: MyColor.warning,
                                 ),
                                 empty: Icon(
-                                  Icons.star_border,
+                                  Icons.star,
                                   color: MyColor.neutralLow,
                                 ),
                                 half: Icon(

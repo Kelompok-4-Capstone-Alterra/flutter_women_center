@@ -335,7 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: MyColor.warning,
                             ),
                             empty: Icon(
-                              Icons.star_border,
+                              Icons.star,
                               color: MyColor.neutralLow,
                             ),
                             half: Icon(
