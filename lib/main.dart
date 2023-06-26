@@ -71,7 +71,7 @@ import 'view/screen/counselor_detail/counselor_detail_screen.dart';
 void main() async {
   HttpOverrides.global = PostHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
-  await Future.delayed(const Duration(seconds: 2));
+  await Future.delayed(const Duration(seconds: 1));
   FlutterNativeSplash.remove();
   runApp(const MyApp());
 }

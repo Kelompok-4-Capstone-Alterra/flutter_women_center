@@ -25,6 +25,7 @@ import '../../../utils/my_color.dart';
 import '../article/article_detail/article_detail_screen.dart';
 import '../auth/login/login_screen.dart';
 import '../career/career_detail/career_detail_screen.dart';
+import '../career/career_detail/career_detail_view_model.dart';
 import '../career/career_list/career_list_screen.dart';
 import '../counselor_detail/counselor_detail_screen.dart';
 import '../counselor_list/counselor_list_view_model.dart';
@@ -335,7 +336,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: MyColor.warning,
                             ),
                             empty: Icon(
-                              Icons.star_border,
+                              Icons.star,
                               color: MyColor.neutralLow,
                             ),
                             half: Icon(
@@ -392,17 +393,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         title: dataCareer[index].jobPosition ?? '',
                         subtitle: dataCareer[index].companyName ?? '',
                         imageUrl: dataCareer[index].image ?? '',
-                        onTapAction: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return CareerDetailScreen(
-                                  id: dataCareer[index].id!,
-                                );
-                              },
-                            ),
-                          );
+                        onTapAction: () async {
+                          await Provider.of<DetailCareerViewModel>(context,
+                                  listen: false)
+                              .fetchCareerById(id: dataCareer[index].id!);
+                          if (context.mounted) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return CareerDetailScreen(
+                                    id: dataCareer[index].id!,
+                                  );
+                                },
+                              ),
+                            );
+                          }
                         },
                         extraWidget: Text(
                           dataCareer[index].salary == 0
