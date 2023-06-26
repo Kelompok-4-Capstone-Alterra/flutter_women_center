@@ -4,7 +4,6 @@ import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_search/search_transactions_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:capstone_project/utils/components/text_box/regular_text_box/text_box.dart';
 import '../../../../utils/components/appbar/custom_appbar.dart';
 import '../../../../utils/components/buttons/primary_button.dart';
@@ -139,7 +138,6 @@ class _SearchTransactionsScreenState extends State<SearchTransactionsScreen> {
                 },
                 child: Consumer<SearchTransactionsViewModel>(
                     builder: (context, searchTransactionsProvider, _) {
-                  print(searchTransactionsProvider.value);
                   if (searchTransactionsProvider.state == MyState.loading) {
                     return const Loading();
                   } else {
@@ -258,9 +256,6 @@ class _SearchTransactionsScreenState extends State<SearchTransactionsScreen> {
                         );
                       }
                     } else {
-                      print(searchTransactionsProvider
-                          .allTransactionsDataHistory);
-                      print('object');
                       if (searchTransactionsProvider
                           .allTransactionsDataHistory.isEmpty) {
                         return const Empty();

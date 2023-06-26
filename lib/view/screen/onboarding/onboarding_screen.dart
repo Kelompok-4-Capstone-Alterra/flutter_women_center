@@ -2,7 +2,6 @@ import 'package:capstone_project/utils/components/buttons/primary_button.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
-import 'package:capstone_project/view/screen/landing/landing_screen.dart';
 import 'package:capstone_project/view/screen/onboarding/onboarding_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

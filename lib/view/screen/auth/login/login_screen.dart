@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../utils/my_size.dart';
-import '../../home/home_view_model.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

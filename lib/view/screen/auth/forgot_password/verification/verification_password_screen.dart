@@ -4,7 +4,6 @@ import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_view_model.dart';
 import 'package:capstone_project/view/screen/auth/forgot_password/verification/verification_password_veiw_model.dart';
 import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
-import 'package:capstone_project/view/screen/auth/verification/verification_veiw_model.dart';
 import 'package:capstone_project/view/screen/auth/verification/widgets/otp_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

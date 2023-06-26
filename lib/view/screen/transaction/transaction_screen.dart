@@ -16,7 +16,6 @@ import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/view/screen/transaction/widgets/transaction_card.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class TransactionScreen extends StatefulWidget {
   const TransactionScreen({super.key});
@@ -595,10 +594,6 @@ class _TransactionScreenState extends State<TransactionScreen>
                                                 : () {
                                                     if (_formKey.currentState!
                                                         .validate()) {
-                                                      print(transactionProvider
-                                                          .allTransactionsDataHistory[
-                                                              index]
-                                                          .id);
                                                       transactionProvider
                                                           .createRateAndReviewCounselor(
                                                         counselorId:

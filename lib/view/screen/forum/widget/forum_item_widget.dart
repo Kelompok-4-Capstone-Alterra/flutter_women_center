@@ -140,6 +140,5 @@ class ForumItem extends StatelessWidget {
         ],
       ),
     );
-    ;
   }
 }

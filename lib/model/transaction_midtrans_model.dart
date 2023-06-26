@@ -153,29 +153,18 @@ class CounselorData {
   int? price;
   int? rating;
   String? description;
-  Null? reviews;
-  Null? dates;
-  Null? times;
-  Null? deletedAt;
-  String? createdAt;
-  Null? transactions;
 
-  CounselorData(
-      {this.id,
-      this.profilePicture,
-      this.username,
-      this.name,
-      this.email,
-      this.topic,
-      this.price,
-      this.rating,
-      this.description,
-      this.reviews,
-      this.dates,
-      this.times,
-      this.deletedAt,
-      this.createdAt,
-      this.transactions});
+  CounselorData({
+    this.id,
+    this.profilePicture,
+    this.username,
+    this.name,
+    this.email,
+    this.topic,
+    this.price,
+    this.rating,
+    this.description,
+  });
 
   CounselorData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -187,16 +176,10 @@ class CounselorData {
     price = json['price'];
     rating = json['rating'];
     description = json['description'];
-    reviews = json['reviews'];
-    dates = json['dates'];
-    times = json['times'];
-    deletedAt = json['deleted_at'];
-    createdAt = json['created_at'];
-    transactions = json['transactions'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['profile_picture'] = profilePicture;
     data['username'] = username;
@@ -206,12 +189,6 @@ class CounselorData {
     data['price'] = price;
     data['rating'] = rating;
     data['description'] = description;
-    data['reviews'] = reviews;
-    data['dates'] = dates;
-    data['times'] = times;
-    data['deleted_at'] = deletedAt;
-    data['created_at'] = createdAt;
-    data['transactions'] = transactions;
     return data;
   }
 }
