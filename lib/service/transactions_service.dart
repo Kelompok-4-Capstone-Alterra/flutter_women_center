@@ -26,7 +26,7 @@ class TransactionsService extends InterceptorApi {
               .toList();
       return transactionsOngoingModel;
     } catch (e) {
-      rethrow;
+      throw e.toString();
     }
   }
 
@@ -55,7 +55,7 @@ class TransactionsService extends InterceptorApi {
               .toList();
       return transactionsOngoingModel;
     } catch (e) {
-      rethrow;
+      throw e.toString();
     }
   }
 
@@ -85,7 +85,7 @@ class TransactionsService extends InterceptorApi {
       final String message = response.data['meta']['message'].toString();
       return message;
     } catch (e) {
-      rethrow;
+      throw e.toString();
     }
   }
 
@@ -112,7 +112,7 @@ class TransactionsService extends InterceptorApi {
       final String message = response.data['meta']['message'].toString();
       return message;
     } catch (e) {
-      rethrow;
+      throw e.toString();
     }
   }
 }
