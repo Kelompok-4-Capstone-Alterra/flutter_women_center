@@ -48,7 +48,6 @@ class CounselorDetailViewModel extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print(e.toString());
       myState = MyState.failed;
       notifyListeners();
       rethrow;

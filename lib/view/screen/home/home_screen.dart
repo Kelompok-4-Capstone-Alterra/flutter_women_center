@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Provider.of<ArticleListProvider>(context, listen: false)
           .getArticlesNoLogin();
       Provider.of<CounselorListViewModel>(context, listen: false)
-          .getCounselorList(topic: 0, sortValue: 'highest_rating');
+          .getCounselorList(topic: 0);
       homeProvider.initCareerData();
       homeProvider.initForumData();
       Provider.of<ForumDiscussionViewModel>(context, listen: false).init();

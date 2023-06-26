@@ -280,7 +280,7 @@ class _CounselingAppointmentState extends State<CounselingAppointment> {
                 case MyState.loaded:
                   return InkWell(
                     onTap: () async {
-                      if (provider.selectedVoucher != 0) {
+                      if (provider.selectedVoucher != '') {
                         final result = await Navigator.push(
                           context,
                           MaterialPageRoute(

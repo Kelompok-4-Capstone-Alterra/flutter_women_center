@@ -1,5 +1,4 @@
 import 'package:capstone_project/utils/state/finite_state.dart';
-import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
 import 'package:capstone_project/view/screen/auth/signup/signup_view_model.dart';
 import 'package:capstone_project/view/screen/auth/verification/verification_screen.dart';
 import 'package:capstone_project/view/screen/auth/verification/verification_veiw_model.dart';

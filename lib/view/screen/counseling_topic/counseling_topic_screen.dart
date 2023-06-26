@@ -1,5 +1,4 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
-import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
