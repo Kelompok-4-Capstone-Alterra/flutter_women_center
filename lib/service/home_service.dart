@@ -1,10 +1,10 @@
-import 'package:capstone_project/model/api/endpoint.dart';
-import 'package:capstone_project/model/api/interceptor_api.dart';
+import 'package:capstone_project/service/api/endpoint.dart';
+import 'package:capstone_project/service/api/interceptor_api.dart';
+import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/model/career_model.dart';
 import 'package:capstone_project/model/counselor_list_model.dart';
 import 'package:capstone_project/model/forum_model.dart';
 
-import '../article_model.dart';
 
 class HomeService extends InterceptorApi {
   Future<List<Articles>> getArticles() async {

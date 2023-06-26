@@ -1,8 +1,8 @@
-import 'package:capstone_project/model/api/interceptor_api.dart';
+import 'package:capstone_project/service/api/interceptor_api.dart';
 import 'package:capstone_project/model/career_model.dart';
 import 'package:dio/dio.dart';
 
-import '../model/api/endpoint.dart';
+import 'api/endpoint.dart';
 import '../model/detail_career_model.dart';
 
 class CareerService extends InterceptorApi {

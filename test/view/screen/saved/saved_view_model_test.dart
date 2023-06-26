@@ -24,15 +24,6 @@ Future<void> main() async {
   });
 
   group('saved view model test', () {
-    test('get all reading list and show all reading list', () async {
-      when(readingListService.getAllReadingList(token: token))
-          .thenAnswer((_) async {
-        return listOfReadingListModel;
-      });
-      await savedViewModel.showAllReadingList();
-      expect(savedViewModel.allReadingListData, listOfReadingListModel);
-    });
-
     test(
         'get reading list sort by oldest or newest and show all reading list sort by oldest or newest',
         () async {

@@ -1,9 +1,9 @@
-import 'package:capstone_project/model/api/endpoint.dart';
-import 'package:capstone_project/model/api/interceptor_api.dart';
+import 'package:capstone_project/service/api/endpoint.dart';
 import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/model/comment_model.dart';
 import 'package:capstone_project/model/reading_list_model.dart';
 import 'package:capstone_project/model/topic_model.dart';
+import 'package:capstone_project/service/api/interceptor_api.dart';
 import 'package:dio/dio.dart';
 
 class ArticleService extends InterceptorApi {
