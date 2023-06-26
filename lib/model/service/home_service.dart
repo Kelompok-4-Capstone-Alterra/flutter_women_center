@@ -1,35 +1,36 @@
 import 'package:capstone_project/model/api/endpoint.dart';
 import 'package:capstone_project/model/api/interceptor_api.dart';
 import 'package:capstone_project/model/career_model.dart';
+import 'package:capstone_project/model/counselor_list_model.dart';
 import 'package:capstone_project/model/forum_model.dart';
-import 'package:capstone_project/model/mock_model.dart';
+
+import '../article_model.dart';
 
 class HomeService extends InterceptorApi {
-  Future<List<ArticlesMock>> getArticles() async {
+  Future<List<Articles>> getArticles() async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.publicArticles;
       final response = await dio.get(
         url,
       );
-      final List<ArticlesMock> data =
-          (response.data["data"]["articles"] as List)
-              .map((e) => ArticlesMock.fromJson(e))
-              .toList();
+      final List<Articles> data = (response.data["data"]["articles"] as List)
+          .map((e) => Articles.fromJson(e))
+          .toList();
       return data;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<List<CounselorMock>> getCounselor({String? search}) async {
+  Future<List<CounselorListModel>> getCounselor({String? search}) async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.publicCounselor;
       final response = await dio.get(url, queryParameters: {
         'search': search,
       });
-      final List<CounselorMock> data =
+      final List<CounselorListModel> data =
           (response.data["data"]["counselors"] as List)
-              .map((e) => CounselorMock.fromJson(e))
+              .map((e) => CounselorListModel.fromJson(e))
               .toList();
       return data;
     } catch (e) {

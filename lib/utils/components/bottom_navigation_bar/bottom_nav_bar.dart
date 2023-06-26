@@ -1,5 +1,6 @@
 import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar_view_model.dart';
 import 'package:capstone_project/utils/my_color.dart';
+import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
 import 'package:capstone_project/view/screen/home/home_screen.dart';
 import 'package:capstone_project/view/screen/profile/profile_screen.dart';
 import 'package:capstone_project/view/screen/saved/saved_screen.dart';
@@ -82,23 +83,91 @@ class _BottomNavBarState extends State<BottomNavBar> {
           }
           switch (value) {
             case 0:
-              Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+              Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) {
+                    return const HomeScreen();
+                  },
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    final tween = Tween(begin: 0.1, end: 1.0);
+                    return FadeTransition(
+                      opacity: animation.drive(tween),
+                      child: child,
+                    );
+                  },
+                ),
+              );
               break;
             case 1:
-              Navigator.pushReplacementNamed(
-                  context, TransactionScreen.routeName);
+              if (buttomNavBarProvider.token == '') {
+                Navigator.pushNamed(context, LoginScreen.routeName);
+              } else {
+                Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return const TransactionScreen();
+                    },
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      final tween = Tween(begin: 0.1, end: 1.0);
+                      return FadeTransition(
+                        opacity: animation.drive(tween),
+                        child: child,
+                      );
+                    },
+                  ),
+                );
+              }
               break;
             case 2:
-              Navigator.pushReplacementNamed(context, SavedScreen.routeName);
+              if (buttomNavBarProvider.token == '') {
+                Navigator.pushNamed(context, LoginScreen.routeName);
+              } else {
+                Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return const SavedScreen();
+                    },
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      final tween = Tween(begin: 0.1, end: 1.0);
+                      return FadeTransition(
+                        opacity: animation.drive(tween),
+                        child: child,
+                      );
+                    },
+                  ),
+                );
+              }
               break;
             case 3:
               if (buttomNavBarProvider.token == '') {
-                Navigator.pushNamed(context, '/login_screen');
+                Navigator.pushNamed(context, LoginScreen.routeName);
               } else {
-                Navigator.pushReplacementNamed(
-                    context, ProfileScreen.routeName);
+                Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return const ProfileScreen();
+                    },
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      final tween = Tween(begin: 0.1, end: 1.0);
+                      return FadeTransition(
+                        opacity: animation.drive(tween),
+                        child: child,
+                      );
+                    },
+                  ),
+                );
               }
               break;
+            default:
+              Navigator.pushReplacementNamed(context, HomeScreen.routeName);
           }
         },
       ),

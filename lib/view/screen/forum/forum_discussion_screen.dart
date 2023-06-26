@@ -47,8 +47,8 @@ class _ForumDiscussionScreenState extends State<ForumDiscussionScreen> {
     forumDiscussionProvider =
         Provider.of<ForumDiscussionViewModel>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      forumDiscussionProvider.fetchForum();
       forumDiscussionProvider.changeTabId(0);
+      forumDiscussionProvider.fetchForum();
     });
     super.initState();
   }
