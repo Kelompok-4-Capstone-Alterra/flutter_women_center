@@ -234,7 +234,8 @@ class _SaveContentState extends State<SaveContent> {
                 saveContentProvider.isButtonPressed.value = true;
                 final detailProvider =
                     Provider.of<SavedViewModel>(context, listen: false);
-                detailProvider.showAllReadingList();
+                detailProvider.showReadingListSortByOldestOrNewest(
+                    sortByOldest: false);
                 Navigator.pop(context);
               },
             ),

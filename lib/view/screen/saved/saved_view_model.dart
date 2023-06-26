@@ -6,8 +6,8 @@ import '../../../utils/state/finite_state.dart';
 
 class SavedViewModel with ChangeNotifier {
   MyState myState = MyState.initial;
-  bool oldestCheckStatus = true;
-  bool sortingByOldest = true;
+  bool oldestCheckStatus = false;
+  bool sortingByOldest = false;
 
   late SharedPreferences _loginData;
   MyState _state = MyState.initial;
@@ -60,21 +60,6 @@ class SavedViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  ///menampilkan semua data reading list dari service reading list
-  Future<void> showAllReadingList() async {
-    try {
-      changeState(MyState.loading);
-      _loginData = await SharedPreferences.getInstance();
-      final token = _loginData.getString('token') ?? '';
-      _allReadingListData =
-          await _readingListService.getAllReadingList(token: token);
-      changeState(MyState.loaded);
-    } catch (e) {
-      _message = e.toString();
-      changeState(MyState.failed);
-    }
-  }
-
   ///menampilkan semua data reading list berdasarkan sort by "oldest" atau "newest" dari servce reading list
   Future<void> showReadingListSortByOldestOrNewest(
       {required bool? sortByOldest}) async {
@@ -85,7 +70,7 @@ class SavedViewModel with ChangeNotifier {
       _allReadingListData =
           await _readingListService.getReadingListSortByOldestOrNewest(
         token: token,
-        sortByOldest: sortByOldest ?? true,
+        sortByOldest: sortByOldest ?? false,
       );
       changeState(MyState.loaded);
     } catch (e) {
