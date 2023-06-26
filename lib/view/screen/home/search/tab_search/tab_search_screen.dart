@@ -11,6 +11,7 @@ import '../../../../../utils/components/empty/empty.dart';
 import '../../../../../utils/my_color.dart';
 import '../../../article/article_detail/article_detail_screen.dart';
 import '../../../career/career_detail/career_detail_screen.dart';
+import '../../../career/career_detail/career_detail_view_model.dart';
 import '../../../counselor_detail/counselor_detail_screen.dart';
 import '../../../forum/forum_discussion_view_model.dart';
 
@@ -324,17 +325,22 @@ class _TabSearchState extends State<TabSearch> {
                               ],
                             )
                           ],
-                          onTapAction: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return CareerDetailScreen(
-                                    id: dataCareer[index].id!,
-                                  );
-                                },
-                              ),
-                            );
+                          onTapAction: () async {
+                            await Provider.of<DetailCareerViewModel>(context,
+                                    listen: false)
+                                .fetchCareerById(id: dataCareer[index].id!);
+                            if (context.mounted) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return CareerDetailScreen(
+                                      id: dataCareer[index].id!,
+                                    );
+                                  },
+                                ),
+                              );
+                            }
                           },
                         );
                       },

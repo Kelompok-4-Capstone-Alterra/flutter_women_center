@@ -393,20 +393,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         title: dataCareer[index].jobPosition ?? '',
                         subtitle: dataCareer[index].companyName ?? '',
                         imageUrl: dataCareer[index].image ?? '',
-                        onTapAction: () {
-                          Provider.of<DetailCareerViewModel>(context,
+                        onTapAction: () async {
+                          await Provider.of<DetailCareerViewModel>(context,
                                   listen: false)
                               .fetchCareerById(id: dataCareer[index].id!);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return CareerDetailScreen(
-                                  id: dataCareer[index].id!,
-                                );
-                              },
-                            ),
-                          );
+                          if (context.mounted) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return CareerDetailScreen(
+                                    id: dataCareer[index].id!,
+                                  );
+                                },
+                              ),
+                            );
+                          }
                         },
                         extraWidget: Text(
                           dataCareer[index].salary == 0
