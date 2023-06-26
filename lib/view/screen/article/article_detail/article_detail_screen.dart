@@ -93,7 +93,8 @@ class ArticleDetailsScreen extends StatelessWidget {
                           }
                         }
                         provider.removeArticleFromReadingList(result);
-                        detailProvider.showAllReadingList();
+                        detailProvider.showReadingListSortByOldestOrNewest(
+                            sortByOldest: false);
                       } else {
                         showModalBottomSheet(
                           useRootNavigator: true,
