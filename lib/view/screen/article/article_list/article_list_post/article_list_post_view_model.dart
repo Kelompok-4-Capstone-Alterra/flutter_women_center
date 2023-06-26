@@ -52,6 +52,7 @@ class ArticleListPostProvider extends ChangeNotifier {
       message = e.toString();
       myState = MyState.failed;
       notifyListeners();
+      rethrow;
     }
   }
 
@@ -67,6 +68,7 @@ class ArticleListPostProvider extends ChangeNotifier {
     } catch (e) {
       message = e.toString();
       myState = MyState.failed;
+      rethrow;
     }
   }
 
@@ -94,6 +96,7 @@ class ArticleListPostProvider extends ChangeNotifier {
     } catch (e) {
       message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 }
