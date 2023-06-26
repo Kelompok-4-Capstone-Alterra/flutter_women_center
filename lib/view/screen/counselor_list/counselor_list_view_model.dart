@@ -10,7 +10,7 @@ class CounselorListViewModel extends ChangeNotifier {
 
   List<CounselorListModel> counselorListData = [];
 
-  String sortValue = 'Highest Rating';
+  String sortValue = '';
 
   final CounselorListService _counselorListService = CounselorListService();
 
