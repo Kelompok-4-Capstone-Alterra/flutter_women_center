@@ -3,10 +3,10 @@ import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_n
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
 import 'package:capstone_project/utils/components/text_box/read_only_text_box.dart';
 import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
+import 'package:capstone_project/utils/constant_text.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
-import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
 import 'package:capstone_project/view/screen/forum/forum_discussion_screen.dart';
 import 'package:capstone_project/view/screen/home/home_view_model.dart';
@@ -19,7 +19,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../../utils/components/buttons/floating_button.dart';
 import '../../../utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 import '../../../utils/my_color.dart';
 import '../article/article_detail/article_detail_screen.dart';
@@ -28,7 +30,6 @@ import '../career/career_detail/career_detail_screen.dart';
 import '../career/career_detail/career_detail_view_model.dart';
 import '../career/career_list/career_list_screen.dart';
 import '../counselor_detail/counselor_detail_screen.dart';
-import '../counselor_list/counselor_list_view_model.dart';
 import '../forum/forum_discussion_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -48,16 +49,16 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     homeProvider = Provider.of<HomeViewModel>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      homeProvider.initUser();
-      Provider.of<ArticleListProvider>(context, listen: false)
-          .getArticlesNoLogin();
-      Provider.of<CounselorListViewModel>(context, listen: false)
-          .getCounselorList(topic: 0);
-      homeProvider.initCareerData();
-      homeProvider.initForumData();
-      Provider.of<ForumDiscussionViewModel>(context, listen: false).init();
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        homeProvider.initUser();
+        homeProvider.initArticleaData();
+        homeProvider.initCareerData();
+        homeProvider.initCounselorData();
+        homeProvider.initForumData();
+        Provider.of<ForumDiscussionViewModel>(context, listen: false).init();
+      },
+    );
   }
 
   @override
@@ -227,9 +228,9 @@ class _HomeScreenState extends State<HomeScreen> {
             title: 'Newest Articles',
             subtitle: 'These are our best new articles of the week!',
             direction: ArticleListScreen.routename,
-            listItem: Consumer<ArticleListProvider>(
+            listItem: Consumer<HomeViewModel>(
               builder: (context, value, _) {
-                if (value.myState == MyState.loading) {
+                if (value.articlesState == MyState.loading) {
                   return SizedBox(
                     height: 100,
                     child: Center(
@@ -238,8 +239,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   );
-                } else if (value.myState == MyState.loaded) {
-                  final dataArticle = value.listArticles;
+                } else if (value.articlesState == MyState.loaded) {
+                  final dataArticle = value.articlesData;
                   return ListView.builder(
                     itemCount: dataArticle.length,
                     scrollDirection: Axis.horizontal,
@@ -281,9 +282,9 @@ class _HomeScreenState extends State<HomeScreen> {
             title: 'Our Best Counselors',
             subtitle: "The best counselors based on user's rate and review",
             direction: CounselingTopicScreen.routeName,
-            listItem: Consumer<CounselorListViewModel>(
+            listItem: Consumer<HomeViewModel>(
               builder: (context, value, _) {
-                if (value.myState == MyState.loading) {
+                if (value.counselorState == MyState.loading) {
                   return SizedBox(
                     height: 100,
                     child: Center(
@@ -292,8 +293,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   );
-                } else if (value.myState == MyState.loaded) {
-                  final dataCounnselor = value.counselorListData;
+                } else if (value.counselorState == MyState.loaded) {
+                  final dataCounnselor = value.counselorData;
                   return ListView.builder(
                     itemCount: dataCounnselor.length,
                     scrollDirection: Axis.horizontal,
@@ -384,7 +385,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   );
                 } else if (value.careerState == MyState.loaded) {
-                  final dataCareer = value.careerMock;
+                  final dataCareer = value.careerData;
                   return ListView.builder(
                     itemCount: dataCareer.length,
                     scrollDirection: Axis.horizontal,
@@ -462,7 +463,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   );
                 } else if (value.forumState == MyState.loaded) {
-                  final dataForum = value.forumMock;
+                  final dataForum = value.forumData;
                   return ListView.builder(
                     itemCount: dataForum.length,
                     scrollDirection: Axis.horizontal,
@@ -565,10 +566,24 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
+          const SizedBox(height: 25),
         ],
       ),
       bottomNavigationBar: const BottomNavBar(
         currentIndex: 0,
+      ),
+      floatingActionButton: FloatingButton(
+        onPressed: () async {
+          await launchUrlString(
+            customerSupport,
+            mode: LaunchMode.externalApplication,
+          );
+        },
+        teks: 'Contact Us',
+        widget: const Image(
+          image: AssetImage('assets/images/whatsapp.png'),
+          height: 20,
+        ),
       ),
     );
   }

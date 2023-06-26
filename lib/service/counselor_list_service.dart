@@ -1,5 +1,5 @@
-import 'package:capstone_project/model/api/endpoint.dart';
-import 'package:capstone_project/model/api/interceptor_api.dart';
+import 'package:capstone_project/service/api/endpoint.dart';
+import 'package:capstone_project/service/api/interceptor_api.dart';
 import 'package:capstone_project/model/counselor_list_model.dart';
 import 'package:dio/dio.dart';
 
@@ -7,7 +7,7 @@ class CounselorListService extends InterceptorApi {
   late List<CounselorListModel> counselingList;
 
   Future<List<CounselorListModel>> getCounselorList(
-      {required int topic}) async {
+      {required int topic, String? search}) async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.getCounselorList;
       final Response response = await dio.get(
@@ -15,6 +15,7 @@ class CounselorListService extends InterceptorApi {
         queryParameters: {
           'topic': topic,
           'sort_by': 'highest_rating',
+          'search': search ?? '',
         },
       );
       counselingList = (response.data['data']['counselors'] as List)
@@ -23,7 +24,7 @@ class CounselorListService extends InterceptorApi {
 
       return counselingList;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 }

@@ -1,4 +1,4 @@
-import 'package:capstone_project/model/service/counseling_topic_service.dart';
+import 'package:capstone_project/service/counseling_topic_service.dart';
 import 'package:capstone_project/model/topic_model.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,7 @@ class CounselingTopicViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> setSelectedTopic(int id) async {
+  void setSelectedTopic(int id) {
     selectedTopic = id;
     notifyListeners();
   }

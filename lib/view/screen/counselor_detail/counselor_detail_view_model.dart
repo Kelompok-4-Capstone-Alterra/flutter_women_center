@@ -1,9 +1,9 @@
 import 'package:capstone_project/model/avaible_time_model.dart';
 import 'package:capstone_project/model/counselor_detail_model.dart';
 import 'package:capstone_project/model/counselor_review_model.dart';
-import 'package:capstone_project/model/service/avaible_time_service.dart';
-import 'package:capstone_project/model/service/counselor_detail_service.dart';
-import 'package:capstone_project/model/service/counselor_review_service.dart';
+import 'package:capstone_project/service/avaible_time_service.dart';
+import 'package:capstone_project/service/counselor_detail_service.dart';
+import 'package:capstone_project/service/counselor_review_service.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

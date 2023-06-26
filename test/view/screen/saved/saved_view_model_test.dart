@@ -1,5 +1,5 @@
 import 'package:capstone_project/model/reading_list_model.dart';
-import 'package:capstone_project/model/service/reading_list_service.dart';
+import 'package:capstone_project/service/reading_list_service.dart';
 import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -24,15 +24,6 @@ Future<void> main() async {
   });
 
   group('saved view model test', () {
-    test('get all reading list and show all reading list', () async {
-      when(readingListService.getAllReadingList(token: token))
-          .thenAnswer((_) async {
-        return listOfReadingListModel;
-      });
-      await savedViewModel.showAllReadingList();
-      expect(savedViewModel.allReadingListData, listOfReadingListModel);
-    });
-
     test(
         'get reading list sort by oldest or newest and show all reading list sort by oldest or newest',
         () async {

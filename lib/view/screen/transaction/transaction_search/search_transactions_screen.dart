@@ -67,16 +67,20 @@ class _SearchTransactionsScreenState extends State<SearchTransactionsScreen> {
           autoFocus: true,
           textEditingController: _searchController,
           onChanged: (value) {
-            if (provider.value == 0) {
-              provider.showAllTransactionsBySearch(
-                statusOngoing: true,
-                search: value,
-              );
-            } else if (provider.value == 1) {
-              provider.showAllTransactionsBySearch(
-                statusOngoing: false,
-                search: value,
-              );
+            if (value.isEmpty) {
+              provider.emptySearch();
+            } else {
+              if (provider.value == 0) {
+                provider.showAllTransactionsBySearch(
+                  statusOngoing: true,
+                  search: value,
+                );
+              } else if (provider.value == 1) {
+                provider.showAllTransactionsBySearch(
+                  statusOngoing: false,
+                  search: value,
+                );
+              }
             }
           },
         ),
@@ -102,16 +106,22 @@ class _SearchTransactionsScreenState extends State<SearchTransactionsScreen> {
                       selected: searchTransactionProvider.value == index,
                       onSelected: (bool selected) {
                         searchTransactionProvider.changeChoiceChip(index);
-                        if (searchTransactionProvider.value == 0) {
-                          searchTransactionProvider.showAllTransactionsBySearch(
-                            statusOngoing: true,
-                            search: _searchController.text,
-                          );
+                        if (_searchController.text.isEmpty) {
+                          searchTransactionProvider.emptySearch();
                         } else {
-                          searchTransactionProvider.showAllTransactionsBySearch(
-                            statusOngoing: false,
-                            search: _searchController.text,
-                          );
+                          if (searchTransactionProvider.value == 0) {
+                            searchTransactionProvider
+                                .showAllTransactionsBySearch(
+                              statusOngoing: true,
+                              search: _searchController.text,
+                            );
+                          } else {
+                            searchTransactionProvider
+                                .showAllTransactionsBySearch(
+                              statusOngoing: false,
+                              search: _searchController.text,
+                            );
+                          }
                         }
                       },
                     );
@@ -127,7 +137,6 @@ class _SearchTransactionsScreenState extends State<SearchTransactionsScreen> {
                 strokeWidth: 2,
                 color: MyColor.primaryMain,
                 onRefresh: () {
-                  _searchController.clear();
                   if (provider.value == 0) {
                     return provider.showAllTransactionsBySearch(
                         statusOngoing: true, search: _searchController.text);
@@ -198,7 +207,7 @@ class _SearchTransactionsScreenState extends State<SearchTransactionsScreen> {
                             } else {
                               return TransactionCard(
                                   showButton: true,
-                                  labelButton: 'Rate & Review',
+                                  labelButton: 'Link',
                                   profilePicture: searchTransactionsProvider
                                       .allTransactionsDataOngoing[index]
                                       .counselorData!
@@ -229,20 +238,6 @@ class _SearchTransactionsScreenState extends State<SearchTransactionsScreen> {
                                       transactionId: searchTransactionsProvider
                                           .allTransactionsDataOngoing[index].id,
                                     );
-                                    // final Uri _url = Uri.parse(
-                                    //     searchTransactionsProvider
-                                    //                 .allTransactionsData[
-                                    //                     index]
-                                    //                 .link ==
-                                    //             null
-                                    //         ? '-'
-                                    //         : searchTransactionsProvider
-                                    //             .allTransactionsData[index]
-                                    //             .link!);
-                                    // if (!await launchUrl(_url)) {
-                                    //   throw Exception(
-                                    //       'Could not launch $_url');
-                                    // }
                                   });
                             }
                           },
@@ -557,7 +552,9 @@ class _SearchTransactionsScreenState extends State<SearchTransactionsScreen> {
                                                                 .showAllTransactionsBySearch(
                                                               statusOngoing:
                                                                   false,
-                                                              search: '',
+                                                              search:
+                                                                  _searchController
+                                                                      .text,
                                                             );
                                                           }
                                                         },

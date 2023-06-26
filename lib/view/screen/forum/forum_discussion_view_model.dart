@@ -1,4 +1,4 @@
-import 'package:capstone_project/model/service/forum_service.dart';
+import 'package:capstone_project/service/forum_service.dart';
 import 'package:capstone_project/model/topic_model.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +14,7 @@ class ForumDiscussionViewModel extends ChangeNotifier {
   List<ForumModel> _forumData = <ForumModel>[];
   late SharedPreferences _loginData;
   List<TopicModel> _topicData = <TopicModel>[];
-  String _sortBy = 'popular';
+  String _sortBy = 'newest';
   String _topic = '';
   int _categoryId = 0;
   int _tabId = 0;
@@ -46,9 +46,11 @@ class ForumDiscussionViewModel extends ChangeNotifier {
     final token = _loginData.getString('token') ?? '';
     if (token != '') {
       _isLogin = true;
+      _sortBy = 'newest';
     } else {
       _isLogin = false;
       _categoryId = topicData[0].id!;
+      _sortBy = 'newest';
     }
   }
 

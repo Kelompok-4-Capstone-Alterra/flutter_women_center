@@ -6,7 +6,7 @@
 import 'dart:async' as _i5;
 
 import 'package:capstone_project/model/reading_list_model.dart' as _i3;
-import 'package:capstone_project/model/service/reading_list_service.dart'
+import 'package:capstone_project/service/reading_list_service.dart'
     as _i4;
 import 'package:dio/dio.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;

@@ -1,5 +1,5 @@
-import 'package:capstone_project/model/api/endpoint.dart';
-import 'package:capstone_project/model/api/interceptor_api.dart';
+import 'package:capstone_project/service/api/endpoint.dart';
+import 'package:capstone_project/service/api/interceptor_api.dart';
 import 'package:capstone_project/model/voucher_model.dart';
 import 'package:dio/dio.dart';
 
@@ -25,7 +25,7 @@ class VoucherService extends InterceptorApi {
 
       return voucher;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 }

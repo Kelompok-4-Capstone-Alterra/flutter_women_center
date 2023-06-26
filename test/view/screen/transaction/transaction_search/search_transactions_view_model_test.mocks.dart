@@ -5,7 +5,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
 
-import 'package:capstone_project/model/service/transactions_service.dart'
+import 'package:capstone_project/service/transactions_service.dart'
     as _i3;
 import 'package:capstone_project/model/transactions_model.dart' as _i5;
 import 'package:dio/dio.dart' as _i2;

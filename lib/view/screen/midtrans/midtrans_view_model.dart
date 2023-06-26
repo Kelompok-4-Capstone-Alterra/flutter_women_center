@@ -1,4 +1,4 @@
-import 'package:capstone_project/model/service/transaction_midtrans_service.dart';
+import 'package:capstone_project/service/transaction_midtrans_service.dart';
 import 'package:capstone_project/model/transaction_detail_model.dart';
 import 'package:capstone_project/model/transaction_midtrans_model.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';

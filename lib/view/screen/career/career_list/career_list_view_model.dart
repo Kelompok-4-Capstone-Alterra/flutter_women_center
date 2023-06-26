@@ -2,7 +2,7 @@ import 'package:capstone_project/model/career_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../../model/service/career_service.dart';
+import '../../../../service/career_service.dart';
 import '../../../../../utils/state/finite_state.dart';
 
 class CareerListViewModel extends ChangeNotifier {

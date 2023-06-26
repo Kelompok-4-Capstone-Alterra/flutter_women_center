@@ -1,7 +1,7 @@
-import 'package:capstone_project/model/api/interceptor_api.dart';
+import 'package:capstone_project/service/api/interceptor_api.dart';
 import 'package:capstone_project/model/transactions_model.dart';
 import 'package:dio/dio.dart';
-import '../api/endpoint.dart';
+import 'api/endpoint.dart';
 
 class TransactionsService extends InterceptorApi {
   ///mengembalikan List<TransactionsModel> berdasarkan status "waiting" atau "completed" dari API transactions

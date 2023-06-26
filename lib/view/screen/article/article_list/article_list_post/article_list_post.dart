@@ -137,7 +137,8 @@ class _ArticleListPostWidgetState extends State<ArticleListPostWidget> {
                           }
                           provider.toggleArticleSaved(article.id ?? '', !saved);
                           provider.removeArticleFromReadingList(result);
-                          detailProvider.showAllReadingList();
+                          detailProvider.showReadingListSortByOldestOrNewest(
+                              sortByOldest: false);
                         } else {
                           showModalBottomSheet(
                             useRootNavigator: true,
