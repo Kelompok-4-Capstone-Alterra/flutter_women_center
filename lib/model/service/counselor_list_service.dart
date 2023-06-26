@@ -7,19 +7,13 @@ class CounselorListService extends InterceptorApi {
   late List<CounselorListModel> counselingList;
 
   Future<List<CounselorListModel>> getCounselorList(
-      {required token, required int topic, required String sortBy}) async {
+      {required int topic}) async {
     try {
       const String url = Endpoint.baseUrl + Endpoint.getCounselorList;
       final Response response = await dio.get(
         url,
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-          },
-        ),
         queryParameters: {
           'topic': topic,
-          'sort_by': sortBy,
         },
       );
       counselingList = (response.data['data']['counselors'] as List)

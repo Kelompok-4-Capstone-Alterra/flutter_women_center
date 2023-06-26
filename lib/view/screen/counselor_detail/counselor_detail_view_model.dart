@@ -22,6 +22,7 @@ class CounselorDetailViewModel extends ChangeNotifier {
   String timeStart = '';
   String timeId = '';
   int currentPages = 1;
+  bool? isLogin;
 
   late SharedPreferences _loginData;
   final CounselorDetailService _counselorDetailService =
@@ -47,6 +48,7 @@ class CounselorDetailViewModel extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
+      print(e.toString());
       myState = MyState.failed;
       notifyListeners();
       rethrow;
@@ -145,5 +147,18 @@ class CounselorDetailViewModel extends ChangeNotifier {
       notifyListeners();
       rethrow;
     }
+  }
+
+  Future<void> checkedIsUserLogin() async {
+    _loginData = await SharedPreferences.getInstance();
+    String token = _loginData.getString('token') ?? 'notLogged';
+    if (token == 'notLogged') {
+      isLogin = false;
+      myState = MyState.failed;
+    } else {
+      isLogin = true;
+      myState = MyState.loaded;
+    }
+    notifyListeners();
   }
 }
