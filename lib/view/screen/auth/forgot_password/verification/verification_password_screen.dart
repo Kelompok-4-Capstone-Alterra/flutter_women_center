@@ -1,47 +1,51 @@
 import 'dart:async';
 
 import 'package:capstone_project/utils/state/finite_state.dart';
+import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_view_model.dart';
+import 'package:capstone_project/view/screen/auth/forgot_password/verification/verification_password_veiw_model.dart';
 import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
 import 'package:capstone_project/view/screen/auth/verification/verification_veiw_model.dart';
 import 'package:capstone_project/view/screen/auth/verification/widgets/otp_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../utils/components/appbar/custom_appbar.dart';
-import '../../../../utils/components/buttons/primary_button.dart';
-import '../../../../utils/my_color.dart';
-import '../../../../utils/my_size.dart';
-import '../signup/signup_view_model.dart';
+import '../../../../../utils/components/appbar/custom_appbar.dart';
+import '../../../../../utils/components/buttons/primary_button.dart';
+import '../../../../../utils/my_color.dart';
+import '../../../../../utils/my_size.dart';
 
-class VerificationScreen extends StatefulWidget {
-  const VerificationScreen({super.key});
+class VerificationPasswordScreen extends StatefulWidget {
+  const VerificationPasswordScreen({super.key});
 
-  static const String routeName = '/verification_screen';
+  static const String routeName = '/verification_password_screen';
 
   @override
-  State<VerificationScreen> createState() => _VerificationScreenState();
+  State<VerificationPasswordScreen> createState() =>
+      _VerificationPasswordScreenState();
 }
 
-class _VerificationScreenState extends State<VerificationScreen> {
+class _VerificationPasswordScreenState
+    extends State<VerificationPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late SignupViewModel signupProvider;
-  late VerificationViewModel verificationProvider;
+  late final ForgotPasswordViewModel forgotPasswordProvider;
+  late final VerificationPasswordViewModel verificationProvider;
 
   @override
   void initState() {
     super.initState();
-    signupProvider = Provider.of<SignupViewModel>(context, listen: false);
+    forgotPasswordProvider =
+        Provider.of<ForgotPasswordViewModel>(context, listen: false);
     verificationProvider =
-        Provider.of<VerificationViewModel>(context, listen: false);
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      verificationProvider.resetTimer();
-      signupProvider.changeState(MyState.initial);
-    });
-
-    signupProvider.addListener(
+        Provider.of<VerificationPasswordViewModel>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        verificationProvider.resetTimer();
+        forgotPasswordProvider.changeState(MyState.initial);
+      },
+    );
+    forgotPasswordProvider.addListener(
       () {
-        if (signupProvider.state == MyState.loaded) {
+        if (forgotPasswordProvider.state == MyState.loaded) {
           verificationProvider.stopTimer();
           _showAlertSuccess(context);
         }
@@ -67,7 +71,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
           ),
           title: Icon(Icons.check_circle, color: MyColor.success, size: 50),
           content: Text(
-            'Verification Completed!',
+            'Verification Completed! Please check your email to get your temporary password.',
             textAlign: TextAlign.center,
             style: TextStyle(color: MyColor.neutralHigh, fontSize: 12),
           ),
@@ -87,7 +91,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
     return Scaffold(
       appBar: CustomAppBar(
         preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
-        judul: 'Verify Email',
+        judul: 'Reset Password',
         home: false,
         searchField: false,
         tabBar: false,
@@ -116,7 +120,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               child: ListView(
                 children: [
                   Text(
-                    'Let’s verify your email.',
+                    "Let's get your new password.",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -196,7 +200,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.03,
                         ),
-                        Consumer<VerificationViewModel>(
+                        Consumer<VerificationPasswordViewModel>(
                           builder: (context, value, _) {
                             String twoDigits(int n) =>
                                 n.toString().padLeft(2, '0');
@@ -216,14 +220,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         Row(
                           children: [
                             Text(
-                              'Don’t receive the code? ',
+                              "Don't receive the code? ",
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
                                 color: MyColor.neutralMediumLow,
                               ),
                             ),
-                            Consumer<VerificationViewModel>(
+                            Consumer<VerificationPasswordViewModel>(
                               builder: (context, value, _) {
                                 return GestureDetector(
                                   onTap: () async {
@@ -250,7 +254,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         ),
                         PrimaryButton(
                           teks: 'Verify Now',
-                          customChild: Consumer<SignupViewModel>(
+                          customChild: Consumer<ForgotPasswordViewModel>(
                             builder: (context, value, _) {
                               return value.state == MyState.loading
                                   ? SizedBox(
@@ -273,7 +277,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              signupProvider.signup(verificationProvider.otp);
+                              _showAlertSuccess(context);
+                              // forgotPasswordProvider
+                              //     .requestNewPassword(verificationProvider.otp);
                             }
                           },
                         ),

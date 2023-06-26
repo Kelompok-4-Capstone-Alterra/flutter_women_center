@@ -33,7 +33,7 @@ class LoginViewModel with ChangeNotifier {
   void login(LoginModel inputCredential) async {
     try {
       changeState(MyState.loading);
-      final token = await _authService.login(inputCredential);
+      final token = await _authService.login(loginData: inputCredential);
       _loginData = await SharedPreferences.getInstance();
       _loginData.setString('token', token);
       changeState(MyState.loaded);

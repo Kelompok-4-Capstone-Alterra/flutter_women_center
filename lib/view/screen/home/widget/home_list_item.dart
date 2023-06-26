@@ -6,7 +6,7 @@ class HomeListItem extends StatelessWidget {
   final String imageUrl;
   final String title;
   final String subtitle;
-  final String direction;
+  final void Function() onTapAction;
   final Widget? extraWidget;
 
   const HomeListItem({
@@ -14,18 +14,14 @@ class HomeListItem extends StatelessWidget {
     required this.imageUrl,
     required this.title,
     required this.subtitle,
-    required this.direction,
+    required this.onTapAction,
     this.extraWidget,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        if (direction != '') {
-          Navigator.pushNamed(context, direction);
-        }
-      },
+      onTap: onTapAction,
       child: Container(
         margin: const EdgeInsets.only(right: 8),
         decoration: BoxDecoration(
@@ -45,27 +41,33 @@ class HomeListItem extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(3),
                 ),
-                child: Image(
-                  image: NetworkImage(imageUrl),
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.error,
-                          color: MyColor.danger,
+                child: imageUrl == ''
+                    ? Container(
+                        decoration: BoxDecoration(
+                          gradient: MyColor.background,
                         ),
-                        Text(
-                          'Image Error',
-                          style: TextStyle(
-                            color: MyColor.danger,
-                          ),
-                        )
-                      ],
-                    );
-                  },
-                ),
+                      )
+                    : Image(
+                        image: NetworkImage(imageUrl),
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.error,
+                                color: MyColor.danger,
+                              ),
+                              Text(
+                                'Image Error',
+                                style: TextStyle(
+                                  color: MyColor.danger,
+                                ),
+                              )
+                            ],
+                          );
+                        },
+                      ),
               ),
             ),
             const SizedBox(

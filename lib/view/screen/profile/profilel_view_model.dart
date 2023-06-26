@@ -35,7 +35,7 @@ class ProfileViewModel with ChangeNotifier {
         _message = 'Token is empty';
         changeState(MyState.failed);
       }
-      _userData = await _userService.getProfile(token);
+      _userData = await _userService.getProfile(token: token);
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();

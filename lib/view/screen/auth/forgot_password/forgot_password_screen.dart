@@ -1,4 +1,6 @@
 import 'package:capstone_project/view/screen/auth/forgot_password/forgot_password_view_model.dart';
+import 'package:capstone_project/view/screen/auth/forgot_password/verification/verification_password_screen.dart';
+import 'package:capstone_project/view/screen/auth/forgot_password/verification/verification_password_veiw_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,7 +9,7 @@ import '../../../../utils/components/buttons/primary_button.dart';
 import '../../../../utils/my_color.dart';
 import '../../../../utils/my_size.dart';
 import '../../../../utils/components/text_box/regular_text_box/text_box.dart';
-import '../verification/verification_screen.dart';
+import '../../../../utils/state/finite_state.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -21,6 +23,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController _emailController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late final ForgotPasswordViewModel forgotPasswordProvider;
 
   @override
   void dispose() {
@@ -29,10 +32,26 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final forgotPasswordProvider =
+  void initState() {
+    forgotPasswordProvider =
         Provider.of<ForgotPasswordViewModel>(context, listen: false);
+    forgotPasswordProvider.addListener(
+      () {
+        if (forgotPasswordProvider.state == MyState.loaded) {
+          Provider.of<VerificationPasswordViewModel>(context, listen: false)
+              .setEmail(_emailController.text);
+          Navigator.pushNamed(
+            context,
+            VerificationPasswordScreen.routeName,
+          );
+        }
+      },
+    );
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         preferredSize: Size(MySize.bodyWidth(context), double.maxFinite),
@@ -113,20 +132,39 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
-                    ),
                     PrimaryButton(
-                        teks: 'Send Link',
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            forgotPasswordProvider.sendLink(
-                              _emailController.text,
+                      teks: 'Continue',
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          forgotPasswordProvider.reuestOtp(
+                            _emailController.text,
+                          );
+                        }
+                      },
+                      customChild: Consumer<ForgotPasswordViewModel>(
+                        builder: (context, value, _) {
+                          if (value.state == MyState.loading) {
+                            return SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: MyColor.white,
+                                strokeWidth: 2,
+                              ),
                             );
-                            Navigator.pushNamed(
-                                context, VerificationScreen.routeName);
+                          } else {
+                            return Text(
+                              'Continue',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w500,
+                                color: MyColor.white,
+                              ),
+                            );
                           }
-                        }),
+                        },
+                      ),
+                    ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),

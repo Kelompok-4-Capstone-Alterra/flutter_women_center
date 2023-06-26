@@ -1,10 +1,12 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
 import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
+import 'package:capstone_project/utils/components/text_box/read_only_text_box.dart';
 import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
 import 'package:capstone_project/view/screen/forum/forum_discussion_screen.dart';
 import 'package:capstone_project/view/screen/home/home_view_model.dart';
@@ -12,13 +14,20 @@ import 'package:capstone_project/view/screen/home/search/search_screen.dart';
 import 'package:capstone_project/view/screen/home/widget/home_list.dart';
 import 'package:capstone_project/view/screen/home/widget/home_list_item.dart';
 import 'package:capstone_project/view/screen/home/widget/home_menu.dart';
+import 'package:capstone_project/view/screen/voucher/voucher_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 import '../../../utils/my_color.dart';
+import '../article/article_detail/article_detail_screen.dart';
+import '../auth/login/login_screen.dart';
+import '../career/career_detail/career_detail_screen.dart';
 import '../career/career_list/career_list_screen.dart';
+import '../counselor_detail/counselor_detail_screen.dart';
+import '../counselor_list/counselor_list_view_model.dart';
 import '../forum/forum_discussion_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -40,6 +49,12 @@ class _HomeScreenState extends State<HomeScreen> {
     homeProvider = Provider.of<HomeViewModel>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       homeProvider.initUser();
+      Provider.of<ArticleListProvider>(context, listen: false)
+          .getArticlesNoLogin();
+      Provider.of<CounselorListViewModel>(context, listen: false)
+          .getCounselorList(topic: 0, sortValue: 'highest_rating');
+      homeProvider.initCareerData();
+      homeProvider.initForumData();
       Provider.of<ForumDiscussionViewModel>(context, listen: false).init();
     });
   }
@@ -158,8 +173,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       PrimaryButton(
                         teks: 'Check Now',
-                        onPressed: () {},
-                        customWidth: 110,
+                        onPressed: () {
+                          if (homeProvider.isLogin) {
+                            Navigator.pushNamed(
+                                context, VoucherScreen.routeName,
+                                arguments: true);
+                          } else {
+                            Navigator.pushNamed(context, LoginScreen.routeName);
+                          }
+                        },
+                        customWidth: 105,
                         customBackgroundColor: MyColor.secondaryMain,
                         customTextColor: MyColor.white,
                       ),
@@ -199,23 +222,56 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-          // article
           HomeList(
             title: 'Newest Articles',
             subtitle: 'These are our best new articles of the week!',
             direction: ArticleListScreen.routename,
-            listItem: ListView.builder(
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return const HomeListItem(
-                  title:
-                      'How art can improve your mental health wajdawjndjansjdbwhbahs dhw ah dhabwhd ',
-                  subtitle: 'Mental Health',
-                  imageUrl:
-                      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Example_image.svg/600px-Example_image.svg.png',
-                  direction: '',
-                );
+            listItem: Consumer<ArticleListProvider>(
+              builder: (context, value, _) {
+                if (value.myState == MyState.loading) {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: MyColor.primaryMain,
+                      ),
+                    ),
+                  );
+                } else if (value.myState == MyState.loaded) {
+                  final dataArticle = value.listArticles;
+                  return ListView.builder(
+                    itemCount: dataArticle.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return HomeListItem(
+                        title: dataArticle[index].title ?? '',
+                        subtitle: dataArticle[index].topic ?? '',
+                        imageUrl: dataArticle[index].image ?? '',
+                        onTapAction: () {
+                          Navigator.pushNamed(
+                            context,
+                            ArticleDetailsScreen.routename,
+                            arguments: dataArticle[index].id ?? 0,
+                          );
+                        },
+                      );
+                    },
+                  );
+                } else {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: Text(
+                        'Error',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: MyColor.secondaryMain,
+                        ),
+                      ),
+                    ),
+                  );
+                }
               },
             ),
           ),
@@ -224,39 +280,89 @@ class _HomeScreenState extends State<HomeScreen> {
             title: 'Our Best Counselors',
             subtitle: "The best counselors based on user's rate and review",
             direction: CounselingTopicScreen.routeName,
-            listItem: ListView.builder(
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return HomeListItem(
-                  title: 'John Doe',
-                  subtitle: 'Self Development',
-                  imageUrl:
-                      'https://img.freepik.com/free-photo/man-wearing-t-shirt-gesturing_23-2149393645.jpg',
-                  direction: '',
-                  extraWidget: RatingBar(
-                    itemSize: 20,
-                    initialRating: 2.5,
-                    direction: Axis.horizontal,
-                    itemCount: 5,
-                    allowHalfRating: true,
-                    ratingWidget: RatingWidget(
-                      full: Icon(
-                        Icons.star,
-                        color: MyColor.warning,
-                      ),
-                      empty: Icon(
-                        Icons.star_border,
-                        color: MyColor.neutralLow,
-                      ),
-                      half: Icon(
-                        Icons.star_half,
-                        color: MyColor.warning,
+            listItem: Consumer<CounselorListViewModel>(
+              builder: (context, value, _) {
+                if (value.myState == MyState.loading) {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: MyColor.primaryMain,
                       ),
                     ),
-                    onRatingUpdate: (value) {},
-                  ),
-                );
+                  );
+                } else if (value.myState == MyState.loaded) {
+                  final dataCounnselor = value.counselorListData;
+                  return ListView.builder(
+                    itemCount: dataCounnselor.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return HomeListItem(
+                        title: dataCounnselor[index].name ?? '',
+                        subtitle: dataCounnselor[index].topic ?? '',
+                        imageUrl: dataCounnselor[index].profilePicture ?? '',
+                        onTapAction: () {
+                          final topicId = Provider.of<ForumDiscussionViewModel>(
+                                  context,
+                                  listen: false)
+                              .topicData
+                              .firstWhere((element) =>
+                                  element.name == dataCounnselor[index].topic)
+                              .id;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return CounselorDetailScreen(
+                                  id: dataCounnselor[index].id!,
+                                  topicId: topicId!,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        extraWidget: RatingBar(
+                          ignoreGestures: true,
+                          itemSize: 20,
+                          initialRating:
+                              dataCounnselor[index].rating!.toDouble(),
+                          direction: Axis.horizontal,
+                          itemCount: 5,
+                          allowHalfRating: true,
+                          ratingWidget: RatingWidget(
+                            full: Icon(
+                              Icons.star,
+                              color: MyColor.warning,
+                            ),
+                            empty: Icon(
+                              Icons.star_border,
+                              color: MyColor.neutralLow,
+                            ),
+                            half: Icon(
+                              Icons.star_half,
+                              color: MyColor.warning,
+                            ),
+                          ),
+                          onRatingUpdate: (value) {},
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: Text(
+                        'Error',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: MyColor.secondaryMain,
+                        ),
+                      ),
+                    ),
+                  );
+                }
               },
             ),
           ),
@@ -264,30 +370,72 @@ class _HomeScreenState extends State<HomeScreen> {
           HomeList(
             title: 'Newest Career Information',
             subtitle: 'We have the newest career information for you!',
-            direction: '',
-            listItem: ListView.builder(
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return HomeListItem(
-                  title: 'Human Resource',
-                  subtitle: 'PT Melodi Karya',
-                  imageUrl:
-                      'https://assets.kpmg.com/content/dam/kpmg/xx/images/2020/10/illustration-standing-man-touching-computer-screen.jpg/jcr:content/renditions/original',
-                  direction: '',
-                  extraWidget: Text(
-                    '${NumberFormat.currency(
-                      locale: 'id',
-                      symbol: 'Rp ',
-                      decimalDigits: 0,
-                    ).format(10000000)} ++',
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w500,
-                      color: MyColor.primaryMain,
+            direction: CareerListScreen.routeName,
+            listItem: Consumer<HomeViewModel>(
+              builder: (context, value, _) {
+                if (value.careerState == MyState.loading) {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: MyColor.primaryMain,
+                      ),
                     ),
-                  ),
-                );
+                  );
+                } else if (value.careerState == MyState.loaded) {
+                  final dataCareer = value.careerMock;
+                  return ListView.builder(
+                    itemCount: dataCareer.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return HomeListItem(
+                        title: dataCareer[index].jobPosition ?? '',
+                        subtitle: dataCareer[index].companyName ?? '',
+                        imageUrl: dataCareer[index].image ?? '',
+                        onTapAction: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return CareerDetailScreen(
+                                  id: dataCareer[index].id!,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        extraWidget: Text(
+                          dataCareer[index].salary == 0
+                              ? 'Rp 0'
+                              : '${NumberFormat.currency(
+                                  locale: 'id',
+                                  symbol: 'Rp ',
+                                  decimalDigits: 0,
+                                ).format(dataCareer[index].salary)} ++',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                            color: MyColor.primaryMain,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: Text(
+                        'Error',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: MyColor.secondaryMain,
+                        ),
+                      ),
+                    ),
+                  );
+                }
               },
             ),
           ),
@@ -296,17 +444,118 @@ class _HomeScreenState extends State<HomeScreen> {
             title: 'Newest Forum',
             subtitle: "Let's join to the newest forum discussion!",
             direction: ForumDiscussionScreen.routeName,
-            listItem: ListView.builder(
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return const HomeListItem(
-                  title: 'Discrimination for being a women',
-                  subtitle: 'Discrimination',
-                  imageUrl:
-                      'https://dl.kaskus.id/jawaban-online.s3.amazonaws.com/media/ckeditor/uploads/2020/10/09/forum.jpg?AWSAccessKeyId=AKIAR42PIJU47XZXHDHE&Signature=zzh8RE5FOMlP6BlBNTd1vbjZ7ZI%3D&Expires=2102251972',
-                  direction: '',
-                );
+            listItem: Consumer<HomeViewModel>(
+              builder: (context, value, _) {
+                if (value.forumState == MyState.loading) {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: MyColor.primaryMain,
+                      ),
+                    ),
+                  );
+                } else if (value.forumState == MyState.loaded) {
+                  final dataForum = value.forumMock;
+                  return ListView.builder(
+                    itemCount: dataForum.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return HomeListItem(
+                        title: dataForum[index].topic ?? '',
+                        subtitle: dataForum[index].category ?? '',
+                        imageUrl: '',
+                        onTapAction: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (context) {
+                              return CustomBottomSheetBuilder(
+                                header: true,
+                                tinggi:
+                                    MediaQuery.of(context).size.height * 0.80,
+                                judul: 'Join Forum',
+                                isi: [
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 18, bottom: 10),
+                                        child: Text(
+                                          "Topic's Category",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: MyColor.neutralHigh,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                      ReadOnlyTextBox(
+                                          value:
+                                              dataForum[index].category ?? ''),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 18, bottom: 10),
+                                        child: Text(
+                                          "Forum's Topic",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: MyColor.neutralHigh,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                      ReadOnlyTextBox(
+                                          value: dataForum[index].topic ?? ''),
+                                      const SizedBox(height: 16),
+                                      PrimaryButton(
+                                        teks: 'Join',
+                                        onPressed: () {
+                                          final forumProvider = Provider.of<
+                                              ForumDiscussionViewModel>(
+                                            context,
+                                            listen: false,
+                                          );
+                                          if (forumProvider.isLogin) {
+                                            forumProvider.joinForum(
+                                                dataForum[index].id!,
+                                                dataForum[index].link!);
+                                          } else {
+                                            Navigator.pushNamed(
+                                              context,
+                                              LoginScreen.routeName,
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                  );
+                } else {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: Text(
+                        'Error',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: MyColor.secondaryMain,
+                        ),
+                      ),
+                    ),
+                  );
+                }
               },
             ),
           ),
