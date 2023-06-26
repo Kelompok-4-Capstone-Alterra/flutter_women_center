@@ -8,8 +8,8 @@ import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
 import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_screen.dart';
 import 'package:capstone_project/view/screen/counselor_detail/counselor_detail_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:star_rating/star_rating.dart';
 
 class CounselorDetailScreen extends StatefulWidget {
   static const routeName = '/counselor_detail';
@@ -34,7 +34,7 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
       await provider.checkedIsUserLogin();
       if (provider.isLogin == false) {
         // ignore: use_build_context_synchronously
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) {
@@ -112,13 +112,29 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        StarRating(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          length: 5,
-                          rating: provider.counselorDetail.rating!.toDouble(),
-                          between: 2,
-                          starSize: 20,
-                          color: MyColor.warning,
+                        RatingBar(
+                          ignoreGestures: true,
+                          itemSize: 20,
+                          initialRating:
+                              provider.counselorDetail.rating?.toDouble() ?? 0,
+                          direction: Axis.horizontal,
+                          itemCount: 5,
+                          allowHalfRating: true,
+                          ratingWidget: RatingWidget(
+                            full: Icon(
+                              Icons.star,
+                              color: MyColor.warning,
+                            ),
+                            empty: Icon(
+                              Icons.star,
+                              color: MyColor.neutralLow,
+                            ),
+                            half: Icon(
+                              Icons.star_half,
+                              color: MyColor.warning,
+                            ),
+                          ),
+                          onRatingUpdate: (value) {},
                         ),
                         const SizedBox(
                           height: 10,
@@ -461,22 +477,33 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          StarRating(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            length: 5,
-                                            rating: provider
-                                                        .counselorReview
-                                                        .reviews?[index]
-                                                        .rating ==
-                                                    null
-                                                ? 0
-                                                : provider.counselorReview
-                                                    .reviews![index].rating!
-                                                    .toDouble(),
-                                            between: 2,
-                                            starSize: 12,
-                                            color: MyColor.warning,
+                                          RatingBar(
+                                            ignoreGestures: true,
+                                            itemSize: 12,
+                                            initialRating: provider
+                                                    .counselorReview
+                                                    .reviews?[index]
+                                                    .rating
+                                                    ?.toDouble() ??
+                                                0,
+                                            direction: Axis.horizontal,
+                                            itemCount: 5,
+                                            allowHalfRating: true,
+                                            ratingWidget: RatingWidget(
+                                              full: Icon(
+                                                Icons.star,
+                                                color: MyColor.warning,
+                                              ),
+                                              empty: Icon(
+                                                Icons.star,
+                                                color: MyColor.neutralLow,
+                                              ),
+                                              half: Icon(
+                                                Icons.star_half,
+                                                color: MyColor.warning,
+                                              ),
+                                            ),
+                                            onRatingUpdate: (value) {},
                                           ),
                                           Text(
                                             DateFormatter.format(provider

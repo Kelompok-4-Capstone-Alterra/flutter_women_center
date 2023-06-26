@@ -9,8 +9,8 @@ import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/counselor_detail/counselor_detail_screen.dart';
 import 'package:capstone_project/view/screen/counselor_list/counselor_list_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:star_rating/star_rating.dart';
 
 class CounselorListScreen extends StatefulWidget {
   static const String routeName = '/counselor-list';
@@ -30,6 +30,7 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
     Future.delayed(Duration.zero, () {
       final provider =
           Provider.of<CounselorListViewModel>(context, listen: false);
+      provider.sortValue = '';
       provider.getCounselorList(topic: widget.topicId);
     });
   }
@@ -170,17 +171,33 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
                                           const SizedBox(
                                             height: 8,
                                           ),
-                                          StarRating(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            length: 5,
-                                            rating: provider
-                                                .counselorList[index].rating!
-                                                .toDouble(),
-                                            between: 2,
-                                            starSize: 20,
-                                            color: MyColor.warning,
+                                          RatingBar(
+                                            ignoreGestures: true,
+                                            itemSize: 20,
+                                            initialRating: provider
+                                                    .counselorList[index].rating
+                                                    ?.toDouble() ??
+                                                0,
+                                            direction: Axis.horizontal,
+                                            itemCount: 5,
+                                            allowHalfRating: true,
+                                            ratingWidget: RatingWidget(
+                                              full: Icon(
+                                                Icons.star,
+                                                color: MyColor.warning,
+                                              ),
+                                              empty: Icon(
+                                                Icons.star,
+                                                color: MyColor.neutralLow,
+                                              ),
+                                              half: Icon(
+                                                Icons.star_half,
+                                                color: MyColor.warning,
+                                              ),
+                                            ),
+                                            onRatingUpdate: (value) {},
                                           ),
+                                          
                                           const SizedBox(
                                             height: 8,
                                           ),
