@@ -59,7 +59,7 @@ class _SavedScreenState extends State<SavedScreen> {
     providerDetailReadingList =
         Provider.of<DetailReadingListViewmodel>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      provider.showAllReadingList();
+      provider.showReadingListSortByOldestOrNewest(sortByOldest: false);
     });
     super.initState();
   }
@@ -140,6 +140,7 @@ class _SavedScreenState extends State<SavedScreen> {
                                   hintText:
                                       'Ex : How to heal my traumatized inner child',
                                   currentFocus: _listNameNode,
+                                  textCapitalization: TextCapitalization.words,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'list name is required';
@@ -166,6 +167,8 @@ class _SavedScreenState extends State<SavedScreen> {
                                   last: true,
                                   hintText: 'Ex : This is an important list',
                                   currentFocus: _descriptionNode,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'description is required';
@@ -194,7 +197,9 @@ class _SavedScreenState extends State<SavedScreen> {
                                         _editDescriptionController.clear();
                                         if (context.mounted) {
                                           Navigator.pop(context);
-                                          savedProvider.showAllReadingList();
+                                          savedProvider
+                                              .showReadingListSortByOldestOrNewest(
+                                                  sortByOldest: false);
                                         }
                                       }
                                     },
@@ -247,7 +252,13 @@ class _SavedScreenState extends State<SavedScreen> {
           _descriptionController.clear();
           _editListNameController.clear();
           _editDescriptionController.clear();
-          return provider.showAllReadingList();
+          if (provider.sortingByOldest == false) {
+            return provider.showReadingListSortByOldestOrNewest(
+                sortByOldest: false);
+          } else {
+            return provider.showReadingListSortByOldestOrNewest(
+                sortByOldest: true);
+          }
         },
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -305,6 +316,8 @@ class _SavedScreenState extends State<SavedScreen> {
                                         TextBox(
                                           textEditingController:
                                               _editListNameController,
+                                          textCapitalization:
+                                              TextCapitalization.words,
                                           hintText:
                                               'Ex : How to heal my traumatized inner child',
                                           currentFocus: _editListNameNode,
@@ -333,6 +346,8 @@ class _SavedScreenState extends State<SavedScreen> {
                                         TextBox(
                                           textEditingController:
                                               _editDescriptionController,
+                                          textCapitalization:
+                                              TextCapitalization.sentences,
                                           last: true,
                                           hintText:
                                               'Ex : This is an important list',
@@ -372,8 +387,17 @@ class _SavedScreenState extends State<SavedScreen> {
                                                   .clear();
                                               if (context.mounted) {
                                                 Navigator.pop(context);
-                                                savedProvider
-                                                    .showAllReadingList();
+                                                if (savedProvider
+                                                        .sortingByOldest ==
+                                                    false) {
+                                                  savedProvider
+                                                      .showReadingListSortByOldestOrNewest(
+                                                          sortByOldest: false);
+                                                } else {
+                                                  savedProvider
+                                                      .showReadingListSortByOldestOrNewest(
+                                                          sortByOldest: true);
+                                                }
                                               }
                                             }
                                           },
@@ -416,7 +440,8 @@ class _SavedScreenState extends State<SavedScreen> {
                             _editDescriptionController.clear();
                             if (context.mounted) {
                               Navigator.pop(context);
-                              savedProvider.showAllReadingList();
+                              savedProvider.showReadingListSortByOldestOrNewest(
+                                  sortByOldest: false);
                             }
                           },
                           daftarArtikel: savedProvider

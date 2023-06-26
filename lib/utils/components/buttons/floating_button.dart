@@ -21,8 +21,8 @@ class FloatingButton extends StatelessWidget {
       decoration: const BoxDecoration(
         boxShadow: [
           BoxShadow(
-            blurRadius: 4,
-            offset: Offset(2, 5),
+            blurRadius: 2,
+            offset: Offset(1, 2),
           ),
         ],
       ),

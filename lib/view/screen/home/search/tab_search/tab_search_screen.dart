@@ -182,7 +182,8 @@ class _TabSearchState extends State<TabSearch> {
                             RatingBar(
                               ignoreGestures: true,
                               itemSize: 20,
-                              initialRating: dataCounselor[index].rating ?? 0,
+                              initialRating:
+                                  dataCounselor[index].rating!.toDouble(),
                               direction: Axis.horizontal,
                               itemCount: 5,
                               allowHalfRating: true,

@@ -131,4 +131,11 @@ class SearchTransactionsViewModel with ChangeNotifier {
       changeState(MyState.failed);
     }
   }
+
+  void emptySearch() {
+    changeState(MyState.loading);
+    allTransactionsDataOngoing.clear();
+    allTransactionsDataHistory.clear();
+    changeState(MyState.loaded);
+  }
 }

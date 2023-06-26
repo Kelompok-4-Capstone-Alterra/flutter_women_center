@@ -1,12 +1,16 @@
+import 'package:capstone_project/model/counselor_list_model.dart';
 import 'package:capstone_project/model/forum_model.dart';
 import 'package:capstone_project/model/mock_model.dart';
 import 'package:capstone_project/service/home_service.dart';
 import 'package:capstone_project/service/user_service.dart';
+import 'package:capstone_project/model/service/home_service.dart';
+import 'package:capstone_project/model/service/user_service.dart';
 import 'package:capstone_project/model/user_model.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../model/article_model.dart';
 import '../../../model/career_model.dart';
 
 class HomeViewModel with ChangeNotifier {
@@ -17,25 +21,25 @@ class HomeViewModel with ChangeNotifier {
   final HomeService _homeService = HomeService();
   String _username = 'user';
   bool _isLogin = false;
-  List<ArticlesMock> _articlesMock = [];
+  List<Articles> _articlesData = [];
   MyState _articlesState = MyState.initial;
-  List<CounselorMock> _counselorMock = [];
+  List<CounselorListModel> _counselorData = [];
   MyState _counselorState = MyState.initial;
-  List<CareerModel> _careerMock = [];
+  List<CareerModel> _careerData = [];
   MyState _careerState = MyState.initial;
-  List<ForumModel> _forumMock = [];
+  List<ForumModel> _forumData = [];
   MyState _forumState = MyState.initial;
 
   MyState get state => _state;
   String get message => _message;
   String get username => _username;
-  List<ArticlesMock> get articlesMock => _articlesMock;
+  List<Articles> get articlesData => _articlesData;
   MyState get articlesState => _articlesState;
-  List<CounselorMock> get counselorMock => _counselorMock;
+  List<CounselorListModel> get counselorData => _counselorData;
   MyState get counselorState => _counselorState;
-  List<CareerModel> get careerMock => _careerMock;
+  List<CareerModel> get careerData => _careerData;
   MyState get careerState => _careerState;
-  List<ForumModel> get forumMock => _forumMock;
+  List<ForumModel> get forumData => _forumData;
   MyState get forumState => _forumState;
   bool get isLogin => _isLogin;
 
@@ -87,7 +91,7 @@ class HomeViewModel with ChangeNotifier {
   void initArticleaData() async {
     try {
       changeArticlesState(MyState.loading);
-      _articlesMock = await _homeService.getArticles();
+      _articlesData = await _homeService.getArticles();
       changeArticlesState(MyState.loaded);
     } catch (e) {
       changeArticlesState(MyState.failed);
@@ -97,7 +101,7 @@ class HomeViewModel with ChangeNotifier {
   void initCounselorData() async {
     try {
       changeCounselorState(MyState.loading);
-      _counselorMock = await _homeService.getCounselor();
+      _counselorData = await _homeService.getCounselor();
       changeCounselorState(MyState.loaded);
     } catch (e) {
       changeCounselorState(MyState.failed);
@@ -107,7 +111,7 @@ class HomeViewModel with ChangeNotifier {
   void initCareerData() async {
     try {
       changeCareerState(MyState.loading);
-      _careerMock = await _homeService.getCareer();
+      _careerData = await _homeService.getCareer();
       changeCareerState(MyState.loaded);
     } catch (e) {
       changeCareerState(MyState.failed);
@@ -117,7 +121,7 @@ class HomeViewModel with ChangeNotifier {
   void initForumData() async {
     try {
       changeForumState(MyState.loading);
-      _forumMock = await _homeService.getForum();
+      _forumData = await _homeService.getForum();
       changeForumState(MyState.loaded);
     } catch (e) {
       changeForumState(MyState.failed);

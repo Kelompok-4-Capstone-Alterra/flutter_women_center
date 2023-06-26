@@ -239,23 +239,21 @@ class _TransactionScreenState extends State<TransactionScreen>
                                       .allTransactionsDataOngoing[index]
                                       .timeStart!,
                               price: harga,
-                              onPressed: () {
-                                transactionsProvider.linkToCounseling(
-                                  userId: transactionsProvider
-                                      .allTransactionsDataOngoing[index].userId,
-                                  transactionId: transactionsProvider
-                                      .allTransactionsDataOngoing[index].id,
-                                );
-                                // final Uri _url = Uri.parse(transactionsProvider
-                                //             .allTransactionsDataOngoing[index].link ==
-                                //         null
-                                //     ? '-'
-                                //     : transactionsProvider
-                                //         .allTransactionsDataOngoing[index].link!);
-                                // if (!await launchUrl(_url)) {
-                                //   throw Exception('Could not launch $_url');
-                                // }
-                              },
+                              onPressed: transactionsProvider
+                                          .allTransactionsDataOngoing[index]
+                                          .status ==
+                                      'waiting'
+                                  ? null
+                                  : () {
+                                      transactionsProvider.linkToCounseling(
+                                        userId: transactionsProvider
+                                            .allTransactionsDataOngoing[index]
+                                            .userId,
+                                        transactionId: transactionsProvider
+                                            .allTransactionsDataOngoing[index]
+                                            .id,
+                                      );
+                                    },
                             );
                           }
                         },
