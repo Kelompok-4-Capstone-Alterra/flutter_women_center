@@ -1,17 +1,12 @@
 import 'package:capstone_project/model/article_model.dart';
-import 'package:capstone_project/model/reading_list_model.dart';
 import 'package:capstone_project/utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_post/article_list_post_view_model.dart';
-import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
 import 'package:capstone_project/view/screen/article/save_content/save_content.dart';
-import 'package:capstone_project/view/screen/article/save_content/save_content_view_model.dart';
-import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_view_model.dart';
 import 'package:capstone_project/view/screen/saved/saved_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:collection/collection.dart';
 
 class ArticleListPostWidget extends StatefulWidget {
   final List<Articles> articles;
@@ -27,14 +22,10 @@ class _ArticleListPostWidgetState extends State<ArticleListPostWidget> {
   @override
   void initState() {
     super.initState();
-    final detailProvider = Provider.of<SavedViewModel>(context, listen: false);
-    detailProvider.showAllReadingList();
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider =
-        Provider.of<ArticleListPostProvider>(context, listen: false);
     return ListView.builder(
       itemCount: widget.articles.length,
       itemBuilder: (context, index) {
