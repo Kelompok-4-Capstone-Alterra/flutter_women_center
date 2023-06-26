@@ -1,9 +1,9 @@
 import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/model/career_model.dart';
 import 'package:capstone_project/model/mock_model.dart';
-import 'package:capstone_project/model/service/article_service.dart';
-import 'package:capstone_project/model/service/forum_service.dart';
-import 'package:capstone_project/model/service/home_service.dart';
+import 'package:capstone_project/service/article_service.dart';
+import 'package:capstone_project/service/forum_service.dart';
+import 'package:capstone_project/service/home_service.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 
 import 'package:flutter/material.dart';

@@ -1,5 +1,5 @@
 import 'package:capstone_project/model/comment_model.dart';
-import 'package:capstone_project/model/service/article_service.dart';
+import 'package:capstone_project/service/article_service.dart';
 import 'package:capstone_project/utils/decoder/jwt_decoder.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/material.dart';

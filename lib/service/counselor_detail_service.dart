@@ -25,7 +25,7 @@ class CounselorDetailService extends InterceptorApi {
 
       return counselorDetail;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 }

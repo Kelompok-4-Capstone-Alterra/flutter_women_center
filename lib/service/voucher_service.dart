@@ -25,7 +25,7 @@ class VoucherService extends InterceptorApi {
 
       return voucher;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 }

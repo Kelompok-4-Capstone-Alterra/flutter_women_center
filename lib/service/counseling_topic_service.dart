@@ -15,7 +15,7 @@ class CounselingTopicService extends InterceptorApi {
           .toList();
       return topics;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 }

@@ -3,7 +3,7 @@ import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../model/service/voucher_service.dart';
+import '../../../service/voucher_service.dart';
 
 class CounselingAppointmentViewModel extends ChangeNotifier {
   MyState myState = MyState.initial;

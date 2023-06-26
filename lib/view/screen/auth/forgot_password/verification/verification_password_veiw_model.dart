@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:capstone_project/model/service/auth_service.dart';
+import 'package:capstone_project/service/auth_service.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/material.dart';
 

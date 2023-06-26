@@ -1,4 +1,4 @@
-import 'package:capstone_project/model/service/transactions_service.dart';
+import 'package:capstone_project/service/transactions_service.dart';
 import 'package:capstone_project/model/transactions_model.dart';
 import 'package:capstone_project/view/screen/transaction/transaction_search/search_transactions_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';

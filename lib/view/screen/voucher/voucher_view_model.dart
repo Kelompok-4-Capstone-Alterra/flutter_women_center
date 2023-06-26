@@ -1,4 +1,4 @@
-import 'package:capstone_project/model/service/voucher_service.dart';
+import 'package:capstone_project/service/voucher_service.dart';
 import 'package:capstone_project/model/voucher_model.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/material.dart';

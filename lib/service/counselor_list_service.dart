@@ -23,7 +23,7 @@ class CounselorListService extends InterceptorApi {
 
       return counselingList;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 }

@@ -25,7 +25,7 @@ class AvaibleTimeService extends InterceptorApi {
 
       return avaibleTime;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 }

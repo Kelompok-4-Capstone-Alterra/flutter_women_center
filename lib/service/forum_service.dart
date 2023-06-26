@@ -3,7 +3,7 @@ import 'package:capstone_project/model/api/interceptor_api.dart';
 import 'package:capstone_project/model/topic_model.dart';
 import 'package:dio/dio.dart';
 
-import '../forum_model.dart';
+import '../model/forum_model.dart';
 
 class ForumService extends InterceptorApi {
   Future<List<TopicModel>> getTopics() async {

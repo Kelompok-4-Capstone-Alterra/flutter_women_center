@@ -1,4 +1,4 @@
-import 'package:capstone_project/model/service/transactions_service.dart';
+import 'package:capstone_project/service/transactions_service.dart';
 import 'package:capstone_project/model/transactions_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

@@ -90,7 +90,7 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                             errorBuilder: (context, error, stackTrace) {
                               return SizedBox(
                                 child: Image.network(
-                                  provider.counselorDetail.profilePicture ?? '',
+                                  'https://cdn-icons-png.flaticon.com/512/7867/7867562.png',
                                   width: double.infinity,
                                   height: 240,
                                   fit: BoxFit.cover,

@@ -1,7 +1,7 @@
 import 'package:capstone_project/model/api/interceptor_api.dart';
 import 'package:capstone_project/model/reading_list_model.dart';
 import 'package:dio/dio.dart';
-import '../api/endpoint.dart';
+import '../model/api/endpoint.dart';
 
 class ReadingListService extends InterceptorApi {
   ///mengembalikan List<ReadingListModel> dari API reading list

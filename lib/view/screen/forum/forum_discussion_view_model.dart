@@ -1,4 +1,4 @@
-import 'package:capstone_project/model/service/forum_service.dart';
+import 'package:capstone_project/service/forum_service.dart';
 import 'package:capstone_project/model/topic_model.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/cupertino.dart';
