@@ -1,10 +1,10 @@
 import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/model/career_model.dart';
+import 'package:capstone_project/service/article_service.dart';
+import 'package:capstone_project/service/career_service.dart';
+import 'package:capstone_project/service/counselor_list_service.dart';
+import 'package:capstone_project/service/forum_service.dart';
 import 'package:capstone_project/model/counselor_list_model.dart';
-import 'package:capstone_project/model/service/article_service.dart';
-import 'package:capstone_project/model/service/career_service.dart';
-import 'package:capstone_project/model/service/counselor_list_service.dart';
-import 'package:capstone_project/model/service/forum_service.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 
 import 'package:flutter/material.dart';

@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../../../model/detail_career_model.dart';
-import '../../../../../model/service/career_service.dart';
+import '../../../../service/career_service.dart';
 import '../../../../../utils/state/finite_state.dart';
 
 class DetailCareerViewModel extends ChangeNotifier {

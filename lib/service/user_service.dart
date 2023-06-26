@@ -1,8 +1,8 @@
 import 'package:capstone_project/model/user_model.dart';
 import 'package:dio/dio.dart';
 
-import '../api/endpoint.dart';
-import '../api/interceptor_api.dart';
+import 'api/endpoint.dart';
+import 'api/interceptor_api.dart';
 
 class UserService extends InterceptorApi {
   Future<UserModel> getProfile({required String token}) async {

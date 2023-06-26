@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../model/reading_list_model.dart';
-import '../../../../model/service/reading_list_service.dart';
+import '../../../../service/reading_list_service.dart';
 import '../../../../utils/state/finite_state.dart';
 
 class DetailReadingListViewmodel with ChangeNotifier {

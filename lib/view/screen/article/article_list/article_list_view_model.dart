@@ -1,6 +1,6 @@
 import 'package:capstone_project/model/article_model.dart';
 import 'package:capstone_project/model/reading_list_model.dart';
-import 'package:capstone_project/model/service/article_service.dart';
+import 'package:capstone_project/service/article_service.dart';
 import 'package:capstone_project/model/topic_model.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:dio/dio.dart';

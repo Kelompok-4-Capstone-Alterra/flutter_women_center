@@ -1,5 +1,5 @@
-import 'package:capstone_project/model/api/endpoint.dart';
-import 'package:capstone_project/model/api/interceptor_api.dart';
+import 'package:capstone_project/service/api/endpoint.dart';
+import 'package:capstone_project/service/api/interceptor_api.dart';
 import 'package:capstone_project/model/avaible_time_model.dart';
 import 'package:dio/dio.dart';
 
@@ -25,7 +25,7 @@ class AvaibleTimeService extends InterceptorApi {
 
       return avaibleTime;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 }

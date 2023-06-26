@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:capstone_project/model/reading_list_model.dart';
-import 'package:capstone_project/model/service/reading_list_service.dart';
+import 'package:capstone_project/service/reading_list_service.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

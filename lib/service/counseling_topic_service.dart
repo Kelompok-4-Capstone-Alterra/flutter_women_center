@@ -1,5 +1,5 @@
-import 'package:capstone_project/model/api/endpoint.dart';
-import 'package:capstone_project/model/api/interceptor_api.dart';
+import 'package:capstone_project/service/api/endpoint.dart';
+import 'package:capstone_project/service/api/interceptor_api.dart';
 import 'package:capstone_project/model/topic_model.dart';
 import 'package:dio/dio.dart';
 
@@ -15,7 +15,7 @@ class CounselingTopicService extends InterceptorApi {
           .toList();
       return topics;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 }

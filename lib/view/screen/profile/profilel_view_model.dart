@@ -1,4 +1,4 @@
-import 'package:capstone_project/model/service/user_service.dart';
+import 'package:capstone_project/service/user_service.dart';
 import 'package:capstone_project/model/user_model.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/material.dart';

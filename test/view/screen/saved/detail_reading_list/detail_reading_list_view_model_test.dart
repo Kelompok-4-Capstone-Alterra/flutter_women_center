@@ -1,5 +1,5 @@
 import 'package:capstone_project/model/reading_list_model.dart';
-import 'package:capstone_project/model/service/reading_list_service.dart';
+import 'package:capstone_project/service/reading_list_service.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
