@@ -25,6 +25,7 @@ import '../../../utils/my_color.dart';
 import '../article/article_detail/article_detail_screen.dart';
 import '../auth/login/login_screen.dart';
 import '../career/career_detail/career_detail_screen.dart';
+import '../career/career_detail/career_detail_view_model.dart';
 import '../career/career_list/career_list_screen.dart';
 import '../counselor_detail/counselor_detail_screen.dart';
 import '../counselor_list/counselor_list_view_model.dart';
@@ -393,6 +394,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         subtitle: dataCareer[index].companyName ?? '',
                         imageUrl: dataCareer[index].image ?? '',
                         onTapAction: () {
+                          Provider.of<DetailCareerViewModel>(context,
+                                  listen: false)
+                              .fetchCareerById(id: dataCareer[index].id!);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
