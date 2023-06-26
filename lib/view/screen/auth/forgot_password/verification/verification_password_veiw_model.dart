@@ -4,7 +4,7 @@ import 'package:capstone_project/model/service/auth_service.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/material.dart';
 
-class VerificationViewModel with ChangeNotifier {
+class VerificationPasswordViewModel with ChangeNotifier {
   MyState _state = MyState.initial;
   String _pin1 = '';
   String _pin2 = '';

@@ -23,5 +23,13 @@ class Endpoint {
   static const String forumJoin = '/users/forums/joins';
   static const String getArticles = '/users/articles';
   static const String getArticlesNoLogin = '/users/public/articles';
+  static const String getPostComment = '/users/articles/:id/comments';
+  static const String deleteComment =
+      '/users/articles/:article_id/comments/:comment_id';
+  static const String postArticleToReadingLists = '/users/reading-lists/save';
+  static const String deleteArticleFromReadingLists =
+      '/users/reading-lists/save/:id';
+  static const String requestOptForgotPassword = '/users/auth/verify/forget';
+  static const String requestNewPassword = '/users/auth/forget-password';
   static const String publicTopics = '/users/public/topics';
 }

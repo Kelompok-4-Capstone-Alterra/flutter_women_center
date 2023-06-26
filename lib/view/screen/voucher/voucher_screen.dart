@@ -31,6 +31,8 @@ class _VoucherScreenState extends State<VoucherScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final condition =
+        ModalRoute.of(context)!.settings.arguments as bool? ?? false;
     return Scaffold(
       appBar: CustomAppBar(
         home: false,
@@ -148,31 +150,34 @@ class _VoucherScreenState extends State<VoucherScreen> {
                                               ),
                                             ),
                                           )
-                                        : ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  MyColor.primaryMain,
-                                              elevation: 0,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(3),
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.pop(context, {
-                                                'id':
-                                                    provider.voucher[index].id,
-                                                'decide': 'choose'
-                                              });
-                                            },
-                                            child: Text(
-                                              'Choose',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: MyColor.white,
-                                              ),
-                                            ),
-                                          ),
+                                        : !condition
+                                            ? ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      MyColor.primaryMain,
+                                                  elevation: 0,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            3),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pop(context, {
+                                                    'id': provider
+                                                        .voucher[index].id,
+                                                    'decide': 'choose'
+                                                  });
+                                                },
+                                                child: Text(
+                                                  'Choose',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: MyColor.white,
+                                                  ),
+                                                ),
+                                              )
+                                            : const SizedBox(),
                                   ],
                                 ),
                               ),

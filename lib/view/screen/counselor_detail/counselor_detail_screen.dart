@@ -4,6 +4,7 @@ import 'package:capstone_project/utils/components/formarter/money_formater.dart'
 import 'package:capstone_project/utils/my_color.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
+import 'package:capstone_project/view/screen/auth/login/login_screen.dart';
 import 'package:capstone_project/view/screen/counseling_appointment/counseling_appointment_screen.dart';
 import 'package:capstone_project/view/screen/counselor_detail/counselor_detail_view_model.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,18 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
     Future.delayed(Duration.zero, () async {
       final provider =
           Provider.of<CounselorDetailViewModel>(context, listen: false);
+      await provider.checkedIsUserLogin();
+      if (provider.isLogin == false) {
+        // ignore: use_build_context_synchronously
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const LoginScreen();
+            },
+          ),
+        );
+      }
       provider.selectedTime = '';
       await provider.getCounselorDetail(widget.id);
       await provider.getAvaibleTime(widget.id);

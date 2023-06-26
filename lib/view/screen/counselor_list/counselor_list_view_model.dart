@@ -18,26 +18,17 @@ class CounselorListViewModel extends ChangeNotifier {
 
   Future<void> getCounselorList({
     required int topic,
-    required String sortValue,
   }) async {
     try {
       myState = MyState.loading;
       notifyListeners();
 
-      _loginData = await SharedPreferences.getInstance();
-      final String token = _loginData.getString('token')!;
-      if (token.isEmpty) {
-        myState = MyState.failed;
-      } else {
-        counselorList = await _counselorListService.getCounselorList(
-          token: token,
-          topic: topic,
-          sortBy: sortValue,
-        );
-        counselorListData = counselorList;
-        myState = MyState.loaded;
-        notifyListeners();
-      }
+      counselorList = await _counselorListService.getCounselorList(
+        topic: topic,
+      );
+      counselorListData = counselorList;
+      myState = MyState.loaded;
+      notifyListeners();
     } catch (e) {
       rethrow;
     }

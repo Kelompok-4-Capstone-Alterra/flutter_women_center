@@ -32,7 +32,7 @@ class WebViewContainer extends StatefulWidget {
 
 class _WebViewContainerState extends State<WebViewContainer> {
   num loadingPercentage = 0;
-  late WebViewController controller;
+  late WebViewController? controller;
 
   @override
   void initState() {
@@ -179,7 +179,7 @@ class _WebViewContainerState extends State<WebViewContainer> {
                   child: CircularProgressIndicator(),
                 );
               } else if (provider.myState == MyState.loaded) {
-                return WebViewWidget(controller: controller);
+                return WebViewWidget(controller: controller!);
               } else {
                 return const SizedBox();
               }

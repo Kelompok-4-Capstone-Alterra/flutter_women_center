@@ -39,7 +39,7 @@ class EditProfileViewModel with ChangeNotifier {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
       final token = _loginData.getString('token') ?? '';
-      await _userService.updateProfile(token, userData);
+      await _userService.updateProfile(token: token, userData: userData);
       changeState(MyState.loaded);
     } catch (e) {
       changeState(MyState.failed);

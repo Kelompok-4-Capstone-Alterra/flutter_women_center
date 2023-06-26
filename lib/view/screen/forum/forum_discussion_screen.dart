@@ -324,7 +324,7 @@ class _ForumDiscussionScreenState extends State<ForumDiscussionScreen> {
                         ),
                         indicatorSize: TabBarIndicatorSize.label,
                         tabs: [
-                          if (value.isLogin) const Tab(text: 'MY FORUM'),
+                          if (value.isLogin) const Tab(text: 'my forums'),
                           ...forumDiscussionProvider.topicData
                               .map((e) => Tab(text: e.name!))
                               .toList(),
@@ -353,43 +353,47 @@ class _ForumDiscussionScreenState extends State<ForumDiscussionScreen> {
               },
             ),
             Expanded(
-              child: Consumer<ForumDiscussionViewModel>(
-                builder: (context, value, _) {
-                  final forum = value.forumData;
-                  if (value.categoryId == 0) {
-                    if (value.forumState == MyState.loading) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else {
-                      if (forum.isEmpty) {
-                        return const Empty();
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: MySize.screenPadding),
+                child: Consumer<ForumDiscussionViewModel>(
+                  builder: (context, value, _) {
+                    final forum = value.forumData;
+                    if (value.categoryId == 0) {
+                      if (value.forumState == MyState.loading) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else {
+                        if (forum.isEmpty) {
+                          return const Empty();
+                        }
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: forum.length,
+                          itemBuilder: (context, index) {
+                            return UpdateForum(forumData: forum[index]);
+                          },
+                        );
                       }
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: forum.length,
-                        itemBuilder: (context, index) {
-                          return UpdateForum(forumData: forum[index]);
-                        },
-                      );
-                    }
-                  } else {
-                    if (value.forumState == MyState.loading) {
-                      return const Center(child: CircularProgressIndicator());
                     } else {
-                      if (forum.isEmpty) {
-                        return const Empty();
+                      if (value.forumState == MyState.loading) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else {
+                        if (forum.isEmpty) {
+                          return const Empty();
+                        }
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: forum.length,
+                          itemBuilder: (context, index) {
+                            return ForumItem(
+                              forumData: forum[index],
+                            );
+                          },
+                        );
                       }
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: forum.length,
-                        itemBuilder: (context, index) {
-                          return ForumItem(
-                            forumData: forum[index],
-                          );
-                        },
-                      );
                     }
-                  }
-                },
+                  },
+                ),
               ),
             ),
           ],
