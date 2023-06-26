@@ -100,6 +100,5 @@ class HomeListItem extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

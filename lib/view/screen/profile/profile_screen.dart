@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import '../../../utils/components/buttons/primary_button.dart';
 import '../../../utils/constant_text.dart';
 import '../../../utils/my_color.dart';
-import '../home/home_view_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

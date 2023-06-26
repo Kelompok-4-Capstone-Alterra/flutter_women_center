@@ -83,6 +83,5 @@ class TabSearchItem extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

@@ -15,7 +15,6 @@ import 'package:capstone_project/view/screen/saved/widgets/vertical_article_card
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:capstone_project/utils/components/text_box/regular_text_box/text_box.dart';
-import '../../../../model/article_model.dart';
 import '../../../../utils/components/buttons/primary_button.dart';
 import '../../../../utils/components/empty/empty.dart';
 import '../../../../utils/components/modal_bottom_sheet/custom_bottom_sheet_builder.dart';
