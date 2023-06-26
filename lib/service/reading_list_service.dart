@@ -23,7 +23,7 @@ class ReadingListService extends InterceptorApi {
               .toList();
       return readingListModel;
     } catch (e) {
-      rethrow;
+      throw e.toString();
     }
   }
 
@@ -47,7 +47,7 @@ class ReadingListService extends InterceptorApi {
               .toList();
       return readingListModel;
     } catch (e) {
-      rethrow;
+      throw e.toString();
     }
   }
 
@@ -68,7 +68,7 @@ class ReadingListService extends InterceptorApi {
           ReadingListModel.fromJson(response.data['data']);
       return readingListModel;
     } catch (e) {
-      rethrow;
+      throw e.toString();
     }
   }
 
@@ -94,7 +94,7 @@ class ReadingListService extends InterceptorApi {
               .toList();
       return readingListModel;
     } catch (e) {
-      rethrow;
+      throw e.toString();
     }
   }
 
@@ -121,7 +121,7 @@ class ReadingListService extends InterceptorApi {
       final String message = response.data['meta']['message'].toString();
       return message;
     } catch (e) {
-      rethrow;
+      throw e.toString();
     }
   }
 
@@ -148,7 +148,7 @@ class ReadingListService extends InterceptorApi {
       final String message = response.data['meta']['message'].toString();
       return message;
     } catch (e) {
-      rethrow;
+      throw e.toString();
     }
   }
 
@@ -176,7 +176,7 @@ class ReadingListService extends InterceptorApi {
       final String message = response.data['meta']['message'].toString();
       return message;
     } catch (e) {
-      rethrow;
+      throw e.toString();
     }
   }
 
@@ -196,7 +196,7 @@ class ReadingListService extends InterceptorApi {
       final String message = response.data['meta']['message'].toString();
       return message;
     } catch (e) {
-      rethrow;
+      throw e.toString();
     }
   }
 
@@ -216,7 +216,7 @@ class ReadingListService extends InterceptorApi {
       final String message = response.data['meta']['message'].toString();
       return message;
     } catch (e) {
-      rethrow;
+      throw e.toString();
     }
   }
 }
