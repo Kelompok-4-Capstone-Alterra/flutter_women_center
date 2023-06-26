@@ -276,9 +276,8 @@ class _VerificationPasswordScreenState
                           ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              _showAlertSuccess(context);
-                              // forgotPasswordProvider
-                              //     .requestNewPassword(verificationProvider.otp);
+                              forgotPasswordProvider
+                                  .requestNewPassword(verificationProvider.otp);
                             }
                           },
                         ),
