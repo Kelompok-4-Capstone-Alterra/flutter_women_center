@@ -2,7 +2,6 @@ import 'package:capstone_project/model/counselor_list_model.dart';
 import 'package:capstone_project/model/service/counselor_list_service.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CounselorListViewModel extends ChangeNotifier {
   MyState myState = MyState.initial;
@@ -13,7 +12,6 @@ class CounselorListViewModel extends ChangeNotifier {
 
   String sortValue = 'Highest Rating';
 
-  late SharedPreferences _loginData;
   final CounselorListService _counselorListService = CounselorListService();
 
   Future<void> getCounselorList({

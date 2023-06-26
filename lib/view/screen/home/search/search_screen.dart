@@ -14,7 +14,6 @@ import 'package:provider/provider.dart';
 import '../../../../utils/components/appbar/custom_appbar.dart';
 import '../../../../utils/components/text_box/search_text_box.dart';
 import '../../../../utils/my_size.dart';
-import '../../article/article_list/article_list_view_model.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});

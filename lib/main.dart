@@ -59,6 +59,7 @@ import 'package:capstone_project/view/screen/auth/signup/signup_view_model.dart'
 import 'package:capstone_project/view/screen/auth/verification/verification_screen.dart';
 import 'package:capstone_project/view/screen/auth/verification/verification_veiw_model.dart';
 import 'package:capstone_project/view/screen/auth/verification/widgets/otp_form_view_model.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'view/screen/career/career_detail/career_detail_screen.dart';
 import 'view/screen/career/career_detail/career_detail_view_model.dart';
@@ -67,8 +68,11 @@ import 'view/screen/career/career_list/career_list_view_model.dart';
 import 'view/screen/counseling_topic/counseling_topic_view_model.dart';
 import 'view/screen/counselor_detail/counselor_detail_screen.dart';
 
-void main() {
+void main() async {
   HttpOverrides.global = PostHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Future.delayed(const Duration(seconds: 2));
+  FlutterNativeSplash.remove();
   runApp(const MyApp());
 }
 

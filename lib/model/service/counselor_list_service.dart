@@ -14,6 +14,7 @@ class CounselorListService extends InterceptorApi {
         url,
         queryParameters: {
           'topic': topic,
+          'sort_by': 'highest_rating',
         },
       );
       counselingList = (response.data['data']['counselors'] as List)
