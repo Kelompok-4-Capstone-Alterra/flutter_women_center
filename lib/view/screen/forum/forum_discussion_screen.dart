@@ -216,8 +216,7 @@ class _ForumDiscussionScreenState extends State<ForumDiscussionScreen> {
                                   ),
                                   TextBox(
                                     textEditingController: _forumLinkController,
-                                    hintText:
-                                        'Ex : Whatsapp Group\'s Link, etc.',
+                                    hintText: 'Only Telegram Group\'s Link',
                                     onFieldSubmitted: (value) {
                                       MyFocusNode.change(
                                         context: context,

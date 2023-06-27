@@ -147,18 +147,21 @@ class ArticleDetailsScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    SizedBox(
-                      width: 300,
-                      child: Text(
-                        articles!.title ?? '',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
+                    Flexible(
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          articles!.title ?? '',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 3,
                         ),
-                        maxLines: 3,
                       ),
                     ),
-                    const Spacer(),
+                    const SizedBox(
+                        width: 8), // Tambahkan jarak antara teks dan tanggal
                     Text(
                       articles.formattedDate,
                       style: TextStyle(

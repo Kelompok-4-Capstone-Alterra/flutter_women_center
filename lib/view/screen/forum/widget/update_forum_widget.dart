@@ -313,7 +313,7 @@ class _UpdateForumState extends State<UpdateForum> {
                               ),
                               TextBox(
                                 textEditingController: editForumLinkController,
-                                hintText: 'Ex : Whatsapp Group\'s Link, etc.',
+                                hintText: 'Only Telegram Group\'s Link',
                                 onFieldSubmitted: (value) {
                                   MyFocusNode.change(
                                     context: context,
