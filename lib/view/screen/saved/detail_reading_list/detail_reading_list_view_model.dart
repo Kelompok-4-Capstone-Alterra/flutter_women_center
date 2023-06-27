@@ -7,12 +7,10 @@ import '../../../../utils/state/finite_state.dart';
 class DetailReadingListViewmodel with ChangeNotifier {
   late SharedPreferences _loginData;
   MyState _state = MyState.initial;
-  String _message = '';
   final ReadingListService _readingListService = ReadingListService();
   ReadingListModel _readingListData = ReadingListModel();
 
   MyState get state => _state;
-  String get message => _message;
   ReadingListModel get readingListData => _readingListData;
 
   late String? id;
