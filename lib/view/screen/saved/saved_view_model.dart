@@ -74,8 +74,8 @@ class SavedViewModel with ChangeNotifier {
       );
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -93,8 +93,8 @@ class SavedViewModel with ChangeNotifier {
       );
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -115,8 +115,8 @@ class SavedViewModel with ChangeNotifier {
       );
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -132,8 +132,8 @@ class SavedViewModel with ChangeNotifier {
       );
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 }
