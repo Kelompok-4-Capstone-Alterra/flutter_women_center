@@ -104,7 +104,7 @@ class _SaveContentState extends State<SaveContent> {
                                     height: 16,
                                   ),
                                   Text(
-                                    'Description (optional)',
+                                    'Description',
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,

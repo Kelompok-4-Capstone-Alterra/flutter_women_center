@@ -44,6 +44,7 @@ class ArticleDetailProvider extends ChangeNotifier {
     } catch (e) {
       message = e.toString();
       myState = MyState.failed;
+      rethrow;
     }
   }
 
