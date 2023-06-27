@@ -1,12 +1,14 @@
 import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
 import 'package:capstone_project/utils/components/bottom_navigation_bar/bottom_nav_bar.dart';
 import 'package:capstone_project/utils/components/buttons/primary_button.dart';
+import 'package:capstone_project/utils/components/formarter/money_formater.dart';
 import 'package:capstone_project/utils/components/text_box/read_only_text_box.dart';
 import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
 import 'package:capstone_project/utils/constant_text.dart';
 import 'package:capstone_project/utils/my_size.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_screen.dart';
+import 'package:capstone_project/view/screen/article/article_list/article_list_view_model.dart';
 import 'package:capstone_project/view/screen/counseling_topic/counseling_topic_screen.dart';
 import 'package:capstone_project/view/screen/forum/forum_discussion_screen.dart';
 import 'package:capstone_project/view/screen/home/home_view_model.dart';
@@ -44,6 +46,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchHomeController = TextEditingController();
   late final HomeViewModel homeProvider;
+  final MoneyFormatter moneyFormatter = MoneyFormatter();
 
   @override
   void initState() {
@@ -56,6 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
         homeProvider.initCareerData();
         homeProvider.initCounselorData();
         homeProvider.initForumData();
+        Provider.of<ArticleListProvider>(context, listen: false)
+            .getArticlesNoLogin();
         Provider.of<ForumDiscussionViewModel>(context, listen: false).init();
       },
     );
@@ -412,13 +417,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                         },
                         extraWidget: Text(
-                          dataCareer[index].salary == 0
-                              ? 'Rp 0'
-                              : '${NumberFormat.currency(
-                                  locale: 'id',
-                                  symbol: 'Rp ',
-                                  decimalDigits: 0,
-                                ).format(dataCareer[index].salary)} ++',
+                          moneyFormatter
+                              .formatRupiah(dataCareer[index].salary ?? 0),
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w500,

@@ -60,7 +60,7 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 16, top: 16, bottom: 8),
+              padding: const EdgeInsets.only(left: 16, bottom: 8),
               child: Consumer<CounselorListViewModel>(
                   builder: (context, provider, _) {
                 return Text(
@@ -100,7 +100,7 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
                               padding:
                                   const EdgeInsets.only(left: 16, right: 16),
                               margin: const EdgeInsets.only(bottom: 8),
-                              height: MediaQuery.of(context).size.height * 0.15,
+                              height: 130,
                               width: double.infinity,
                               child: DecoratedBox(
                                 decoration: BoxDecoration(
@@ -112,7 +112,7 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
                                 child: Row(
                                   children: [
                                     SizedBox(
-                                      width: 135,
+                                      width: 130,
                                       height: double.infinity,
                                       child: Image(
                                         image: NetworkImage(provider
@@ -122,98 +122,107 @@ class _CounselorListScreenState extends State<CounselorListScreen> {
                                         fit: BoxFit.cover,
                                         errorBuilder:
                                             (context, error, stackTrace) {
-                                          return const Image(
-                                            image: NetworkImage(
-                                                'https://cdn-icons-png.flaticon.com/512/7867/7867562.png'),
-                                            fit: BoxFit.cover,
+                                          return Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.error,
+                                                color: MyColor.danger,
+                                              ),
+                                              Text(
+                                                'Image Error',
+                                                style: TextStyle(
+                                                  color: MyColor.danger,
+                                                ),
+                                              )
+                                            ],
                                           );
                                         },
                                       ),
                                     ),
                                     const SizedBox(
-                                      width: 8,
+                                      width: 10,
                                     ),
-                                    SingleChildScrollView(
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.5,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.2,
-                                        padding: const EdgeInsets.only(
-                                            top: 16,
-                                            bottom: 16,
-                                            left: 8,
-                                            right: 8),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              provider.counselorList[index]
-                                                      .name ??
-                                                  '',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12,
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.2,
+                                      padding: const EdgeInsets.only(
+                                          top: 16,
+                                          bottom: 16,
+                                          left: 8,
+                                          right: 8),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            provider.counselorList[index]
+                                                    .name ??
+                                                '',
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            provider.counselorList[index]
+                                                    .topic ??
+                                                '',
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          RatingBar(
+                                            ignoreGestures: true,
+                                            itemSize: 20,
+                                            initialRating: provider
+                                                    .counselorList[index].rating
+                                                    ?.toDouble() ??
+                                                0,
+                                            direction: Axis.horizontal,
+                                            itemCount: 5,
+                                            allowHalfRating: true,
+                                            ratingWidget: RatingWidget(
+                                              full: Icon(
+                                                Icons.star,
+                                                color: MyColor.warning,
+                                              ),
+                                              empty: Icon(
+                                                Icons.star,
+                                                color: MyColor.neutralLow,
+                                              ),
+                                              half: Icon(
+                                                Icons.star_half,
+                                                color: MyColor.warning,
                                               ),
                                             ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            Text(
-                                              provider.counselorList[index]
-                                                      .topic ??
-                                                  '',
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            RatingBar(
-                                              ignoreGestures: true,
-                                              itemSize: 20,
-                                              initialRating: provider
-                                                      .counselorList[index]
-                                                      .rating
-                                                      ?.toDouble() ??
-                                                  0,
-                                              direction: Axis.horizontal,
-                                              itemCount: 5,
-                                              allowHalfRating: true,
-                                              ratingWidget: RatingWidget(
-                                                full: Icon(
-                                                  Icons.star,
-                                                  color: MyColor.warning,
-                                                ),
-                                                empty: Icon(
-                                                  Icons.star,
-                                                  color: MyColor.neutralLow,
-                                                ),
-                                                half: Icon(
-                                                  Icons.star_half,
-                                                  color: MyColor.warning,
-                                                ),
-                                              ),
-                                              onRatingUpdate: (value) {},
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            Text(
-                                              moneyFormatter.formatRupiah(
-                                                  provider.counselorList[index]
-                                                          .price ??
-                                                      0),
-                                              style: const TextStyle(
-                                                  color: Color(0xFFAF1582),
-                                                  fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
+                                            onRatingUpdate: (value) {},
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            moneyFormatter.formatRupiah(provider
+                                                    .counselorList[index]
+                                                    .price ??
+                                                0),
+                                            style: const TextStyle(
+                                                color: Color(0xFFAF1582),
+                                                fontSize: 12),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
