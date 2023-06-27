@@ -19,7 +19,7 @@ class UserService extends InterceptorApi {
       final profile = UserModel.fromJson(response.data['data']['profile']);
       return profile;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -43,7 +43,7 @@ class UserService extends InterceptorApi {
       );
       return response.data["meta"]["message"].toString();
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -68,7 +68,7 @@ class UserService extends InterceptorApi {
       );
       return response.data["meta"]["message"].toString();
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 }

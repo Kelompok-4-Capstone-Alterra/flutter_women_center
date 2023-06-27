@@ -30,8 +30,8 @@ class CareerListViewModel extends ChangeNotifier {
       changeState(MyState.loaded);
     } catch (e) {
       changeState(MyState.failed);
+      rethrow;
     }
-    notifyListeners();
   }
 
   void searchCareer({required String keyword}) async {
@@ -45,8 +45,8 @@ class CareerListViewModel extends ChangeNotifier {
       changeState(MyState.loaded);
     } catch (e) {
       changeState(MyState.failed);
+      rethrow;
     }
-    notifyListeners();
   }
 
   void checkHighestSalary() {
@@ -98,7 +98,7 @@ class CareerListViewModel extends ChangeNotifier {
       changeState(MyState.loaded);
     } catch (e) {
       changeState(MyState.failed);
+      rethrow;
     }
-    notifyListeners();
   }
 }

@@ -17,7 +17,7 @@ class ForumService extends InterceptorApi {
           .toList();
       return data;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -37,7 +37,7 @@ class ForumService extends InterceptorApi {
         },
       );
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -55,7 +55,7 @@ class ForumService extends InterceptorApi {
         data: forumData.toJson(),
       );
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -72,7 +72,7 @@ class ForumService extends InterceptorApi {
         ),
       );
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -92,7 +92,7 @@ class ForumService extends InterceptorApi {
         data: forumData.toJson(),
       );
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -122,7 +122,7 @@ class ForumService extends InterceptorApi {
           .toList();
       return data;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -154,7 +154,7 @@ class ForumService extends InterceptorApi {
           .toList();
       return data;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 }

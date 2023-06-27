@@ -325,7 +325,7 @@ class _CareerDetailScreenState extends State<CareerDetailScreen> {
                       ),
                       title: Center(
                         child: Text(
-                          'Do you want to apply for this career??',
+                          'Do you want to apply for this career?',
                           style: TextStyle(
                             fontSize: 14,
                             color: MyColor.neutralHigh,

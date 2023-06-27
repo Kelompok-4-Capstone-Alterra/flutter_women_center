@@ -1,3 +1,4 @@
+import 'package:capstone_project/utils/components/formarter/money_formater.dart';
 import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/forum/widget/forum_item_widget.dart';
 import 'package:capstone_project/view/screen/home/search/tab_search/tab_search_view_model.dart';
@@ -23,6 +24,8 @@ class TabSearch extends StatefulWidget {
 }
 
 class _TabSearchState extends State<TabSearch> {
+  final MoneyFormatter moneyFormatter = MoneyFormatter();
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -310,13 +313,8 @@ class _TabSearchState extends State<TabSearch> {
                                   width: 5,
                                 ),
                                 Text(
-                                  dataCareer[index].salary == 0
-                                      ? 'Rp 0'
-                                      : NumberFormat.currency(
-                                          locale: 'id',
-                                          symbol: 'Rp ',
-                                          decimalDigits: 0,
-                                        ).format(dataCareer[index].salary),
+                                  moneyFormatter.formatRupiah(
+                                      dataCareer[index].salary ?? 0),
                                   style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w500,

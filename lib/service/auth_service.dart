@@ -19,7 +19,7 @@ class AuthService extends InterceptorApi {
       );
       return response.data["meta"]["message"].toString();
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -34,7 +34,7 @@ class AuthService extends InterceptorApi {
       );
       return response.data["meta"]["message"].toString();
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -51,7 +51,7 @@ class AuthService extends InterceptorApi {
       final String token = response.data["data"]["token"].toString();
       return token;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -65,7 +65,7 @@ class AuthService extends InterceptorApi {
       final String message = response.data["meta"]["message"].toString();
       return message;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -80,7 +80,7 @@ class AuthService extends InterceptorApi {
       );
       return response.data["meta"]["message"].toString();
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -97,7 +97,7 @@ class AuthService extends InterceptorApi {
       );
       return response.data["meta"]["message"].toString();
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 }

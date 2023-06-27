@@ -1,12 +1,15 @@
+import 'package:capstone_project/utils/components/appbar/custom_appbar.dart';
+import 'package:capstone_project/utils/components/buttons/floating_button.dart';
+import 'package:capstone_project/utils/components/empty/empty.dart';
+import 'package:capstone_project/utils/components/text_box/search_text_box.dart';
+import 'package:capstone_project/utils/my_color.dart';
+import 'package:capstone_project/utils/my_size.dart';
+import 'package:capstone_project/utils/state/finite_state.dart';
+import 'package:capstone_project/view/screen/career/career_detail/career_detail_screen.dart';
+import 'package:capstone_project/view/screen/career/career_detail/career_detail_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../utils/components/buttons/floating_button.dart';
-import '../../../../../utils/my_color.dart';
-import '../../../../../utils/state/finite_state.dart';
-import '../../../../utils/components/text_box/search_text_box.dart';
-import '../career_detail/career_detail_screen.dart';
-import '../career_detail/career_detail_view_model.dart';
 import 'career_list_view_model.dart';
 import 'widget/career_info_widget.dart';
 import 'widget/option_sort_by_widget.dart';
@@ -51,24 +54,23 @@ class _CareerListScreenState extends State<CareerListScreen> {
   Widget build(BuildContext context) {
     late String statusList = 'Newest';
 
-    final DetailCareerViewModel provider =
-        Provider.of<DetailCareerViewModel>(context, listen: false);
+    final provider = Provider.of<DetailCareerViewModel>(context, listen: false);
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+      appBar: CustomAppBar(
+        preferredSize: Size(
+          MySize.screenWidth(context),
+          double.maxFinite,
         ),
-        title: Text(
-          'Career Information',
-          style: TextStyle(
-            color: MyColor.neutralHigh,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            letterSpacing: 0.15,
-          ),
+        home: false,
+        judul: 'Career Information',
+        searchField: true,
+        tabBar: false,
+        searchTextBox: SearchTextBox(
+          keyboardType: TextInputType.text,
+          textEditingController: _searchController,
+          onChanged: (p0) {
+            careerProvider.searchCareer(keyword: p0);
+          },
         ),
       ),
       body: Padding(
@@ -78,136 +80,73 @@ class _CareerListScreenState extends State<CareerListScreen> {
         child: Column(
           children: [
             const SizedBox(
-              height: 24,
+              height: 12,
             ),
-            Form(
-              key: _formKey,
-              child: SearchTextBox(
-                keyboardType: TextInputType.text,
-                textEditingController: _searchController,
-                onChanged: (value) {
-                  careerProvider.searchCareer(keyword: value);
-                },
-                focusNode: _searchFocusNode,
-              ),
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            Divider(
-              thickness: 1,
-              color: Colors.grey[300],
+            Consumer<CareerListViewModel>(
+              builder: (context, value, child) {
+                return Container(
+                  alignment: Alignment.topLeft,
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    statusList,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: MyColor.neutralMediumLow,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                );
+              },
             ),
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Consumer<CareerListViewModel>(
-                      builder: (context, value, child) {
-                        return Container(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            statusList,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: MyColor.neutralMediumLow,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    Consumer<CareerListViewModel>(
-                      builder: (context, value, child) {
-                        if (value.state == MyState.loading) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (value.state == MyState.failed) {
-                          return const Center(
-                            child:
-                                Text('Error occurred while fetching careers.'),
-                          );
-                        } else if (value.careerList.isEmpty) {
-                          return Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.1,
-                                ),
-                                Image.asset('assets/images/nothing_here.png'),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                Text(
-                                  'Woops! Sorry, no result found.',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: MyColor.neutralHigh,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        } else {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: careerProvider.careerList.length,
-                            itemBuilder: (context, index) {
-                              final career = careerProvider.careerList[index];
-                              return Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 4,
-                                ),
-                                width: double.infinity,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      _searchFocusNode.unfocus();
-                                      await provider.fetchCareerById(
-                                        id: career.id!,
-                                      );
-                                      if (context.mounted) {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                CareerDetailScreen(
-                                              id: career.id!,
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                    child: CareerInfoWidget(
-                                      image: career.image,
-                                      jobPosition: career.jobPosition,
-                                      companyName: career.companyName,
-                                      location: career.location,
-                                      salary: career.salary,
-                                    ),
+              child: Consumer<CareerListViewModel>(
+                builder: (context, value, child) {
+                  if (value.state == MyState.loading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (value.state == MyState.failed) {
+                    return const Center(
+                      child: Text('Error occurred while fetching careers.'),
+                    );
+                  } else if (value.careerList.isEmpty) {
+                    return const Empty();
+                  } else {
+                    return ListView.builder(
+                      itemCount: careerProvider.careerList.length,
+                      itemBuilder: (context, index) {
+                        final career = careerProvider.careerList[index];
+                        return InkWell(
+                          onTap: () async {
+                            _searchFocusNode.unfocus();
+                            await provider.fetchCareerById(
+                              id: career.id!,
+                            );
+                            if (context.mounted) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CareerDetailScreen(
+                                    id: career.id!,
                                   ),
                                 ),
                               );
-                            },
-                          );
-                        }
+                            }
+                          },
+                          child: CareerInfoWidget(
+                            image: career.image,
+                            jobPosition: career.jobPosition,
+                            companyName: career.companyName,
+                            location: career.location,
+                            salary: career.salary,
+                          ),
+                        );
                       },
-                    ),
-                  ],
-                ),
+                    );
+                  }
+                },
               ),
-            )
+            ),
           ],
         ),
       ),
