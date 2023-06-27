@@ -147,11 +147,15 @@ class ArticleDetailsScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(
-                      articles!.title ?? '',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
+                    SizedBox(
+                      width: 300,
+                      child: Text(
+                        articles!.title ?? '',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 3,
                       ),
                     ),
                     const Spacer(),
