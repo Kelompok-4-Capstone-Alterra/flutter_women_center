@@ -90,6 +90,7 @@ class ForumDiscussionViewModel extends ChangeNotifier {
       changeForumState(MyState.loaded);
     } catch (e) {
       changeForumState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -103,6 +104,7 @@ class ForumDiscussionViewModel extends ChangeNotifier {
       changeForumState(MyState.loaded);
     } catch (e) {
       changeForumState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -116,6 +118,7 @@ class ForumDiscussionViewModel extends ChangeNotifier {
       changeForumState(MyState.loaded);
     } catch (e) {
       changeForumState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -130,6 +133,7 @@ class ForumDiscussionViewModel extends ChangeNotifier {
       changeForumState(MyState.loaded);
     } catch (e) {
       changeForumState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -154,6 +158,7 @@ class ForumDiscussionViewModel extends ChangeNotifier {
       changeForumState(MyState.loaded);
     } catch (e) {
       changeForumState(MyState.failed);
+      rethrow;
     }
   }
 

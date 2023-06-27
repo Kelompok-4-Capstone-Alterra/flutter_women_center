@@ -40,6 +40,7 @@ class ProfileViewModel with ChangeNotifier {
     } catch (e) {
       _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 

@@ -22,6 +22,7 @@ class ForgotPasswordViewModel with ChangeNotifier {
       changeState(MyState.loaded);
     } catch (e) {
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -32,6 +33,7 @@ class ForgotPasswordViewModel with ChangeNotifier {
       changeState(MyState.loaded);
     } catch (e) {
       changeState(MyState.failed);
+      rethrow;
     }
   }
 }

@@ -24,7 +24,7 @@ class CareerService extends InterceptorApi {
 
       return careerList;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -50,7 +50,7 @@ class CareerService extends InterceptorApi {
 
       return careerList;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -75,7 +75,7 @@ class CareerService extends InterceptorApi {
 
       return careerList;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -96,7 +96,7 @@ class CareerService extends InterceptorApi {
       detailCareer = DetailCareerModel.fromJson(response.data['data']);
       return detailCareer;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 }
