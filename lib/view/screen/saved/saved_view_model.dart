@@ -74,14 +74,16 @@ class SavedViewModel with ChangeNotifier {
       );
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
   ///membuat reading list baru ke service reading list
   Future<void> createReadingList(
-      {required String? name, required String? description}) async {
+      {required String? name,
+      required String? description,
+      required bool? sortByOldest}) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
@@ -91,18 +93,21 @@ class SavedViewModel with ChangeNotifier {
         name: name ?? '',
         description: description ?? '',
       );
+      showReadingListSortByOldestOrNewest(sortByOldest: sortByOldest);
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
   ///mengubah informasi reading list ke service reading list
-  Future<void> updateReadingList(
-      {required String? id,
-      required String? name,
-      required String? description}) async {
+  Future<void> updateReadingList({
+    required String? id,
+    required String? name,
+    required String? description,
+    required bool? sortByOldest,
+  }) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
@@ -113,15 +118,19 @@ class SavedViewModel with ChangeNotifier {
         name: name ?? '',
         description: description ?? '',
       );
+      showReadingListSortByOldestOrNewest(sortByOldest: sortByOldest);
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
   ///menghapus reading list dari service reading list
-  Future<void> removeReadingList({required String? id}) async {
+  Future<void> removeReadingList({
+    required String? id,
+    required bool? sortByOldest,
+  }) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
@@ -130,10 +139,11 @@ class SavedViewModel with ChangeNotifier {
         token: token,
         id: id ?? '',
       );
+      showReadingListSortByOldestOrNewest(sortByOldest: sortByOldest);
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 }

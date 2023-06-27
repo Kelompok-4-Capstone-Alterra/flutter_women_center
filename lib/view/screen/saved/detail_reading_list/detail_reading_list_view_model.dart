@@ -41,8 +41,8 @@ class DetailReadingListViewmodel with ChangeNotifier {
         changeState(MyState.loaded);
       }
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -61,10 +61,11 @@ class DetailReadingListViewmodel with ChangeNotifier {
         name: name ?? '',
         description: description ?? '',
       );
+      showReadingList(id: id);
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -80,8 +81,8 @@ class DetailReadingListViewmodel with ChangeNotifier {
       );
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -95,10 +96,11 @@ class DetailReadingListViewmodel with ChangeNotifier {
         token: token,
         id: id ?? '',
       );
+      showReadingList(id: id);
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 }

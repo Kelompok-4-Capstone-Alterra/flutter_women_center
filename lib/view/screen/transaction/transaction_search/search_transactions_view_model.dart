@@ -82,8 +82,8 @@ class SearchTransactionsViewModel with ChangeNotifier {
       }
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -106,8 +106,8 @@ class SearchTransactionsViewModel with ChangeNotifier {
           review: review);
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -127,8 +127,8 @@ class SearchTransactionsViewModel with ChangeNotifier {
       );
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 

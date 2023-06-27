@@ -190,12 +190,8 @@ class _DetailReadingListScreenState extends State<DetailReadingListScreen> {
               _editDescriptionController.clear();
               _editListNameController.clear();
               provider.removeReadingList(id: provider.readingListData.id);
-              if (context.mounted) {
-                Navigator.popUntil(
-                  context,
-                  ModalRoute.withName(SavedScreen.routeName),
-                );
-              }
+              Navigator.pop(context);
+              Navigator.pop(context);
             },
           )
         ],
@@ -310,7 +306,10 @@ class _DetailReadingListScreenState extends State<DetailReadingListScreen> {
                                           .readingListArticles![index]
                                           .article!
                                           .id!,
-                                    );
+                                    ).then((_) {
+                                      provider.showReadingList(
+                                          id: provider.readingListData.id);
+                                    });
                                   },
                                   child: VerticalArticleCard(
                                     deleteEvent: () {

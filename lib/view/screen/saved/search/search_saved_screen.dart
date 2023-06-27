@@ -112,11 +112,13 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
                         child: SavedCard(
                           deleteEvent: () {
                             searchSavedProvider.removeReadingList(
-                                id: searchSavedProvider
-                                    .allReadingListData[indexList].id);
+                              id: searchSavedProvider
+                                  .allReadingListData[indexList].id,
+                              name: _searchController.text,
+                            );
                             _editListNameController.clear();
                             _editDescriptionController.clear();
-                            _searchController.clear();
+
                             if (context.mounted) {
                               Navigator.pop(context);
                               searchSavedProvider.showReadingListByName(
@@ -214,7 +216,7 @@ class _SearchSavedScreen extends State<SearchSavedScreen> {
                                                     _editDescriptionController
                                                         .text,
                                               );
-                                              _searchController.clear();
+
                                               _editListNameController.clear();
                                               _editDescriptionController
                                                   .clear();

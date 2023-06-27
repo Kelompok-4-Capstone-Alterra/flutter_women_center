@@ -86,7 +86,15 @@ class _SavedScreenState extends State<SavedScreen> {
           textEditingController: _searchController,
           readOnly: true,
           onTap: () {
-            Navigator.pushNamed(context, SearchSavedScreen.routeName);
+            Navigator.pushNamed(context, SearchSavedScreen.routeName).then((_) {
+              if (provider.sortingByOldest == false) {
+                return provider.showReadingListSortByOldestOrNewest(
+                    sortByOldest: false);
+              } else {
+                return provider.showReadingListSortByOldestOrNewest(
+                    sortByOldest: true);
+              }
+            });
           },
         ),
         actions: [
@@ -190,6 +198,8 @@ class _SavedScreenState extends State<SavedScreen> {
                                           name: _listNameController.text,
                                           description:
                                               _descriptionController.text,
+                                          sortByOldest:
+                                              savedProvider.sortingByOldest,
                                         );
                                         _listNameController.clear();
                                         _descriptionController.clear();
@@ -282,7 +292,17 @@ class _SavedScreenState extends State<SavedScreen> {
                           Navigator.pushNamed(
                             context,
                             DetailReadingListScreen.routeName,
-                          );
+                          ).then((_) {
+                            if (provider.sortingByOldest == false) {
+                              return provider
+                                  .showReadingListSortByOldestOrNewest(
+                                      sortByOldest: false);
+                            } else {
+                              return provider
+                                  .showReadingListSortByOldestOrNewest(
+                                      sortByOldest: true);
+                            }
+                          });
                         },
                         child: SavedCard(
                           editReadingListBottomSheetBuilder: (context) {
@@ -379,6 +399,8 @@ class _SavedScreenState extends State<SavedScreen> {
                                                 description:
                                                     _editDescriptionController
                                                         .text,
+                                                sortByOldest: savedProvider
+                                                    .sortingByOldest,
                                               );
                                               _listNameController.clear();
                                               _descriptionController.clear();
@@ -432,8 +454,10 @@ class _SavedScreenState extends State<SavedScreen> {
                           editDescriptionFocusNode: _editDescriptionNode,
                           deleteEvent: () {
                             savedProvider.removeReadingList(
-                                id: savedProvider
-                                    .allReadingListData[indexList].id);
+                              id: savedProvider
+                                  .allReadingListData[indexList].id,
+                              sortByOldest: savedProvider.sortingByOldest,
+                            );
                             _listNameController.clear();
                             _descriptionController.clear();
                             _editListNameController.clear();
