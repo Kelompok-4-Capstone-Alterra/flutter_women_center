@@ -19,7 +19,6 @@ import 'package:capstone_project/view/screen/home/widget/home_menu.dart';
 import 'package:capstone_project/view/screen/voucher/voucher_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
