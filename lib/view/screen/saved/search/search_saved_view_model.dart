@@ -36,8 +36,8 @@ class SearchSavedViewModel with ChangeNotifier {
       );
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -60,8 +60,8 @@ class SearchSavedViewModel with ChangeNotifier {
       showReadingListByName(name: name);
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -81,8 +81,8 @@ class SearchSavedViewModel with ChangeNotifier {
       showReadingListByName(name: name);
       changeState(MyState.loaded);
     } catch (e) {
-      _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 }
