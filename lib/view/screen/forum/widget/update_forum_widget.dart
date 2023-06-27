@@ -192,144 +192,222 @@ class _UpdateForumState extends State<UpdateForum> {
                     isi: [
                       Form(
                         key: formKey,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 18, bottom: 10),
-                              child: Text(
-                                'Topic\'s Category',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: MyColor.neutralHigh,
-                                  fontWeight: FontWeight.w400,
+                        child: SizedBox(
+                          height: 800,
+                          width: double.infinity,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 18, bottom: 10),
+                                child: Text(
+                                  'Topic\'s Category',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: MyColor.neutralHigh,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ),
-                            ),
-                            DropdownSearch<TopicModel>(
-                              itemAsString: (item) => item.name!,
-                              selectedItem: forumProvider.topicData.firstWhere(
-                                  (element) =>
-                                      element.name ==
-                                      widget.forumData.category),
-                              dropdownDecoratorProps: DropDownDecoratorProps(
-                                textAlign: TextAlign.left,
-                                baseStyle: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: MyColor.neutralHigh,
-                                ),
-                                dropdownSearchDecoration: InputDecoration(
-                                  hintText: 'Choose topic\'s category',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(3),
-                                  ),
-                                  isDense: true,
-                                  hintStyle: TextStyle(
+                              DropdownSearch<TopicModel>(
+                                itemAsString: (item) => item.name!,
+                                selectedItem: forumProvider.topicData
+                                    .firstWhere((element) =>
+                                        element.name ==
+                                        widget.forumData.category),
+                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                  textAlign: TextAlign.left,
+                                  baseStyle: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
-                                    color: MyColor.neutralMediumLow,
+                                    color: MyColor.neutralHigh,
                                   ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(3),
-                                    borderSide: BorderSide(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    hintText: 'Choose topic\'s category',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(3),
+                                    ),
+                                    isDense: true,
+                                    hintStyle: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
                                       color: MyColor.neutralMediumLow,
-                                      width: .25,
                                     ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(3),
-                                    borderSide: BorderSide(
-                                      color: MyColor.primaryMain,
-                                      width: .25,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(3),
+                                      borderSide: BorderSide(
+                                        color: MyColor.neutralMediumLow,
+                                        width: .25,
+                                      ),
                                     ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(3),
-                                    borderSide: BorderSide(
-                                      color: MyColor.danger,
-                                      width: .25,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(3),
+                                      borderSide: BorderSide(
+                                        color: MyColor.primaryMain,
+                                        width: .25,
+                                      ),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(3),
+                                      borderSide: BorderSide(
+                                        color: MyColor.danger,
+                                        width: .25,
+                                      ),
                                     ),
                                   ),
                                 ),
+                                items: forumProvider.topicData,
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'Please fill this field';
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  selectedTopic = value!.id!;
+                                },
                               ),
-                              items: forumProvider.topicData,
-                              validator: (value) {
-                                if (value == null) {
-                                  return 'Please fill this field';
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                selectedTopic = value!.id!;
-                              },
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 18, bottom: 10),
-                              child: Text(
-                                'Forum\'s Topic',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: MyColor.neutralHigh,
-                                  fontWeight: FontWeight.w400,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 18, bottom: 10),
+                                child: Text(
+                                  'Forum\'s Topic',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: MyColor.neutralHigh,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ),
-                            ),
-                            TextBox(
-                              textEditingController: editForumTopicController,
-                              hintText:
-                                  'Ex : How to improve your leadership skills',
-                              onFieldSubmitted: (value) {
-                                MyFocusNode.change(
-                                  context: context,
-                                  currentFocus: editForumTopicNode,
-                                  nextFocus: editForumLinkNode,
-                                );
-                              },
-                              validator: (p0) {
-                                if (p0 == null || p0.isEmpty) {
-                                  return 'Please fill this field';
-                                }
-                                return null;
-                              },
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 18, bottom: 10),
-                              child: Text(
-                                'Forum\'s Link',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: MyColor.neutralHigh,
-                                  fontWeight: FontWeight.w400,
+                              TextBox(
+                                textEditingController: editForumTopicController,
+                                hintText:
+                                    'Ex : How to improve your leadership skills',
+                                onFieldSubmitted: (value) {
+                                  MyFocusNode.change(
+                                    context: context,
+                                    currentFocus: editForumTopicNode,
+                                    nextFocus: editForumLinkNode,
+                                  );
+                                },
+                                validator: (p0) {
+                                  if (p0 == null || p0.isEmpty) {
+                                    return 'Please fill this field';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 18, bottom: 10),
+                                child: Text(
+                                  'Forum\'s Link',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: MyColor.neutralHigh,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ),
-                            ),
-                            TextBox(
-                              textEditingController: editForumLinkController,
-                              hintText: 'Ex : Whatsapp Group\'s Link, etc.',
-                              onFieldSubmitted: (value) {
-                                MyFocusNode.change(
-                                  context: context,
-                                  currentFocus: editForumLinkNode,
-                                  nextFocus: editForumLinkNode,
-                                );
-                              },
-                              validator: (p0) {
-                                if (p0 == null || p0.isEmpty) {
-                                  return 'Please fill this field';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 16),
-                            PrimaryButton(
-                              teks: 'Edit',
-                              onPressed: () {
-                                if (formKey.currentState!.validate()) {
+                              TextBox(
+                                textEditingController: editForumLinkController,
+                                hintText: 'Ex : Whatsapp Group\'s Link, etc.',
+                                onFieldSubmitted: (value) {
+                                  MyFocusNode.change(
+                                    context: context,
+                                    currentFocus: editForumLinkNode,
+                                    nextFocus: editForumLinkNode,
+                                  );
+                                },
+                                validator: (p0) {
+                                  if (p0 == null || p0.isEmpty) {
+                                    return 'Please fill this field';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              PrimaryButton(
+                                teks: 'Edit',
+                                onPressed: () {
+                                  if (formKey.currentState!.validate()) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          backgroundColor:
+                                              const Color(0xffFFFFFF),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(3),
+                                          ),
+                                          title: Text(
+                                            'Are you sure want to make a change?',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: MyColor.neutralHigh,
+                                              letterSpacing: 0.1,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          actions: <Widget>[
+                                            const SizedBox(
+                                              height: 16,
+                                            ),
+                                            PrimaryButton(
+                                              teks: 'Sure',
+                                              onPressed: updateForum,
+                                            ),
+                                            const SizedBox(
+                                              height: 8,
+                                            ),
+                                            OutlineButton(
+                                              teks: 'Maybe Later',
+                                              customBackgroundColor:
+                                                  MyColor.white,
+                                              customTextColor:
+                                                  MyColor.primaryMain,
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
+                                customChild: Consumer<ForumDiscussionViewModel>(
+                                  builder: (context, value, child) {
+                                    if (value.forumState == MyState.loading) {
+                                      return const SizedBox(
+                                        height: 16,
+                                        width: 16,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 1.5,
+                                        ),
+                                      );
+                                    } else {
+                                      return Text(
+                                        'Edit',
+                                        style: TextStyle(
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w500,
+                                          color: MyColor.white,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              OutlineButton(
+                                customBackgroundColor: MyColor.white,
+                                customTextColor: MyColor.primaryMain,
+                                teks: 'Delete',
+                                onPressed: () {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -341,7 +419,7 @@ class _UpdateForumState extends State<UpdateForum> {
                                               BorderRadius.circular(3),
                                         ),
                                         title: Text(
-                                          'Are you sure want to make a change?',
+                                          'Are you sure want to delete this forum?',
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: MyColor.neutralHigh,
@@ -355,7 +433,7 @@ class _UpdateForumState extends State<UpdateForum> {
                                           ),
                                           PrimaryButton(
                                             teks: 'Sure',
-                                            onPressed: updateForum,
+                                            onPressed: deleteForum,
                                           ),
                                           const SizedBox(
                                             height: 8,
@@ -374,102 +452,32 @@ class _UpdateForumState extends State<UpdateForum> {
                                       );
                                     },
                                   );
-                                }
-                              },
-                              customChild: Consumer<ForumDiscussionViewModel>(
-                                builder: (context, value, child) {
-                                  if (value.forumState == MyState.loading) {
-                                    return const SizedBox(
-                                      height: 16,
-                                      width: 16,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 1.5,
-                                      ),
-                                    );
-                                  } else {
-                                    return Text(
-                                      'Edit',
-                                      style: TextStyle(
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w500,
-                                        color: MyColor.white,
-                                      ),
-                                    );
-                                  }
                                 },
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            OutlineButton(
-                              customBackgroundColor: MyColor.white,
-                              customTextColor: MyColor.primaryMain,
-                              teks: 'Delete',
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      backgroundColor: const Color(0xffFFFFFF),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(3),
-                                      ),
-                                      title: Text(
-                                        'Are you sure want to delete this forum?',
+                                customChild: Consumer<ForumDiscussionViewModel>(
+                                  builder: (context, value, child) {
+                                    if (value.forumState == MyState.loading) {
+                                      return const SizedBox(
+                                        height: 16,
+                                        width: 16,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 1.5,
+                                        ),
+                                      );
+                                    } else {
+                                      return Text(
+                                        'Delete',
                                         style: TextStyle(
-                                          fontSize: 14,
-                                          color: MyColor.neutralHigh,
-                                          letterSpacing: 0.1,
+                                          fontSize: 14.0,
                                           fontWeight: FontWeight.w500,
+                                          color: MyColor.primaryMain,
                                         ),
-                                      ),
-                                      actions: <Widget>[
-                                        const SizedBox(
-                                          height: 16,
-                                        ),
-                                        PrimaryButton(
-                                          teks: 'Sure',
-                                          onPressed: deleteForum,
-                                        ),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        OutlineButton(
-                                          teks: 'Maybe Later',
-                                          customBackgroundColor: MyColor.white,
-                                          customTextColor: MyColor.primaryMain,
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ],
-                                    );
+                                      );
+                                    }
                                   },
-                                );
-                              },
-                              customChild: Consumer<ForumDiscussionViewModel>(
-                                builder: (context, value, child) {
-                                  if (value.forumState == MyState.loading) {
-                                    return const SizedBox(
-                                      height: 16,
-                                      width: 16,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 1.5,
-                                      ),
-                                    );
-                                  } else {
-                                    return Text(
-                                      'Delete',
-                                      style: TextStyle(
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w500,
-                                        color: MyColor.primaryMain,
-                                      ),
-                                    );
-                                  }
-                                },
-                              ),
-                            )
-                          ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ],

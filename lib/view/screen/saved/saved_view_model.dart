@@ -11,12 +11,10 @@ class SavedViewModel with ChangeNotifier {
 
   late SharedPreferences _loginData;
   MyState _state = MyState.initial;
-  String _message = '';
   final ReadingListService _readingListService = ReadingListService();
   List<ReadingListModel> _allReadingListData = <ReadingListModel>[];
 
   MyState get state => _state;
-  String get message => _message;
   List<ReadingListModel> get allReadingListData => _allReadingListData;
 
   void checkNewest() {
