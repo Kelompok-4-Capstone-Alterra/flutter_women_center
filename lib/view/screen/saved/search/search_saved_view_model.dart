@@ -42,10 +42,11 @@ class SearchSavedViewModel with ChangeNotifier {
   }
 
   ///mengubah informasi reading list dari service reading list
-  Future<void> updateReadingList(
-      {required String? id,
-      required String? name,
-      required String? description}) async {
+  Future<void> updateReadingList({
+    required String? id,
+    required String? name,
+    required String? description,
+  }) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
@@ -56,6 +57,7 @@ class SearchSavedViewModel with ChangeNotifier {
         name: name ?? '',
         description: description ?? '',
       );
+      showReadingListByName(name: name);
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
@@ -64,7 +66,10 @@ class SearchSavedViewModel with ChangeNotifier {
   }
 
   ///menghapus reading list dari service reading list
-  Future<void> removeReadingList({required String? id}) async {
+  Future<void> removeReadingList({
+    required String? id,
+    required String? name,
+  }) async {
     try {
       changeState(MyState.loading);
       _loginData = await SharedPreferences.getInstance();
@@ -73,6 +78,7 @@ class SearchSavedViewModel with ChangeNotifier {
         token: token,
         id: id ?? '',
       );
+      showReadingListByName(name: name);
       changeState(MyState.loaded);
     } catch (e) {
       _message = e.toString();
