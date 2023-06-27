@@ -11,13 +11,11 @@ class TransactionViewModel with ChangeNotifier {
 
   late SharedPreferences _loginData;
   MyState _state = MyState.initial;
-  String _message = '';
   final TransactionsService _transactionsService = TransactionsService();
   List<TransactionsModel> _allTransactionsDataOngoing = <TransactionsModel>[];
   List<TransactionsModel> _allTransactionsDataHistory = <TransactionsModel>[];
 
   MyState get state => _state;
-  String get message => _message;
   List<TransactionsModel> get allTransactionsDataOngoing =>
       _allTransactionsDataOngoing;
   List<TransactionsModel> get allTransactionsDataHistory =>

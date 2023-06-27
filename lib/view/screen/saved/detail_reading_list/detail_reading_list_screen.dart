@@ -8,7 +8,6 @@ import 'package:capstone_project/utils/state/finite_state.dart';
 import 'package:capstone_project/view/screen/article/article_detail/article_detail_screen.dart';
 import 'package:capstone_project/view/screen/article/article_list/article_list_post/article_list_post_view_model.dart';
 import 'package:capstone_project/view/screen/saved/detail_reading_list/detail_reading_list_view_model.dart';
-import 'package:capstone_project/view/screen/saved/saved_screen.dart';
 import 'package:capstone_project/view/screen/saved/search/search_saved_screen.dart';
 import 'package:capstone_project/view/screen/saved/widgets/article_list_popup_menu_button.dart';
 import 'package:capstone_project/view/screen/saved/widgets/vertical_article_card.dart';
