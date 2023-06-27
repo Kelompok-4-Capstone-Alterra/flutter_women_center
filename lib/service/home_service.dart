@@ -5,7 +5,6 @@ import 'package:capstone_project/model/career_model.dart';
 import 'package:capstone_project/model/counselor_list_model.dart';
 import 'package:capstone_project/model/forum_model.dart';
 
-
 class HomeService extends InterceptorApi {
   Future<List<Articles>> getArticles() async {
     try {
@@ -18,7 +17,7 @@ class HomeService extends InterceptorApi {
           .toList();
       return data;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -34,7 +33,7 @@ class HomeService extends InterceptorApi {
               .toList();
       return data;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -49,7 +48,7 @@ class HomeService extends InterceptorApi {
           .toList();
       return data;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 
@@ -64,7 +63,7 @@ class HomeService extends InterceptorApi {
           .toList();
       return data;
     } catch (e) {
-      rethrow;
+      throw Exception(e);
     }
   }
 }

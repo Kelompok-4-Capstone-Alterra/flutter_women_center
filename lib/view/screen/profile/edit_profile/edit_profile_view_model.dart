@@ -41,6 +41,7 @@ class EditProfileViewModel with ChangeNotifier {
       changeState(MyState.loaded);
     } catch (e) {
       changeState(MyState.failed);
+      rethrow;
     }
   }
 }

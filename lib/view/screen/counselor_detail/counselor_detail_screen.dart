@@ -88,13 +88,20 @@ class _CounselorDetailScreenState extends State<CounselorDetailScreen> {
                             height: 240,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
-                              return SizedBox(
-                                child: Image.network(
-                                  'https://cdn-icons-png.flaticon.com/512/7867/7867562.png',
-                                  width: double.infinity,
-                                  height: 240,
-                                  fit: BoxFit.cover,
-                                ),
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.error,
+                                    color: MyColor.danger,
+                                  ),
+                                  Text(
+                                    'Image Error',
+                                    style: TextStyle(
+                                      color: MyColor.danger,
+                                    ),
+                                  )
+                                ],
                               );
                             },
                           ),

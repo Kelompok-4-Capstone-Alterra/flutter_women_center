@@ -22,132 +22,126 @@ class CareerInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MoneyFormatter moneyFormatter = MoneyFormatter();
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: MyColor.neutralLow.withOpacity(0.7),
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(3),
+    return Card(
+      margin: const EdgeInsets.only(
+        bottom: 16,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+      surfaceTintColor: Colors.transparent,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(3),
+          ),
+          side: BorderSide(
+            color: MyColor.neutralLow,
+            width: .5,
+          )),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Image(
-                height: 120,
-                width: 150,
-                image: NetworkImage(
-                  image!,
-                ),
-                fit: BoxFit.fill,
+          SizedBox(
+            height: 128,
+            width: 135,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(3),
+              ),
+              child: Image(
+                image: NetworkImage(image!),
+                fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(
-                        Icons.error_outline,
-                        color: Colors.red,
-                        size: 32,
+                        Icons.error,
+                        color: MyColor.danger,
                       ),
                       Text(
                         'Image Error',
                         style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
+                          color: MyColor.danger,
                         ),
-                      ),
+                      )
                     ],
                   );
                 },
               ),
-              Flexible(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    jobPosition ?? '',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    companyName ?? '',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: MyColor.neutralMedium,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Row(
                     children: [
-                      Text(
-                        jobPosition ?? '',
-                        maxLines: 1,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: MyColor.neutralHigh,
-                          fontSize: 12,
-                          letterSpacing: 0.5,
-                          fontWeight: FontWeight.w500,
-                        ),
+                      Icon(
+                        Icons.location_on,
+                        size: 15,
+                        color: MyColor.neutralHigh,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(
+                        width: 5,
+                      ),
                       Text(
-                        companyName ?? '',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        textAlign: TextAlign.left,
+                        location ?? '',
                         style: TextStyle(
-                          color: MyColor.neutralMediumHigh,
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
+                          color: MyColor.neutralHigh,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.place,
-                            size: 12,
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            location ?? '',
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              color: MyColor.neutralHigh,
-                              fontSize: 12,
-                              letterSpacing: 0.5,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.money,
-                            size: 12,
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            moneyFormatter.formatRupiah(salary ?? 0),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              color: MyColor.primaryMain,
-                              fontSize: 12,
-                              letterSpacing: 0.5,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      )
                     ],
                   ),
-                ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    children: [
+                      const Icon(Icons.money, size: 15),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        moneyFormatter.formatRupiah(salary ?? 0),
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                          color: MyColor.primaryMain,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
               ),
-            ],
+            ),
           ),
         ],
       ),

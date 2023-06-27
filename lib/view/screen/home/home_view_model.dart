@@ -82,6 +82,7 @@ class HomeViewModel with ChangeNotifier {
     } catch (e) {
       _message = e.toString();
       changeState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -92,6 +93,7 @@ class HomeViewModel with ChangeNotifier {
       changeArticlesState(MyState.loaded);
     } catch (e) {
       changeArticlesState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -102,6 +104,7 @@ class HomeViewModel with ChangeNotifier {
       changeCounselorState(MyState.loaded);
     } catch (e) {
       changeCounselorState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -112,6 +115,7 @@ class HomeViewModel with ChangeNotifier {
       changeCareerState(MyState.loaded);
     } catch (e) {
       changeCareerState(MyState.failed);
+      rethrow;
     }
   }
 
@@ -122,6 +126,7 @@ class HomeViewModel with ChangeNotifier {
       changeForumState(MyState.loaded);
     } catch (e) {
       changeForumState(MyState.failed);
+      rethrow;
     }
   }
 }

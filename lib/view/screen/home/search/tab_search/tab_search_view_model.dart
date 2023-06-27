@@ -55,6 +55,7 @@ class TabSearchViewModel extends ChangeNotifier {
       changeState(MyState.loaded);
     } catch (e) {
       changeState(MyState.failed);
+      rethrow;
     }
   }
 }
